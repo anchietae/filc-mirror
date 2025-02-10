@@ -1,0 +1,5 @@
+package hu.qwit.filc.filc
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
