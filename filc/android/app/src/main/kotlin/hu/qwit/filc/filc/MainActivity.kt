@@ -1,4 +1,4 @@
-package hu.qwit.filc.filc
+package hu.qwit.filc
 
 import io.flutter.embedding.android.FlutterActivity
 
