@@ -33,3 +33,6 @@ secrets/keystore.properties
 
 #VSCode
 .vscode/
+
+#IntelliJ
+.idea/
