@@ -30,3 +30,6 @@ doc/api/
 #Custom files to ignore
 secrets/upload-keystore.jks
 secrets/keystore.properties
+
+#VSCode
+.vscode/
