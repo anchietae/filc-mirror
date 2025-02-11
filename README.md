@@ -1,6 +1,4 @@
-# refilc-student-rewrite
-
-<img src="https://etc.qwit.cloud/random" alt="top bar" width="200px">
+# <img src="https://etc.qwit.cloud/random" alt="top bar" width="100px"> reFilc rewrite
 
 [![Crowdin](https://badges.crowdin.net/filc/localized.svg)](https://crowdin.com/project/filc)
 
