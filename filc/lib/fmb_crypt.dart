@@ -7,7 +7,7 @@ import 'dart:convert';
 /// since fmb works quite interesting, it may not throw an error on an un-decomposable string,
 /// so it is recommended to check the string to see if it is intact
 
-class fmbCrypt {
+class FMBCrypt {
   static Uint8List generateKey(String password) {
     final key = Uint8List(32);
     int hash = 0;
@@ -75,13 +75,12 @@ class fmbCrypt {
   }
 
   /// basic usage:
-  /// String? encrypted = fmbCrypt.handleText('encrypt', 'Hello World', 'myPassword');
-  /// String? decrypted = fmbCrypt.handleText('decrypt', encrypted!, 'myPassword');
+  /// String? encrypted = FMBCrypt.handleText('encrypt', 'Hello World', 'myPassword');
+  /// String? decrypted = FMBCrypt.handleText('decrypt', encrypted!, 'myPassword');
 
   static String? handleText(String action, String input, String password) {
     if (password.isEmpty || input.isEmpty) {
       throw ArgumentError('Password and input cannot be empty');
-      return null;
     }
 
     try {
@@ -95,12 +94,10 @@ class fmbCrypt {
           return utf8.decode(decrypted);
         } catch (e) {
           throw Exception('Failed to decrypt data: ${e.toString()}');
-          return null;
         }
       }
     } catch (error) {
       throw Exception('Failed to $action data: ${error.toString()}');
-      return null;
     }
   }
 }
