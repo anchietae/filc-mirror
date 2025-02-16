@@ -8,7 +8,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:filc/fmb_crypt.dart';
+import 'package:firka/fmb_crypt.dart';
 
 void main() {
   test('encryption and decryption test', () async {
