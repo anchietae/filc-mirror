@@ -43,8 +43,8 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 flutter_native_splash:
-  color: "#FAFFF0"
-  image: assets/logos/colored_logo.png
+  color: "#7CA021"
+  image: assets/logos/splash.png
   android: true
   ios: true
 
