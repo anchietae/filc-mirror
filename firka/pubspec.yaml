@@ -29,6 +29,9 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+
+isar_version: &isar_version ^4.0.0-dev.14
+
 dependencies:
   flutter:
     sdk: flutter
@@ -36,11 +39,17 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.5
+  dio: ^5.8.0+1
+  isar: *isar_version
+  isar_flutter_libs: *isar_version
+  build_runner: any
+  path_provider: ^2.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  build_runner: any
 
 flutter_native_splash:
   color: "#7CA021"
