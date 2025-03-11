@@ -1,6 +1,6 @@
 # hogyan hozz létre upload-keystore-t flutterhez?
 
-ha ezt olvasod, akkor valószínűleg szeretnéd a refilc appot build-elni. ha bármi kérdésed lenne, nyugodtan keress minket discordon, vagy akár emailben is!
+ha ezt olvasod, akkor valószínűleg szeretnéd a refirka appot build-elni. ha bármi kérdésed lenne, nyugodtan keress minket discordon, vagy akár emailben is!
 
 ## 1. keystore létrehozása
 

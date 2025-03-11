@@ -14,4 +14,4 @@ Additionally, the following conditions apply:
 
 2. All terms of AGPL-3.0+ remain in effect alongside these additional conditions
 
-Copyright (c) 2024 reFilc
+Copyright (c) 2024 refirka

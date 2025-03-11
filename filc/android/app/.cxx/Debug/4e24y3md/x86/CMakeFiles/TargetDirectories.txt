@@ -1,2 +1,0 @@
-/mnt/FileStorage/QwIT/refilc-student-rewrite/filc/android/app/.cxx/Debug/4e24y3md/x86/CMakeFiles/edit_cache.dir
-/mnt/FileStorage/QwIT/refilc-student-rewrite/filc/android/app/.cxx/Debug/4e24y3md/x86/CMakeFiles/rebuild_cache.dir

@@ -30,7 +30,7 @@ doc/api/
 #Custom files to ignore
 secrets/upload-keystore.jks
 secrets/keystore.properties
-filc/android/app/.cxx/
+firka/android/app/.cxx/
 #VSCode
 .vscode/
 
