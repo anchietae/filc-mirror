@@ -16,16 +16,26 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
-part 'token_model.g.dart';
+import 'package:path_provider/path_provider.dart';
+import '../models/token_model.dart';
 
-class TokenModel {
-  @Id()
-  int studentId = 0; // Custom unique student identifier
+class TokenService {
+  late Future<Isar> db;
 
-  String? tokenId; // Unique identifier for the token if needed
-  String? accessToken; // The main auth token
-  String? refreshToken; // Token used to refresh the access token
-  DateTime? expiryDate; // When the token expires
+  // Initialize the database
+  TokenService() {
+    db = openDB();
+  }
+
+  // Open the Isar database
+  Future<Isar> openDB() async {
+    final dir = await getApplicationDocumentsDirectory();
+    return await Isar.open(
+      inspector: true,
+      schemas: [TokenModelSchema],
+      directory: dir.path,
+    );
+  }
+
 }
