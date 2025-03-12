@@ -1,3 +1,8 @@
+/*
+
+TODO: add license header here, when the code is replaced with actual code, and not flutter's default code
+
+*/
 import 'package:flutter/material.dart';
 
 void main() {
