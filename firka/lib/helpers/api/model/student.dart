@@ -16,7 +16,6 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import 'package:firka/helpers/api/model/bank_account.dart';
 import 'package:firka/helpers/api/model/guardian.dart';
 import 'package:firka/helpers/api/model/institution.dart';
 
@@ -76,6 +75,31 @@ class Student {
       instituteCode: json['IntezmenyAzonosito'],
       instituteName: json['IntezmenyNev'],
       institution: json['Intezmeny']
+    );
+  }
+
+}
+
+class BankAccount {
+
+  final String accountNumber;
+  final String isReadOnly;
+  final String ownerName;
+  final String ownerType;
+
+  BankAccount({
+    required this.accountNumber,
+    required this.isReadOnly,
+    required this.ownerName,
+    required this.ownerType
+  });
+  
+  factory BankAccount.fromJson(Map<String, dynamic> json) {
+    return BankAccount(
+        accountNumber: json['BankszamlaSzam'],
+        isReadOnly: json['IsReadOnly'],
+        ownerName: json['BankszamlaTulajdonosNeve'],
+        ownerType: json['BankszamlaTulajdonosTipusId']
     );
   }
 
