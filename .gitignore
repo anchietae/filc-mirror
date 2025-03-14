@@ -44,6 +44,7 @@ firka/debug-info/
 **/migrate_working_dir/
 **/.plugin_symlinks/
 **/local.properties
+**.metadata
 
 # symbols, obfuscations
 **/app.*.symbols
@@ -57,6 +58,7 @@ firka/debug-info/
 **.jks
 **key.properties
 **.keystore
+**keystore.properties
 **local.properties
 **GenerateedPluginRegistrant.java
 **/android/app/.cxx/
@@ -104,6 +106,3 @@ firka/debug-info/
 tool_logs/build/*.log
 tool_logs/d8dx_fix/*.log
 tool_logs/pub_fix/*.log
-
-#keystore
-secrets/keystore.properties
