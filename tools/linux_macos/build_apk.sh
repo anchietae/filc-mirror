@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # move out from tools dir
-cd ../../firka
+cd ../../firka || exit
 
 # refresh packages
 flutter clean
