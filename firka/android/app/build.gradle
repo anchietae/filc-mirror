@@ -61,7 +61,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(keystoreProperties['storeFile']) // Path to the keystore file
+            storeFile file("../../../${keystoreProperties['storeFile']}") // Path to the keystore file
             storePassword keystoreProperties['storePassword'] // Keystore password
             keyAlias keystoreProperties['keyAlias'] // Key alias
             keyPassword keystoreProperties['keyPassword'] // Key password
