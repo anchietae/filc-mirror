@@ -44,7 +44,6 @@ firka/debug-info/
 **/migrate_working_dir/
 **/.plugin_symlinks/
 **/local.properties
-**.metadata
 
 # symbols, obfuscations
 **/app.*.symbols
