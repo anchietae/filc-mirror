@@ -17,9 +17,6 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
-subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
 // Taken from https://github.com/isar/isar/issues/1662
 subprojects {
     //  fix for verifyReleaseResources
