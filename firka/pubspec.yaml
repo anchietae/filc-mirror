@@ -38,7 +38,6 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   flutter_launcher_icons: ^0.14.3
-  flutter_native_splash: ^2.4.5
   dio: ^5.8.0+1
   isar: *isar_version
   isar_flutter_libs: *isar_version
@@ -49,12 +48,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-
-flutter_native_splash:
-  color: "#7CA021"
-  image: assets/logos/splash.png
-  android: true
-  ios: true
 
 
 # For information on the generic Dart part of this file, see the
