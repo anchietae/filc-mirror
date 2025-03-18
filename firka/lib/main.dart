@@ -98,8 +98,8 @@ class InitializationScreen extends StatelessWidget {
 
 
           // Initialization successful, determine which screen to show
-          StatelessWidget screen;
-          if (kDebugMode) {
+          Widget screen;
+          if (false) {
             print('Debug mode: using DebugScreen');
             screen = DebugScreen();
           } else {
