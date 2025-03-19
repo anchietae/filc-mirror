@@ -45,7 +45,8 @@ dependencies:
   path_provider: ^2.1.0
   carousel_slider: ^5.0.0
   i18n_extension: ^15.0.4
-
+  flutter_inappwebview: ^6.1.5
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -60,6 +61,7 @@ flutter:
   assets:
     - assets/images/logos/colored_logo.png
     - assets/images/carousel/
+
 
   fonts:
     - family: Montserrat
