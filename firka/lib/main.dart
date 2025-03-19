@@ -102,7 +102,7 @@ class InitializationScreen extends StatelessWidget {
             screen = DebugScreen();
           } else {
             if (snapshot.data!.tokenCount == 0) {
-              screen = LoginScreen();
+              screen = LoginScreen(snapshot.data!.isarInstance);
             } else {
               screen = HomeScreen();
             }
@@ -116,7 +116,7 @@ class InitializationScreen extends StatelessWidget {
             ),
             home: screen,
             routes: {
-              '/login': (context) => LoginScreen(),
+              '/login': (context) => LoginScreen(snapshot.data!.isarInstance),
               '/debug': (context) => DebugScreen(),
             },
           );

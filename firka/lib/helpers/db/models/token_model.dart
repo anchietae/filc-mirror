@@ -16,6 +16,8 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import 'package:firka/helpers/api/resp/token_grant.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:isar/isar.dart';
 part 'token_model.g.dart';
 
@@ -27,5 +29,25 @@ class TokenModel {
   String? accessToken; // The main auth token
   String? refreshToken; // Token used to refresh the access token
   DateTime? expiryDate;
+
+  TokenModel();
+
+  factory TokenModel.fromResp(TokenGrantResponse resp) {
+    var m = TokenModel();
+    final jwt = JWT.decode(resp.idToken);
+
+    // TODO: Add a proper model for jwt id
+
+
+    m.studentId = int.parse(jwt.payload["kreta:user_name"]);
+    m.idToken = resp.idToken;
+    m.accessToken = resp.accessToken;
+    m.refreshToken = resp.refreshToken;
+    m.expiryDate = DateTime.now()
+      .add(Duration(seconds: resp.expiresIn))
+      .subtract(Duration(minutes: 10)); // just to be safe
+
+    return m;
+  }
 
 }

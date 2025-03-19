@@ -1,17 +1,57 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firka/helpers/db/models/token_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:isar/isar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:firka/helpers/api/consts.dart';
 
+import '../../helpers/api/token_grant.dart';
+
 late WebViewController _webViewController;
 
-/// Epic login screen code, licensed under AGPL 3.0, unlike "refilc"
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key}) {
+  LoginScreen(Isar isar, {super.key}) {
     _webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(KretaEndpoints.kretaLoginUrl));
+      ..loadRequest(Uri.parse(KretaEndpoints.kretaLoginUrl))
+      ..setNavigationDelegate(NavigationDelegate(
+        onNavigationRequest: (NavigationRequest request) async {
+          var uri = Uri.parse(request.url);
+
+          if (uri.path == "/ellenorzo-student/prod/oauthredirect") {
+            if (kDebugMode) {
+              print("query params: ${uri.queryParameters}");
+            }
+
+            var code = uri.queryParameters["code"]!;
+
+            try {
+              var resp = await getAccessToken(code);
+
+              if (kDebugMode) {
+                print("getAccessToken(): $resp");
+              }
+
+              isar.write((isar) {
+                isar.tokenModels.put(TokenModel.fromResp(resp));
+              });
+
+              // TODO: navigate to home
+            } catch (ex) {
+              if (kDebugMode) {
+                print("oauthredirect failed: $ex");
+              }
+              // TODO: display an error popup
+            }
+
+            return NavigationDecision.prevent;
+          }
+
+          return NavigationDecision.navigate;
+        }
+      ));
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
