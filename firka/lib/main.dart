@@ -53,11 +53,6 @@ void main() async {
     // Run App Initialization
     runApp(InitializationScreen());
 
-    if (kDebugMode) {
-      var isar = await initDB();
-      var count = isar.tokenModels.count();
-      print(count);
-    }
   }, (error, stackTrace) {
     debugPrint('Caught error: $error');
     debugPrint('Stack trace: $stackTrace');
