@@ -32,8 +32,13 @@ const TokenModelSchema = CollectionSchema(
       name: r'idToken',
       type: IsarType.string,
     ),
-    r'refreshToken': PropertySchema(
+    r'iss': PropertySchema(
       id: 3,
+      name: r'iss',
+      type: IsarType.string,
+    ),
+    r'refreshToken': PropertySchema(
+      id: 4,
       name: r'refreshToken',
       type: IsarType.string,
     )
@@ -71,6 +76,12 @@ int _tokenModelEstimateSize(
     }
   }
   {
+    final value = object.iss;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.refreshToken;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -88,7 +99,8 @@ void _tokenModelSerialize(
   writer.writeString(offsets[0], object.accessToken);
   writer.writeDateTime(offsets[1], object.expiryDate);
   writer.writeString(offsets[2], object.idToken);
-  writer.writeString(offsets[3], object.refreshToken);
+  writer.writeString(offsets[3], object.iss);
+  writer.writeString(offsets[4], object.refreshToken);
 }
 
 TokenModel _tokenModelDeserialize(
@@ -101,7 +113,8 @@ TokenModel _tokenModelDeserialize(
   object.accessToken = reader.readStringOrNull(offsets[0]);
   object.expiryDate = reader.readDateTimeOrNull(offsets[1]);
   object.idToken = reader.readStringOrNull(offsets[2]);
-  object.refreshToken = reader.readStringOrNull(offsets[3]);
+  object.iss = reader.readStringOrNull(offsets[3]);
+  object.refreshToken = reader.readStringOrNull(offsets[4]);
   object.studentId = id;
   return object;
 }
@@ -120,6 +133,8 @@ P _tokenModelDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
+      return (reader.readStringOrNull(offset)) as P;
+    case 4:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -597,6 +612,152 @@ extension TokenModelQueryFilter
     });
   }
 
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'iss',
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'iss',
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'iss',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'iss',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'iss',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'iss',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'iss',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'iss',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'iss',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'iss',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'iss',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition> issIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'iss',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<TokenModel, TokenModel, QAfterFilterCondition>
       refreshTokenIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -868,6 +1029,18 @@ extension TokenModelQuerySortBy
     });
   }
 
+  QueryBuilder<TokenModel, TokenModel, QAfterSortBy> sortByIss() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'iss', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterSortBy> sortByIssDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'iss', Sort.desc);
+    });
+  }
+
   QueryBuilder<TokenModel, TokenModel, QAfterSortBy> sortByRefreshToken() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'refreshToken', Sort.asc);
@@ -919,6 +1092,18 @@ extension TokenModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<TokenModel, TokenModel, QAfterSortBy> thenByIss() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'iss', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TokenModel, TokenModel, QAfterSortBy> thenByIssDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'iss', Sort.desc);
+    });
+  }
+
   QueryBuilder<TokenModel, TokenModel, QAfterSortBy> thenByRefreshToken() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'refreshToken', Sort.asc);
@@ -966,6 +1151,13 @@ extension TokenModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<TokenModel, TokenModel, QDistinct> distinctByIss(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'iss', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<TokenModel, TokenModel, QDistinct> distinctByRefreshToken(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -997,6 +1189,12 @@ extension TokenModelQueryProperty
   QueryBuilder<TokenModel, String?, QQueryOperations> idTokenProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'idToken');
+    });
+  }
+
+  QueryBuilder<TokenModel, String?, QQueryOperations> issProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'iss');
     });
   }
 

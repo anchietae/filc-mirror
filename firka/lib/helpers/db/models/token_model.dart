@@ -24,6 +24,7 @@ part 'token_model.g.dart';
 @collection
 class TokenModel {
   Id? studentId; // Custom unique student identifier
+  String? iss; // Institution id for student
   String? idToken; // Unique identifier for the token if needed
   String? accessToken; // The main auth token
   String? refreshToken; // Token used to refresh the access token
@@ -39,6 +40,7 @@ class TokenModel {
 
 
     m.studentId = int.parse(jwt.payload["kreta:user_name"]);
+    m.iss = jwt.payload["kreta:institute_code"];
     m.idToken = resp.idToken;
     m.accessToken = resp.accessToken;
     m.refreshToken = resp.refreshToken;
