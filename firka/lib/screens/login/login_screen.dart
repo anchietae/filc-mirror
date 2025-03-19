@@ -1,18 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
+import 'package:firka/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:isar/isar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:firka/helpers/api/consts.dart';
 import 'package:firka/screens/home/home_screen.dart';
 import '../../helpers/api/token_grant.dart';
 
 class LoginScreen extends StatefulWidget {
-  final Isar isar;
+  final AppInitialization data;
 
-  const LoginScreen(this.isar, {super.key});
+  const LoginScreen(this.data, {super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -40,21 +41,25 @@ class _LoginScreenState extends State<LoginScreen> {
           var code = uri.queryParameters["code"]!;
 
           try {
-            var isar = widget.isar;
+            var isar = widget.data.isar;
             var resp = await getAccessToken(code);
 
             if (kDebugMode) {
               print("getAccessToken(): $resp");
             }
 
+            var tokenModel = TokenModel.fromResp(resp);
+
             await isar.writeTxn(() async {
-              await isar.tokenModels.put(TokenModel.fromResp(resp));
+              await isar.tokenModels.put(tokenModel);
             });
+
+            widget.data.client = KretaClient(tokenModel, isar);
 
             if (!mounted) return NavigationDecision.prevent;
 
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => HomeScreen()),
+              MaterialPageRoute(builder: (context) => HomeScreen(widget.data)),
               (route) => false, // Remove all previous routes
             );
           } catch (ex) {

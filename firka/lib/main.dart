@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +14,12 @@ late Isar isar;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class AppInitialization {
-  final Isar isarInstance;
+  final Isar isar;
+  late KretaClient client;
   final int tokenCount;
 
   AppInitialization({
-    required this.isarInstance,
+    required this.isar,
     required this.tokenCount,
   });
 }
@@ -33,16 +35,27 @@ Future<Isar> initDB() async {
 }
 
 Future<AppInitialization> initializeApp() async {
-  final isarInstance = await initDB();
-  final tokenCount = await isarInstance.tokenModels.count();
+  final isar = await initDB();
+  final tokenCount = await isar.tokenModels.count();
 
   if (kDebugMode) {
     print('Token count: $tokenCount');
   }
-  return AppInitialization(
-    isarInstance: isarInstance,
+
+  var _init = AppInitialization(
+    isar: isar,
     tokenCount: tokenCount,
   );
+
+  // TODO: Account selection
+  if (tokenCount > 0) {
+    _init.client = KretaClient(
+      (await isar.tokenModels.where().findFirst())!,
+      isar
+    );
+  }
+
+  return _init;
 }
 
 void main() async {
@@ -92,16 +105,16 @@ class InitializationScreen extends StatelessWidget {
 
           // Initialization successful, determine which screen to show
           Widget screen;
-          if (false) {
-            print('Debug mode: using DebugScreen');
-            screen = DebugScreen();
+
+          assert(snapshot.data != null);
+          var data = snapshot.data!;
+
+          if (snapshot.data!.tokenCount == 0) {
+            screen = LoginScreen(data);
           } else {
-            if (snapshot.data!.tokenCount == 0) {
-              screen = LoginScreen(snapshot.data!.isarInstance);
-            } else {
-              screen = HomeScreen();
-            }
+            screen = HomeScreen(data);
           }
+
           return MaterialApp(
             title: 'Firka',
             navigatorKey: navigatorKey, // Use the global navigator key
@@ -111,8 +124,8 @@ class InitializationScreen extends StatelessWidget {
             ),
             home: screen,
             routes: {
-              '/login': (context) => LoginScreen(snapshot.data!.isarInstance),
-              '/debug': (context) => DebugScreen(),
+              '/login': (context) => LoginScreen(data),
+              '/debug': (context) => DebugScreen(data),
             },
           );
         }

@@ -1,7 +1,11 @@
+// ignore_for_file: avoid_print
+
+import 'package:firka/main.dart';
 import 'package:flutter/material.dart';
 
 class DebugScreen extends StatelessWidget {
-  const DebugScreen({super.key});
+  final AppInitialization data;
+  const DebugScreen(this.data, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,12 @@ class DebugScreen extends StatelessWidget {
                 throw 0 / 0;
               },
               child: const Text('Throw Exception'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                print("getStudent(): ${await data.client.getStudent()}");
+              },
+              child: const Text('getStudent()'),
             ),
           ],
         ),

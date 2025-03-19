@@ -18,6 +18,7 @@
 
 import 'package:firka/helpers/api/model/guardian.dart';
 import 'package:firka/helpers/api/model/institution.dart';
+import 'package:firka/helpers/json_helper.dart';
 
 class Student {
 
@@ -32,7 +33,7 @@ class Student {
   final String name;
   final String phoneNumber;
 
-  final int schoolYearUID;
+  final String schoolYearUID;
   final String uid;
 
   final List<Guardian> guardianList;
@@ -60,9 +61,15 @@ class Student {
   });
 
   factory Student.fromJson(Map<String, dynamic> json) {
+    var guardianList = List<Guardian>.empty(growable: true);
+
+    for (var item in json['Gondviselok']) {
+      guardianList.add(Guardian.fromJson(item));
+    }
+
     return Student(
-      addressDataList: json['Cimek'],
-      bankAccount: json['Bankszamla'],
+      addressDataList: listToTyped<String>(json['Cimek']),
+      bankAccount: BankAccount.fromJson(json['Bankszamla']),
       yearOfBirth: json['SzuletesiEv'],
       monthOfBirth: json['SzuletesiHonap'],
       dayOfBirth: json['SzuletesiNap'],
@@ -71,10 +78,10 @@ class Student {
       phoneNumber: json['Telefonszam'],
       schoolYearUID: json['TanevUid'],
       uid: json['Uid'],
-      guardianList: json['Gondviselok'],
+      guardianList: guardianList,
       instituteCode: json['IntezmenyAzonosito'],
       instituteName: json['IntezmenyNev'],
-      institution: json['Intezmeny']
+      institution: Institution.fromJson(json['Intezmeny'])
     );
   }
 
@@ -101,9 +108,9 @@ class Student {
 class BankAccount {
 
   final String accountNumber;
-  final String isReadOnly;
+  final bool isReadOnly;
   final String ownerName;
-  final String ownerType;
+  final int ownerType;
 
   BankAccount({
     required this.accountNumber,

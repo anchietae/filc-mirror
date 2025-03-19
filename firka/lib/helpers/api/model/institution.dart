@@ -31,10 +31,16 @@ class Institution {
   });
 
   factory Institution.fromJson(Map<String, dynamic> json) {
+    var systemModuleList = List<SystemModule>.empty(growable: true);
+
+    for (var item in json['Rendszermodulok']) {
+      systemModuleList.add(SystemModule.fromJson(item));
+    }
+
     return Institution(
-      customizationSettings: json['TestreszabasBeallitasok'],
+      customizationSettings: CustomizationSettings.fromJson(json['TestreszabasBeallitasok']),
       shortName: json['RovidNev'],
-      systemModuleList: json['Rendszermodulok'],
+      systemModuleList: systemModuleList,
       uid: json['Uid'],
     );
   }
@@ -80,7 +86,7 @@ class SystemModule {
   
   final bool isActive;
   final String type;
-  final String url;
+  final String? url;
 
   SystemModule({
     required this.isActive,

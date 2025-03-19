@@ -1,3 +1,4 @@
+import 'package:firka/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
@@ -5,13 +6,17 @@ import 'package:shake_gesture/shake_gesture.dart';
 import '../../screens/debug/debug_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final AppInitialization data;
+  const HomeScreen(this.data, {super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState(data);
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final AppInitialization data;
+  _HomeScreenState(this.data);
+
   @override
   void initState() {
     super.initState();
@@ -19,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (kDebugMode) {
       ShakeGesture.registerCallback(onShake: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const DebugScreen()));
+            MaterialPageRoute(builder: (context) => DebugScreen(data)));
       });
     }
   }
