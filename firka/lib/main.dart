@@ -46,7 +46,6 @@ Future<AppInitialization> initializeApp() async {
 }
 
 void main() async {
-
   //TODO: fix the error handling currently not pushing to the error page
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -96,7 +95,6 @@ class InitializationScreen extends StatelessWidget {
             );
           }
 
-
           // Initialization successful, determine which screen to show
           Widget screen;
           if (false) {
@@ -118,8 +116,8 @@ class InitializationScreen extends StatelessWidget {
             ),
             home: screen,
             routes: {
-              '/login': (context) => const LoginScreen(),
-              '/debug': (context) => const DebugScreen(),
+              '/login': (context) => LoginScreen(),
+              '/debug': (context) => DebugScreen(),
             },
           );
         }
