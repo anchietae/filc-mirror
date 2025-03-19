@@ -32,8 +32,8 @@ class TokenService {
   Future<Isar> openDB() async {
     final dir = await getApplicationDocumentsDirectory();
     return Isar.open(
+      [TokenModelSchema],
       inspector: true,
-      schemas: [TokenModelSchema],
       directory: dir.path,
     );
   }
