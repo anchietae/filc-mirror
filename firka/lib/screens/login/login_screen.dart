@@ -1,12 +1,18 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:firka/helpers/api/consts.dart';
 
+late WebViewController _webViewController;
 
-
+/// Epic login screen code, licensed under AGPL 3.0, unlike "refilc"
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key}) {
+    _webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(KretaEndpoints.kretaLoginUrl));
+
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
@@ -21,7 +27,7 @@ class LoginScreen extends StatelessWidget {
     final paddingWidthHorizontal = MediaQuery.of(context).size.width -
         MediaQuery.of(context).size.width * 0.95;
     final contentWidth = MediaQuery.of(context).size.width * 0.95;
-
+    final modalHeight = MediaQuery.of(context).size.height * 0.90;
     final List<Map<String, String>> slides = [
       {
         'title': 'A romló tendenciádat tízféle képpen láthatod',
@@ -186,28 +192,38 @@ class LoginScreen extends StatelessWidget {
                       child: InkWell(
                         onTap: () {
                           showModalBottomSheet<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SizedBox(
-                                  height: 200,
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        const Text('Modal BottomSheet'),
-                                        ElevatedButton(
-                                          child:
-                                              const Text('Close BottomSheet'),
-                                          onPressed: () =>
-                                              Navigator.pop(context),
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return FractionallySizedBox(
+                                heightFactor: 0.9,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Container(
+                                        height: MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                            0.8, // Adjust height for content
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        // Add ClipRRect for circular edges
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: WebViewWidget(
+                                            controller: _webViewController,
+                                          ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              });
+                                ),
+                              );
+                            },
+                          );
                         },
                         borderRadius: BorderRadius.circular(12),
                         child: Container(
