@@ -42,4 +42,14 @@ class Guardian {
     );
   }
 
+  @override
+  String toString() {
+    return 'Guardian('
+        'email: "$email", '
+        'isLegalRepresentative: $isLegalRepresentative, '
+        'name: "$name", '
+        'phoneNumber: "$phoneNumber", '
+        'uid: "$uid"'
+        ')';
+  }
 }

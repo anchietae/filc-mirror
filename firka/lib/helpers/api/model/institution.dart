@@ -64,6 +64,16 @@ class CustomizationSettings {
     );
   }
 
+  @override
+  String toString() {
+    return 'CustomizationSettings('
+        'delayForNotifications: $delayForNotifications, '
+        'isClassAverageVisible: $isClassAverageVisible, '
+        'isLessonsThemeVisible: $isLessonsThemeVisible, '
+        'nextServerDeployAsString: "$nextServerDeployAsString"'
+        ')';
+  }
+
 }
 
 class SystemModule {
@@ -84,6 +94,15 @@ class SystemModule {
       type: json['Tipus'],
       url: json['Url']
     );
+  }
+
+  @override
+  String toString() {
+    return 'SystemModule('
+        'isActive: $isActive, '
+        'type: "$type", '
+        'url: "$url"'
+        ')';
   }
 
 }

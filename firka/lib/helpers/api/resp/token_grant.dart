@@ -16,6 +16,8 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import 'package:isar/isar.dart';
+
 class TokenGrantResponse {
   final String idToken;
   final String accessToken;
@@ -42,5 +44,15 @@ class TokenGrantResponse {
       refreshToken: json['refresh_token'],
       scope: json['scope']
     );
+  }
+
+  @override
+  String toString() {
+    return 'TokenGrant(idToken: "$idToken", accessToken: "$accessToken", '
+        'expiresIn: $expiresIn, '
+        'tokenType: "$tokenType", '
+        'refreshToken: "$refreshToken", '
+        'scope: "$scope"'
+        ')';
   }
 }

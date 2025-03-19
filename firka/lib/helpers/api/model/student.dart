@@ -78,6 +78,24 @@ class Student {
     );
   }
 
+  @override
+  String toString() {
+    return 'Student('
+    'addressDataList: [$addressDataList], '
+    'bankAccount: $bankAccount, '
+    'yearOfBirth: $yearOfBirth, '
+    'monthOfBirth: $monthOfBirth, '
+    'dayOfBirth: $dayOfBirth, '
+    'emailAddress: "$emailAddress", '
+    'name: "$name", '
+    'phoneNumber: "$phoneNumber", '
+    'schoolYearUID: "$schoolYearUID", '
+    'uid: "$uid", '
+    'guardianList: [$guardianList], '
+    'instituteCode: "$instituteCode", '
+    'instituteName: "$instituteName", '
+    ')';
+  }
 }
 
 class BankAccount {
@@ -103,4 +121,13 @@ class BankAccount {
     );
   }
 
+  @override
+  String toString() {
+    return 'BankAccount('
+        'accountNumber: "$accountNumber", '
+        'isReadOnly: "$isReadOnly", '
+        'ownerName: "$ownerName", '
+        'ownerType: "$ownerType"'
+        ')';
+  }
 }
