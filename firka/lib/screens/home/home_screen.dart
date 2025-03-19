@@ -1,8 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
+import 'package:shake_gesture/shake_gesture.dart';
+import '../../screens/debug/debug_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // TODO: move this to a button inside the settings page when it's implemented
+    if (kDebugMode) {
+      ShakeGesture.registerCallback(onShake: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const DebugScreen()));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,19 +34,12 @@ class HomeScreen extends StatelessWidget {
       systemNavigationBarColor: Color(0xFFDAE4F7),
     ));
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'Home Screen',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+        appBar: AppBar(
+          title: const Text('Home'),
+          centerTitle: true,
         ),
-      ),
-    );
+        body: Column(
+          children: [],
+        ));
   }
 }

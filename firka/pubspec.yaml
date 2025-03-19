@@ -47,7 +47,8 @@ dependencies:
   i18n_extension: ^15.0.4
   webview_flutter: ^4.7.0
   dart_jsonwebtoken: ^3.2.0
-  
+  shake_gesture: ^1.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -62,7 +63,6 @@ flutter:
   assets:
     - assets/images/logos/colored_logo.png
     - assets/images/carousel/
-
 
   fonts:
     - family: Montserrat
