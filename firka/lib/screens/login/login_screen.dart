@@ -6,55 +6,71 @@ import 'package:flutter/services.dart';
 import 'package:isar/isar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:firka/helpers/api/consts.dart';
-
+import 'package:firka/screens/home/home_screen.dart';
 import '../../helpers/api/token_grant.dart';
 
-late WebViewController _webViewController;
+class LoginScreen extends StatefulWidget {
+  final Isar isar;
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen(Isar isar, {super.key}) {
+  const LoginScreen(this.isar, {super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late WebViewController _webViewController;
+
+  @override
+  void initState() {
+    super.initState();
+
     _webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(Uri.parse(KretaEndpoints.kretaLoginUrl))
       ..setNavigationDelegate(NavigationDelegate(
-        onNavigationRequest: (NavigationRequest request) async {
-          var uri = Uri.parse(request.url);
+          onNavigationRequest: (NavigationRequest request) async {
+        var uri = Uri.parse(request.url);
 
-          if (uri.path == "/ellenorzo-student/prod/oauthredirect") {
-            if (kDebugMode) {
-              print("query params: ${uri.queryParameters}");
-            }
-
-            var code = uri.queryParameters["code"]!;
-
-            try {
-              var resp = await getAccessToken(code);
-
-              if (kDebugMode) {
-                print("getAccessToken(): $resp");
-              }
-
-              isar.write((isar) {
-                isar.tokenModels.put(TokenModel.fromResp(resp));
-              });
-
-              // TODO: navigate to home
-            } catch (ex) {
-              if (kDebugMode) {
-                print("oauthredirect failed: $ex");
-              }
-              // TODO: display an error popup
-            }
-
-            return NavigationDecision.prevent;
+        if (uri.path == "/ellenorzo-student/prod/oauthredirect") {
+          if (kDebugMode) {
+            print("query params: ${uri.queryParameters}");
           }
 
-          return NavigationDecision.navigate;
+          var code = uri.queryParameters["code"]!;
+
+          try {
+            var resp = await getAccessToken(code);
+
+            if (kDebugMode) {
+              print("getAccessToken(): $resp");
+            }
+
+            widget.isar.write((isar) {
+              isar.tokenModels.put(TokenModel.fromResp(resp));
+            });
+
+            if (!mounted) return NavigationDecision.prevent;
+
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+              (route) => false, // Remove all previous routes
+            );
+          } catch (ex) {
+            if (kDebugMode) {
+              print("oauthredirect failed: $ex");
+            }
+            // TODO: display an error popup
+          }
+
+          return NavigationDecision.prevent;
         }
-      ));
+
+        return NavigationDecision.navigate;
+      }));
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.transparent,
@@ -95,14 +111,14 @@ class LoginScreen extends StatelessWidget {
 
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xFFFAFFEF),
+        backgroundColor: const Color(0xFFFAFFEF),
         body: SafeArea(
             child: Stack(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Padding(
                   padding: EdgeInsets.only(left: paddingWidthHorizontal),
                   child: Row(
@@ -112,7 +128,7 @@ class LoginScreen extends StatelessWidget {
                         height: 30,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          image: DecorationImage(
+                          image: const DecorationImage(
                             image: AssetImage(
                                 'assets/images/logos/colored_logo.png'),
                             fit: BoxFit.cover,
@@ -121,8 +137,8 @@ class LoginScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6)),
                         ),
                       ),
-                      SizedBox(width: 8),
-                      Text(
+                      const SizedBox(width: 8),
+                      const Text(
                         'Firka',
                         style: TextStyle(
                           color: Color(0xFF394B0A),
@@ -136,7 +152,7 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Expanded(
                   child: CarouselSlider.builder(
                     itemCount: slides.length,
@@ -149,7 +165,7 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           Text(
                             slides[index]['title']!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xFF394B0A),
                               fontSize: 19,
                               fontFamily: 'Montserrat',
@@ -160,10 +176,10 @@ class LoginScreen extends StatelessWidget {
                             softWrap: true,
                             overflow: TextOverflow.visible,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text(
                             slides[index]['subtitle']!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xFF394B0A),
                               fontSize: 17,
                               fontFamily: 'Montserrat',
@@ -175,7 +191,7 @@ class LoginScreen extends StatelessWidget {
                             softWrap: true,
                             overflow: TextOverflow.visible,
                           ),
-                          SizedBox(height: 38),
+                          const SizedBox(height: 38),
                           SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: Image(
@@ -205,7 +221,7 @@ class LoginScreen extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   height: 200,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Color(0x00DAE4F7),
@@ -237,13 +253,15 @@ class LoginScreen extends StatelessWidget {
                             builder: (BuildContext context) {
                               return Padding(
                                 padding: EdgeInsets.only(
-                                  bottom: MediaQuery.of(context).viewInsets.bottom
-                                ),
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom),
                                 child: FractionallySizedBox(
                                   heightFactor: 0.90,
                                   child: Center(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
                                         Column(
@@ -253,14 +271,15 @@ class LoginScreen extends StatelessWidget {
                                               MainAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 16),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 16),
                                               child: Container(
                                                 decoration: const BoxDecoration(
                                                   color: Color(0xFFB9C8E5),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(2)
-                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(2)),
                                                 ),
                                                 width: 40,
                                                 height: 4,
@@ -273,7 +292,7 @@ class LoginScreen extends StatelessWidget {
                                                   .size
                                                   .height *
                                               0.8, // Adjust height for content
-                                          margin: EdgeInsets.symmetric(
+                                          margin: const EdgeInsets.symmetric(
                                               horizontal: 16),
                                           // Add ClipRRect for circular edges
                                           child: ClipRRect(
@@ -311,11 +330,11 @@ class LoginScreen extends StatelessWidget {
                               )
                             ],
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Bejelentkezés E-Kréta fiókkal',
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Color(0xFF394B0A), // Text-Primary
                                 fontSize: 17,
                                 fontFamily: 'Montserrat',
@@ -330,12 +349,12 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Adatvédelmi tájékoztató',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: const Color(0x7F394C0A) /* Text-Teritary */,
+                      color: Color(0x7F394C0A) /* Text-Teritary */,
                       fontSize: 14,
                       fontFamily: 'Montserrat',
                       fontVariations: [
