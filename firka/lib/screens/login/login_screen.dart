@@ -40,14 +40,15 @@ class _LoginScreenState extends State<LoginScreen> {
           var code = uri.queryParameters["code"]!;
 
           try {
+            var isar = widget.isar;
             var resp = await getAccessToken(code);
 
             if (kDebugMode) {
               print("getAccessToken(): $resp");
             }
 
-            widget.isar.write((isar) {
-              isar.tokenModels.put(TokenModel.fromResp(resp));
+            await isar.writeTxn(() async {
+              await isar.tokenModels.put(TokenModel.fromResp(resp));
             });
 
             if (!mounted) return NavigationDecision.prevent;

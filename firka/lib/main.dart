@@ -26,15 +26,15 @@ Future<Isar> initDB() async {
   final dir = await getApplicationDocumentsDirectory();
 
   return Isar.open(
+    [TokenModelSchema],
     inspector: true,
-    schemas: [TokenModelSchema],
     directory: dir.path,
   );
 }
 
 Future<AppInitialization> initializeApp() async {
   final isarInstance = await initDB();
-  final tokenCount = isarInstance.tokenModels.count();
+  final tokenCount = await isarInstance.tokenModels.count();
 
   if (kDebugMode) {
     print('Token count: $tokenCount');

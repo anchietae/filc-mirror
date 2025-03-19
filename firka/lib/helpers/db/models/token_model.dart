@@ -21,10 +21,9 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:isar/isar.dart';
 part 'token_model.g.dart';
 
+@collection
 class TokenModel {
-  @Id()
-  int studentId = 0; // Custom unique student identifier
-
+  Id? studentId; // Custom unique student identifier
   String? idToken; // Unique identifier for the token if needed
   String? accessToken; // The main auth token
   String? refreshToken; // Token used to refresh the access token
