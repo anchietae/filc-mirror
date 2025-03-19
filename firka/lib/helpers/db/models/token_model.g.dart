@@ -50,7 +50,7 @@ const TokenModelSchema = IsarGeneratedSchema(
 @isarProtected
 int serializeTokenModel(IsarWriter writer, TokenModel object) {
   {
-    final value = object.tokenId;
+    final value = object.idToken;
     if (value == null) {
       IsarCore.writeNull(writer, 1);
     } else {
@@ -85,7 +85,7 @@ int serializeTokenModel(IsarWriter writer, TokenModel object) {
 TokenModel deserializeTokenModel(IsarReader reader) {
   final object = TokenModel();
   object.studentId = IsarCore.readId(reader);
-  object.tokenId = IsarCore.readString(reader, 1);
+  object.idToken = IsarCore.readString(reader, 1);
   object.accessToken = IsarCore.readString(reader, 2);
   object.refreshToken = IsarCore.readString(reader, 3);
   {

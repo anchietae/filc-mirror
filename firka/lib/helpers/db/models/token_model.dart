@@ -23,8 +23,9 @@ class TokenModel {
   @Id()
   int studentId = 0; // Custom unique student identifier
 
-  String? tokenId; // Unique identifier for the token if needed
+  String? idToken; // Unique identifier for the token if needed
   String? accessToken; // The main auth token
   String? refreshToken; // Token used to refresh the access token
-  DateTime? expiryDate; // When the token expires
+  DateTime? expiryDate;
+
 }
