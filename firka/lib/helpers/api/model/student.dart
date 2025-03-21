@@ -29,9 +29,9 @@ class Student {
   final int monthOfBirth;
   final int dayOfBirth;
 
-  final String emailAddress;
+  final String? emailAddress;
   final String name;
-  final String phoneNumber;
+  final String? phoneNumber;
 
   final String schoolYearUID;
   final String uid;

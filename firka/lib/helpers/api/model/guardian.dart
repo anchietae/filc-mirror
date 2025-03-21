@@ -18,10 +18,10 @@
 
 class Guardian {
   
-  final String email;
+  final String? email;
   final bool isLegalRepresentative;
-  final String name;
-  final String phoneNumber;
+  final String? name;
+  final String? phoneNumber;
   final String uid;
 
   Guardian({
