@@ -28,4 +28,5 @@ class KretaEndpoints {
 
   static String getStudentUrl(String iss) => "${kreta(iss)}/ellenorzo/v3/sajat/TanuloAdatlap";
   static String getNoticeBoard(String iss) => "${kreta(iss)}/ellenorzo/v3/sajat/FaliujsagElemek";
+  static String getGrades(String iss) => "${kreta(iss)}/ellenorzo/v3/sajat/Ertekelesek";
 }

@@ -7,6 +7,7 @@ import 'package:isar/isar.dart';
 
 import '../../db/models/token_model.dart';
 import '../consts.dart';
+import '../model/grade.dart';
 import '../model/notice_board.dart';
 import '../model/student.dart';
 import '../token_grant.dart';
@@ -158,6 +159,28 @@ class KretaClient {
       List<dynamic> rawItems = resp;
       for (var item in rawItems) {
         items.add(NoticeBoardItem.fromJson(item));
+      }
+    } catch (ex) {
+      err = ex.toString();
+    }
+
+    if (ex != null) {
+      err = ex.toString();
+    }
+
+    return ApiResponse(items, status, err, cached);
+  }
+
+  Future<ApiResponse<List<Grade>>> getGrades() async {
+    var (resp, status, ex, cached) = await _cachingGet(CacheId.getGrades,
+        KretaEndpoints.getGrades(model.iss!));
+
+    var items = List<Grade>.empty(growable: true);
+    String? err;
+    try {
+      List<dynamic> rawItems = resp;
+      for (var item in rawItems) {
+        items.add(Grade.fromJson(item));
       }
     } catch (ex) {
       err = ex.toString();

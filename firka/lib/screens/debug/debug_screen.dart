@@ -44,6 +44,12 @@ class DebugScreen extends StatelessWidget {
               },
               child: const Text('getNoticeBoard()'),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                print("getGrades(): ${await data.client.getGrades()}");
+              },
+              child: const Text('getGrades()'),
+            ),
           ],
         ),
       ),

@@ -3,7 +3,8 @@ part 'generic_cache_model.g.dart';
 
 enum CacheId {
   getStudent,
-  getNoticeBoard
+  getNoticeBoard,
+  getGrades
 }
 
 @collection
