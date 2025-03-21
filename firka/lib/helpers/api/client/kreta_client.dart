@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:firka/helpers/db/models/cache_model.dart';
+import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:isar/isar.dart';
 
 import '../../db/models/token_model.dart';
@@ -97,7 +97,7 @@ class KretaClient {
     // binary operations seem to round the number down to
     // 32 bits for some reason???
     var cacheKey = model.studentId! + ((id.index+1) * pow(10, 11));
-    var cache = await isar.cacheModels.get(cacheKey as int);
+    var cache = await isar.genericCacheModels.get(cacheKey as int);
 
     dynamic resp;
     int statusCode;
@@ -118,11 +118,11 @@ class KretaClient {
     }
 
     await isar.writeTxn(() async {
-      var cache = CacheModel();
+      var cache = GenericCacheModel();
       cache.cacheKey = cacheKey;
       cache.cacheData = jsonEncode(resp);
 
-      isar.cacheModels.put(cache);
+      isar.genericCacheModels.put(cache);
     });
 
     return (resp, statusCode, null, false);

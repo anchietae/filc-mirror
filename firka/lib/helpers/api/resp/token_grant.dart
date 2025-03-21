@@ -16,8 +16,6 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import 'package:isar/isar.dart';
-
 class TokenGrantResponse {
   final String idToken;
   final String accessToken;
