@@ -1,3 +1,5 @@
+import 'package:firka/helpers/api/model/generic.dart';
+
 class Grade {
 
   final String uid;
@@ -6,16 +8,16 @@ class Grade {
   final String? ackDate;
   final Subject subject;
   final String? topic;
-  final GradeType type;
-  final GradeMode? mode;
-  final GradeValueType valueType;
+  final NameUidDesc type;
+  final NameUidDesc? mode;
+  final NameUidDesc valueType;
   final String teacher;
   final String? kind;
   final int? numericValue;
   final String strValue;
   final int? weightPercentage;
   final String? shortStrValue;
-  final ClassGroup? classGroup;
+  final UidObj? classGroup;
   final int sortIndex;
 
 
@@ -47,9 +49,9 @@ class Grade {
       json['LattamozasDatuma'],
       Subject.fromJson(json['Tantargy']),
       json['Tema'],
-      GradeType.fromJson(json['Tipus']),
-      json['Mod'] != null ? GradeMode.fromJson(json['Mod']) : null,
-      GradeValueType.fromJson(json['ErtekFajta']),
+      NameUidDesc.fromJson(json['Tipus']),
+      json['Mod'] != null ? NameUidDesc.fromJson(json['Mod']) : null,
+      NameUidDesc.fromJson(json['ErtekFajta']),
       json['ErtekeloTanarNeve'],
       json['Kind'],
       json['SzamErtek'],
@@ -57,7 +59,7 @@ class Grade {
       json['SulySzazalekErteke'],
       json['SzovegesErtekelesRovidNev'],
       json['OsztalyCsoport'] != null ?
-        ClassGroup.fromJson(json['OsztalyCsoport']) : null,
+        UidObj.fromJson(json['OsztalyCsoport']) : null,
       json['SortIndex'],
     );
   }
@@ -89,7 +91,7 @@ class Grade {
 class Subject {
   final String uid;
   final String name;
-  final SubjectCategory category;
+  final NameUidDesc category;
   final int sortIndex;
 
   Subject(
@@ -103,136 +105,8 @@ class Subject {
     return Subject(
       json['Uid'],
       json['Nev'],
-      SubjectCategory.fromJson(json['Kategoria']),
+      NameUidDesc.fromJson(json['Kategoria']),
       json['SortIndex']
     );
-  }
-}
-
-class SubjectCategory {
-  final String uid;
-  final String name;
-  final String description;
-
-  SubjectCategory(
-    this.uid,
-    this.name,
-    this.description
-  );
-
-  factory SubjectCategory.fromJson(Map<String, dynamic> json) {
-    return SubjectCategory(
-      json['Uid'],
-      json['Nev'],
-      json['Leiras']
-    );
-  }
-
-  @override
-  String toString() {
-    return "SubjectCategory("
-      "uid: \"$uid\", "
-      "name: \"$name\", "
-      "description: \"$description\""
-      ")";
-  }
-}
-
-class GradeType {
-  final String uid;
-  final String name;
-  final String description;
-
-  GradeType(
-    this.uid,
-    this.name,
-    this.description
-  );
-
-  factory GradeType.fromJson(Map<String, dynamic> json) {
-    return GradeType(
-      json['Uid'],
-      json['Nev'],
-      json['Leiras']
-    );
-  }
-
-  @override
-  String toString() {
-    return "GradeType("
-      "uid: \"$uid\", "
-      "name: \"$name\", "
-      "description: \"$description\""
-      ")";
-  }
-}
-
-class GradeMode {
-  final String uid;
-  final String name;
-  final String description;
-
-  GradeMode(
-    this.uid,
-    this.name,
-    this.description
-  );
-
-  factory GradeMode.fromJson(Map<String, dynamic> json) {
-    return GradeMode(
-      json['Uid'],
-      json['Nev'],
-      json['Leiras']
-    );
-  }
-}
-
-class GradeValueType {
-  final String uid;
-  final String name;
-  final String description;
-
-  GradeValueType(
-    this.uid,
-    this.name,
-    this.description
-  );
-
-  factory GradeValueType.fromJson(Map<String, dynamic> json) {
-    return GradeValueType(
-      json['Uid'],
-      json['Nev'],
-      json['Leiras']
-    );
-  }
-
-  @override
-  String toString() {
-    return "GradeValueType("
-      "uid: \"$uid\", "
-      "name: \"$name\", "
-      "description: \"$description\""
-      ")";
-  }
-}
-
-class ClassGroup {
-  final String uid;
-
-  ClassGroup(
-    this.uid
-  );
-
-  factory ClassGroup.fromJson(Map<String, dynamic> json) {
-    return ClassGroup(
-      json['Uid'],
-    );
-  }
-
-  @override
-  String toString() {
-    return "ClassGroup("
-      "uid: \"$uid\""
-      ")";
   }
 }
