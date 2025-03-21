@@ -27,4 +27,5 @@ class KretaEndpoints {
   static const tokenGrantUrl = "https://idp.e-kreta.hu/connect/token";
 
   static String getStudentUrl(String iss) => "${kreta(iss)}/ellenorzo/v3/sajat/TanuloAdatlap";
+  static String getNoticeBoard(String iss) => "${kreta(iss)}/ellenorzo/v3/sajat/FaliujsagElemek";
 }
