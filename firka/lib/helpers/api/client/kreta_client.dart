@@ -1,10 +1,38 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:dio/dio.dart';
+import 'package:firka/helpers/db/models/cache_model.dart';
 import 'package:isar/isar.dart';
 
 import '../../db/models/token_model.dart';
 import '../consts.dart';
 import '../model/student.dart';
 import '../token_grant.dart';
+
+class ApiResponse<T> {
+  T? response;
+  int statusCode;
+  String? err;
+  bool cached;
+
+  ApiResponse(
+    this.response,
+    this.statusCode,
+    this.err,
+    this.cached,
+  );
+
+  @override
+  String toString() {
+    return "ApiResponse("
+        "response: $response, "
+        "statusCode: $statusCode, "
+        "err: \"$err\", "
+        "cached: $cached"
+        ")";
+  }
+}
 
 class KretaClient {
   bool _tokenMutex = false;
@@ -27,9 +55,7 @@ class KretaClient {
   }
 
   Future<Response> _authReq(String method, String url,
-      [Object? data, bool? refreshed]) async {
-
-
+      [Object? data]) async {
     var localToken = await _mutexCallback<String>(() async {
       var now = DateTime.now();
 
@@ -60,21 +86,65 @@ class KretaClient {
     ), data: data);
   }
 
-  Future<dynamic> _authJson(String method, String url, [Object? data]) async {
+  Future<(dynamic, int)> _authJson(String method, String url, [Object? data]) async {
     var resp = await _authReq(method, url, data);
 
-    if (resp.statusCode! >= 400) {
-      return Future.error("Unexpected status code for json request, code: "
-          "${resp.statusCode!}");
-    }
-
-    return resp.data;
+    return (resp.data, resp.statusCode!);
   }
 
-  Future<Student> getStudent() async {
-    var resp = await _authJson("GET", KretaEndpoints.getStudentUrl(model.iss!));
+  Future<(dynamic, int, Object?, bool)> _cachingGet(CacheId id, String url) async {
+    // it would be *ideal* to use xor and left shift here, however
+    // binary operations seem to round the number down to
+    // 32 bits for some reason???
+    var cacheKey = model.studentId! + ((id.index+1) * pow(10, 11));
+    var cache = await isar.cacheModels.get(cacheKey as int);
 
-    return Student.fromJson(resp);
+    dynamic resp;
+    int statusCode;
+    try {
+      (resp, statusCode) = await _authJson("GET", url);
+
+      if (statusCode >= 400) {
+        if (cache != null) {
+          return (jsonDecode(cache.cacheData!), statusCode, null, true);
+        }
+      }
+    } catch (ex) {
+      if (cache != null) {
+        return (jsonDecode(cache.cacheData!), 0, ex, true);
+      } else {
+        return (null, 0, ex, false);
+      }
+    }
+
+    await isar.writeTxn(() async {
+      var cache = CacheModel();
+      cache.cacheKey = cacheKey;
+      cache.cacheData = jsonEncode(resp);
+
+      isar.cacheModels.put(cache);
+    });
+
+    return (resp, statusCode, null, false);
+  }
+
+  Future<ApiResponse<Student>> getStudent() async {
+    var (resp, status, ex, cached) = await _cachingGet(CacheId.getStudent,
+        KretaEndpoints.getStudentUrl(model.iss!));
+
+    Student? student;
+    String? err;
+    try {
+      student = Student.fromJson(resp);
+    } catch (ex) {
+      err = ex.toString();
+    }
+
+    if (ex != null) {
+      err = ex.toString();
+    }
+
+    return ApiResponse(student, status, err, cached);
   }
 
 }

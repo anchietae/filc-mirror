@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firka/helpers/api/client/kreta_client.dart';
+import 'package:firka/helpers/db/models/cache_model.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ Future<Isar> initDB() async {
   final dir = await getApplicationDocumentsDirectory();
 
   return Isar.open(
-    [TokenModelSchema],
+    [TokenModelSchema, CacheModelSchema],
     inspector: true,
     directory: dir.path,
   );
