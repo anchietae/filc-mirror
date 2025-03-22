@@ -8,13 +8,13 @@ class Lesson {
   final String name;
   final int? lessonNumber;
   final int? lessonSeqNumber;
-  final NameUid classGroup;
-  final String teacher;
-  final NameUidDesc subject;
+  final NameUid? classGroup;
+  final String? teacher;
+  final NameUidDesc? subject;
   final String? theme;
-  final String roomName;
+  final String? roomName;
   final NameUidDesc type;
-  final NameUidDesc studentPresence;
+  final NameUidDesc? studentPresence;
   final NameUidDesc state;
   final String? substituteTeacher;
   final String? homeworkUid;
@@ -23,7 +23,7 @@ class Lesson {
   final String? assessmentUid;
   final bool canStudentEditHomework;
   final bool isHomeworkComplete;
-  final List<dynamic> attachments;
+  final List<NameUid> attachments;
   final bool isDigitalLesson;
   final String? digitalDeviceList;
   final String? digitalPlatformType;
@@ -64,6 +64,12 @@ class Lesson {
   );
 
   factory Lesson.fromJson(Map<String, dynamic> json) {
+    var attachments = List<NameUid>.empty(growable: true);
+    var rawAttachments = json['Csatolmanyok'];
+
+    for (var attachment in rawAttachments) {
+      attachments.add(NameUid.fromJson(attachment));
+    }
     return Lesson(
       json['Uid'],
       json['Datum'],
@@ -72,13 +78,13 @@ class Lesson {
       json['Nev'],
       json['Oraszam'],
       json['OraEvesSorszama'],
-      NameUid.fromJson(json['OsztalyCsoport']),
+      json['OsztalyCsoport'] != null ? NameUid.fromJson(json['OsztalyCsoport']) : null,
       json['TanarNeve'],
-      NameUidDesc.fromJson(json['Tantargy']),
+      json['Tantargy'] != null ?NameUidDesc.fromJson(json['Tantargy']) : null,
       json['Tema'],
       json['TeremNeve'],
       NameUidDesc.fromJson(json['Tipus']),
-      NameUidDesc.fromJson(json['TanuloJelenlet']),
+      json['TanuloJelenlet'] != null ? NameUidDesc.fromJson(json['TanuloJelenlet']) : null,
       NameUidDesc.fromJson(json['Allapot']),
       json['HelyettesTanarNeve'],
       json['HaziFeladatUid'],
@@ -87,11 +93,11 @@ class Lesson {
       json['BejelentettSzamonkeresUid'],
       json['IsTanuloHaziFeladatEnabled'],
       json['IsHaziFeladatMegoldva'],
-      json['Csatolmanyok'],
+      attachments,
       json['IsDigitalisOra'],
       json['DigitalisEszkozTipus'],
       json['DigitalisPlatformTipus'],
-      List<String>.from(json['DigitalisTamogatoEszkozTipusList']),
+      json['DigitalisTamogatoEszkozTipusList'] != null ? List<String>.from(json['DigitalisTamogatoEszkozTipusList']) : List<String>.empty(),
       DateTime.parse(json['Letrehozas']),
       DateTime.parse(json['UtolsoModositas']),
     );
@@ -140,11 +146,11 @@ class Subject {
   final int sortIndex;
 
   Subject(
-      this.uid,
-      this.name,
-      this.category,
-      this.sortIndex,
-      );
+    this.uid,
+    this.name,
+    this.category,
+    this.sortIndex,
+  );
 
   factory Subject.fromJson(Map<String, dynamic> json) {
     return Subject(

@@ -54,8 +54,8 @@ class DebugScreen extends StatelessWidget {
               onPressed: () async {
                 var now = DateTime.now();
 
-                var start = now.subtract(Duration(days: now.weekday - 1));
-                var end = now.add(Duration(days: 7 - now.weekday));
+                var start = now.subtract(Duration(days: 14));
+                var end = now.add(Duration(days: 7));
 
                 print("getLessons(): ${await data.client.getTimeTable(start, end)}");
               },

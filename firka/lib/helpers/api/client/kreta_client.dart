@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:firka/helpers/db/models/timetable_cache_model.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 import 'package:firka/helpers/api/model/timetable.dart';
@@ -196,14 +197,71 @@ class KretaClient {
     return ApiResponse(items, status, err, cached);
   }
 
-  Future<ApiResponse<List<Lesson>>> getTimeTable(DateTime from, DateTime to) async {
+  Future<(dynamic, int, Object?, bool)> _getTimeTableCached(DateTime from, DateTime to) async {
+    var cacheKey = genCacheKey(from, model.studentId!);
+    var cache = await isar.timetableCacheModels.get(cacheKey);
     var formatter = DateFormat('yyyy-MM-dd');
     var fromStr = formatter.format(from);
     var toStr = formatter.format(to);
-    // TODO: Custom caching for lessons
-    var (resp, status) = await _authJson("GET",
-        "${KretaEndpoints.getTimeTable(model.iss!)}?"
-            "datumTol=$fromStr&datumIg=$toStr");
+    var now = DateTime.now();
+
+    dynamic resp;
+    int statusCode;
+    try {
+      (resp, statusCode) = await _authJson("GET",
+          "${KretaEndpoints.getTimeTable(model.iss!)}?"
+          "datumTol=$fromStr&datumIg=$toStr");
+
+      if (statusCode >= 400) {
+        if (cache != null) {
+          var items = List<dynamic>.empty(growable: true);
+          for (var item in cache.classes!) {
+            items.add(jsonDecode(item));
+          }
+          return (items, statusCode, null, true);
+        }
+      }
+    } catch (ex) {
+      if (cache != null) {
+        var items = List<dynamic>.empty(growable: true);
+        for (var item in cache.classes!) {
+          items.add(jsonDecode(item));
+        }
+        return (items, 0, ex, true);
+      } else {
+        return (null, 0, ex, false);
+      }
+    }
+
+    // only cache stuff in a 1 month frame
+    if (from.millisecondsSinceEpoch >= now
+        .subtract(Duration(days: 30))
+        .millisecondsSinceEpoch
+        &&
+        to.millisecondsSinceEpoch <= now
+            .add(Duration(days: 30))
+            .millisecondsSinceEpoch) {
+      await isar.writeTxn(() async {
+        var cache = TimetableCacheModel();
+        var rawClasses = List<String>.empty(growable: true);
+
+        for (var obj in resp) {
+          rawClasses.add(jsonEncode(obj));
+        }
+
+        cache.cacheKey = cacheKey;
+        cache.classes = rawClasses;
+
+        await isar.timetableCacheModels.put(cache);
+      });
+    }
+
+    return (resp, statusCode, null, false);
+  }
+
+  /// Expects from and to to be 7 days apart
+  Future<ApiResponse<List<Lesson>>> _getTimeTable(DateTime from, DateTime to) async {
+    var (resp, status, ex, cached) = await _getTimeTableCached(from, to);
 
     var items = List<Lesson>.empty(growable: true);
     String? err;
@@ -216,9 +274,42 @@ class KretaClient {
       err = ex.toString();
     }
 
-    items.sort((a, b) => a.start.compareTo(b.start));
+    if (ex != null) {
+      err = ex.toString();
+    }
 
-    return ApiResponse(items, status, err, false);
+    return ApiResponse(items, status, err, cached);
+  }
+
+  /// Automatically aligns requests to start at Monday and end at Sunday
+  Future<ApiResponse<List<Lesson>>> getTimeTable(DateTime from, DateTime to) async {
+
+    var lessons = List<Lesson>.empty(growable: true);
+    String? err;
+    bool cached = true;
+
+    for (var i = from.millisecondsSinceEpoch; i < to.millisecondsSinceEpoch; i += 604800000) {
+      var from = DateTime.fromMillisecondsSinceEpoch(i);
+      var start = from.subtract(Duration(days: from.weekday - 1));
+      var end = start.add(Duration(days: 6));
+
+      var resp = await _getTimeTable(start, end);
+      if (resp.err != null) {
+        err = resp.err;
+        if (!resp.cached) {
+          return resp;
+        } else {
+          lessons.addAll(resp.response!);
+        }
+      } else {
+        lessons.addAll(resp.response!);
+      }
+      if (!resp.cached) cached = false;
+    }
+
+    lessons.sort((a, b) => a.start.compareTo(b.start));
+
+    return ApiResponse(lessons, 200, err, cached);
   }
 
 }

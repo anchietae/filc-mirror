@@ -21,8 +21,7 @@ const TimetableCacheModelSchema = CollectionSchema(
     r'classes': PropertySchema(
       id: 0,
       name: r'classes',
-      type: IsarType.objectList,
-      target: r'TimetableClass',
+      type: IsarType.stringList,
     )
   },
   estimateSize: _timetableCacheModelEstimateSize,
@@ -32,7 +31,7 @@ const TimetableCacheModelSchema = CollectionSchema(
   idName: r'cacheKey',
   indexes: {},
   links: {},
-  embeddedSchemas: {r'TimetableClass': TimetableClassSchema},
+  embeddedSchemas: {},
   getId: _timetableCacheModelGetId,
   getLinks: _timetableCacheModelGetLinks,
   attach: _timetableCacheModelAttach,
@@ -50,11 +49,9 @@ int _timetableCacheModelEstimateSize(
     if (list != null) {
       bytesCount += 3 + list.length * 3;
       {
-        final offsets = allOffsets[TimetableClass]!;
         for (var i = 0; i < list.length; i++) {
           final value = list[i];
-          bytesCount +=
-              TimetableClassSchema.estimateSize(value, offsets, allOffsets);
+          bytesCount += value.length * 3;
         }
       }
     }
@@ -68,12 +65,7 @@ void _timetableCacheModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeObjectList<TimetableClass>(
-    offsets[0],
-    allOffsets,
-    TimetableClassSchema.serialize,
-    object.classes,
-  );
+  writer.writeStringList(offsets[0], object.classes);
 }
 
 TimetableCacheModel _timetableCacheModelDeserialize(
@@ -84,12 +76,7 @@ TimetableCacheModel _timetableCacheModelDeserialize(
 ) {
   final object = TimetableCacheModel();
   object.cacheKey = id;
-  object.classes = reader.readObjectList<TimetableClass>(
-    offsets[0],
-    TimetableClassSchema.deserialize,
-    allOffsets,
-    TimetableClass(),
-  );
+  object.classes = reader.readStringList(offsets[0]);
   return object;
 }
 
@@ -101,12 +88,7 @@ P _timetableCacheModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readObjectList<TimetableClass>(
-        offset,
-        TimetableClassSchema.deserialize,
-        allOffsets,
-        TimetableClass(),
-      )) as P;
+      return (reader.readStringList(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -302,6 +284,142 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
   }
 
   QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+      classesElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'classes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+      classesElementGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'classes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+      classesElementLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'classes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+      classesElementBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'classes',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+      classesElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'classes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+      classesElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'classes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+      classesElementContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'classes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+      classesElementMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'classes',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+      classesElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'classes',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+      classesElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'classes',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
       classesLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
@@ -392,14 +510,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
 }
 
 extension TimetableCacheModelQueryObject on QueryBuilder<TimetableCacheModel,
-    TimetableCacheModel, QFilterCondition> {
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
-      classesElement(FilterQuery<TimetableClass> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'classes');
-    });
-  }
-}
+    TimetableCacheModel, QFilterCondition> {}
 
 extension TimetableCacheModelQueryLinks on QueryBuilder<TimetableCacheModel,
     TimetableCacheModel, QFilterCondition> {}
@@ -425,7 +536,14 @@ extension TimetableCacheModelQuerySortThenBy
 }
 
 extension TimetableCacheModelQueryWhereDistinct
-    on QueryBuilder<TimetableCacheModel, TimetableCacheModel, QDistinct> {}
+    on QueryBuilder<TimetableCacheModel, TimetableCacheModel, QDistinct> {
+  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QDistinct>
+      distinctByClasses() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'classes');
+    });
+  }
+}
 
 extension TimetableCacheModelQueryProperty
     on QueryBuilder<TimetableCacheModel, TimetableCacheModel, QQueryProperty> {
@@ -435,70 +553,10 @@ extension TimetableCacheModelQueryProperty
     });
   }
 
-  QueryBuilder<TimetableCacheModel, List<TimetableClass>?, QQueryOperations>
+  QueryBuilder<TimetableCacheModel, List<String>?, QQueryOperations>
       classesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'classes');
     });
   }
 }
-
-// **************************************************************************
-// IsarEmbeddedGenerator
-// **************************************************************************
-
-// coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
-
-const TimetableClassSchema = Schema(
-  name: r'TimetableClass',
-  id: 1099254660594408841,
-  properties: {},
-  estimateSize: _timetableClassEstimateSize,
-  serialize: _timetableClassSerialize,
-  deserialize: _timetableClassDeserialize,
-  deserializeProp: _timetableClassDeserializeProp,
-);
-
-int _timetableClassEstimateSize(
-  TimetableClass object,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  var bytesCount = offsets.last;
-  return bytesCount;
-}
-
-void _timetableClassSerialize(
-  TimetableClass object,
-  IsarWriter writer,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {}
-TimetableClass _timetableClassDeserialize(
-  Id id,
-  IsarReader reader,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  final object = TimetableClass();
-  return object;
-}
-
-P _timetableClassDeserializeProp<P>(
-  IsarReader reader,
-  int propertyId,
-  int offset,
-  Map<Type, List<int>> allOffsets,
-) {
-  switch (propertyId) {
-    default:
-      throw IsarError('Unknown property with id $propertyId');
-  }
-}
-
-extension TimetableClassQueryFilter
-    on QueryBuilder<TimetableClass, TimetableClass, QFilterCondition> {}
-
-extension TimetableClassQueryObject
-    on QueryBuilder<TimetableClass, TimetableClass, QFilterCondition> {}
