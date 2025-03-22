@@ -49,6 +49,8 @@ Future<AppInitialization> initializeApp() async {
     tokenCount: tokenCount,
   );
 
+  resetOldTimeTableCache(isar);
+
   // TODO: Account selection
   if (tokenCount > 0) {
     init.client = KretaClient(
