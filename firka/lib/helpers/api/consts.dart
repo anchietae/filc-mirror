@@ -30,4 +30,5 @@ class KretaEndpoints {
   static String getNoticeBoard(String iss) => "${kreta(iss)}/ellenorzo/v3/sajat/FaliujsagElemek";
   static String getGrades(String iss) => "${kreta(iss)}/ellenorzo/v3/sajat/Ertekelesek";
   static String getTimeTable(String iss) => "${kreta(iss)}/ellenorzo/v3/sajat/OrarendElemek";
+  static String getOmissions(String iss) => "${kreta(iss)}/ellenorzo/v3/sajat/Mulasztasok";
 }

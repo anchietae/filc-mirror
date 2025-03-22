@@ -12,6 +12,7 @@ import '../../db/models/token_model.dart';
 import '../consts.dart';
 import '../model/grade.dart';
 import '../model/notice_board.dart';
+import '../model/omission.dart';
 import '../model/student.dart';
 import '../token_grant.dart';
 
@@ -310,6 +311,30 @@ class KretaClient {
     lessons.sort((a, b) => a.start.compareTo(b.start));
 
     return ApiResponse(lessons, 200, err, cached);
+  }
+
+  Future<ApiResponse<List<Omission>>> getOmissions() async {
+    var (resp, status, ex, cached) = await _cachingGet(CacheId.getOmissions,
+        KretaEndpoints.getOmissions(model.iss!));
+
+    var items = List<Omission>.empty(growable: true);
+    String? err;
+    try {
+      List<dynamic> rawItems = resp;
+      for (var item in rawItems) {
+        items.add(Omission.fromJson(item));
+      }
+    } catch (ex) {
+      err = ex.toString();
+    }
+
+    if (ex != null) {
+      err = ex.toString();
+    }
+
+    items.sort((a, b) => a.date.compareTo(b.date));
+
+    return ApiResponse(items, status, err, cached);
   }
 
 }
