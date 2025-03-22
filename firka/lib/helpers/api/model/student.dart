@@ -19,15 +19,17 @@
 import 'package:firka/helpers/api/model/guardian.dart';
 import 'package:firka/helpers/api/model/institution.dart';
 import 'package:firka/helpers/json_helper.dart';
+import 'package:intl/intl.dart';
 
 class Student {
 
   final List<String> addressDataList;
   final BankAccount bankAccount;
   
-  final int yearOfBirth;
-  final int monthOfBirth;
-  final int dayOfBirth;
+  // final int yearOfBirth;
+  // final int monthOfBirth;
+  // final int dayOfBirth;
+  final DateTime birthdate;
 
   final String? emailAddress;
   final String name;
@@ -46,9 +48,10 @@ class Student {
   Student({
     required this.addressDataList,
     required this.bankAccount,
-    required this.yearOfBirth,
-    required this.monthOfBirth,
-    required this.dayOfBirth,
+    // required this.yearOfBirth,
+    // required this.monthOfBirth,
+    // required this.dayOfBirth,
+    required this.birthdate,
     required this.emailAddress,
     required this.name,
     required this.phoneNumber,
@@ -70,9 +73,9 @@ class Student {
     return Student(
       addressDataList: listToTyped<String>(json['Cimek']),
       bankAccount: BankAccount.fromJson(json['Bankszamla']),
-      yearOfBirth: json['SzuletesiEv'],
-      monthOfBirth: json['SzuletesiHonap'],
-      dayOfBirth: json['SzuletesiNap'],
+      birthdate: DateFormat("yyyy-M-d").parse(
+          "${json['SzuletesiEv']}-${json['SzuletesiHonap']}-${json['SzuletesiNap']}"
+      ),
       emailAddress: json['EmailCim'],
       name: json['Nev'],
       phoneNumber: json['Telefonszam'],
@@ -90,9 +93,7 @@ class Student {
     return 'Student('
     'addressDataList: [$addressDataList], '
     'bankAccount: $bankAccount, '
-    'yearOfBirth: $yearOfBirth, '
-    'monthOfBirth: $monthOfBirth, '
-    'dayOfBirth: $dayOfBirth, '
+    'birthDate: $birthdate, '
     'emailAddress: "$emailAddress", '
     'name: "$name", '
     'phoneNumber: "$phoneNumber", '

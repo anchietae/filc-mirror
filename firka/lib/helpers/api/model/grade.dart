@@ -3,9 +3,9 @@ import 'package:firka/helpers/api/model/generic.dart';
 class Grade {
 
   final String uid;
-  final String recordDate;
-  final String creationDate;
-  final String? ackDate;
+  final DateTime recordDate;
+  final DateTime creationDate;
+  final DateTime? ackDate;
   final Subject subject;
   final String? topic;
   final NameUidDesc type;
@@ -44,9 +44,10 @@ class Grade {
   factory Grade.fromJson(Map<String, dynamic> json) {
     return Grade(
       json['Uid'],
-      json['RogzitesDatuma'],
-      json['KeszitesDatuma'],
-      json['LattamozasDatuma'],
+      DateTime.parse(json['RogzitesDatuma']),
+      DateTime.parse(json['KeszitesDatuma']),
+      json['LattamozasDatuma'] != null
+          ? DateTime.parse(json['LattamozasDatuma']) : null,
       Subject.fromJson(json['Tantargy']),
       json['Tema'],
       NameUidDesc.fromJson(json['Tipus']),

@@ -1,8 +1,8 @@
 class NoticeBoardItem {
   final String uid;
   final String author;
-  final String validFrom;
-  final String validTo;
+  final DateTime validFrom;
+  final DateTime validTo;
   final String title;
   final String contentHTML;
   final String contentText;
@@ -21,8 +21,8 @@ class NoticeBoardItem {
     return NoticeBoardItem(
       json['Uid'],
       json['RogzitoNeve'],
-      json['ErvenyessegKezdete'],
-      json['ErvenyessegVege'],
+      DateTime.parse(json['ErvenyessegKezdete']),
+      DateTime.parse(json['ErvenyessegVege']),
       json['Cim'],
       json['Tartalom'],
       json['TartalomText']
