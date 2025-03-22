@@ -50,6 +50,17 @@ class DebugScreen extends StatelessWidget {
               },
               child: const Text('getGrades()'),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                var now = DateTime.now();
+
+                var start = now.subtract(Duration(days: now.weekday - 1));
+                var end = now.add(Duration(days: 7 - now.weekday));
+
+                print("getLessons(): ${await data.client.getTimeTable(start, end)}");
+              },
+              child: const Text('getLessons()'),
+            ),
           ],
         ),
       ),

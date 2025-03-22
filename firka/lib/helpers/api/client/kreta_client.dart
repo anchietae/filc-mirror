@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
+import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:isar/isar.dart';
 
@@ -76,10 +78,11 @@ class KretaClient {
     });
 
     final headers = <String, String>{
-      "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+      // "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
       "accept": "*/*",
       "user-agent": "eKretaStudent/264745 CFNetwork/1494.0.7 Darwin/23.4.0",
-      "authorization": "Bearer $localToken"
+      "authorization": "Bearer $localToken",
+      "apiKey": "21ff6c25-d1da-4a68-a811-c881a6057463"
     };
 
     return await dio.get(url, options: Options(
@@ -191,6 +194,29 @@ class KretaClient {
     }
 
     return ApiResponse(items, status, err, cached);
+  }
+
+  Future<ApiResponse<List<Lesson>>> getTimeTable(DateTime from, DateTime to) async {
+    var formatter = DateFormat('yyyy-MM-dd');
+    var fromStr = formatter.format(from);
+    var toStr = formatter.format(to);
+    // TODO: Custom caching for lessons
+    var (resp, status) = await _authJson("GET",
+        "${KretaEndpoints.getTimeTable(model.iss!)}?"
+            "datumTol=$fromStr&datumIg=$toStr");
+
+    var items = List<Lesson>.empty(growable: true);
+    String? err;
+    try {
+      List<dynamic> rawItems = resp;
+      for (var item in rawItems) {
+        items.add(Lesson.fromJson(item));
+      }
+    } catch (ex) {
+      err = ex.toString();
+    }
+
+    return ApiResponse(items, status, err, false);
   }
 
 }
