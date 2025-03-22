@@ -63,6 +63,7 @@ dev_dependencies:
 android_notification_icons:
   image_path: 'assets/images/logos/splash.png'
   icon_name: 'ic_notification'
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

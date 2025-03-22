@@ -1,31 +1,25 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:firka/helpers/api/client/kreta_client.dart';
-import 'package:firka/helpers/db/models/generic_cache_model.dart';
-import 'package:firka/helpers/db/models/timetable_cache_model.dart';
+
 import 'package:firka/helpers/db/models/token_model.dart';
-import 'package:firka/wear_main.dart';
-import 'package:firka/screens/phone/debug/debug_screen.dart';
-import 'package:firka/screens/phone/home/home_screen.dart';
-import 'package:firka/screens/phone/login/login_screen.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firka/pages/error/wear_error_page.dart';
+import 'package:firka/screens/wear/home/home_screen.dart';
+import 'package:firka/screens/wear/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'pages/error/error_page.dart';
+import 'package:wear_plus/wear_plus.dart';
 
 late Isar isar;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-class AppInitialization {
+class WearAppInitialization {
   final Isar isar;
-  late KretaClient client;
   final int tokenCount;
 
-  AppInitialization({
+  WearAppInitialization({
     required this.isar,
-    required this.tokenCount,
+    required this.tokenCount
   });
 }
 
@@ -33,57 +27,30 @@ Future<Isar> initDB() async {
   final dir = await getApplicationDocumentsDirectory();
 
   return Isar.open(
-    [TokenModelSchema, GenericCacheModelSchema, TimetableCacheModelSchema],
+    [TokenModelSchema],
     inspector: true,
     directory: dir.path,
   );
 }
 
-Future<AppInitialization> initializeApp() async {
+Future<WearAppInitialization> initializeApp() async {
   final isar = await initDB();
-  final tokenCount = await isar.tokenModels.count();
 
-  if (kDebugMode) {
-    print('Token count: $tokenCount');
-  }
-
-  var init = AppInitialization(
+  var init = WearAppInitialization(
     isar: isar,
-    tokenCount: tokenCount,
+    tokenCount: await isar.tokenModels.count()
   );
-
-  resetOldTimeTableCache(isar);
-
-  // TODO: Account selection
-  if (tokenCount > 0) {
-    init.client = KretaClient(
-      (await isar.tokenModels.where().findFirst())!,
-      isar
-    );
-  }
 
   return init;
 }
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  const platform = MethodChannel('firka.app/main');
-  if (Platform.isAndroid) {
-    var isWear = (await platform.invokeMethod("isWear")) as bool;
-
-    if (isWear) {
-      wearMain(platform);
-      return;
-    }
-  }
-
-  //TODO: fix the error handling currently not pushing to the error page
+void wearMain(MethodChannel platform) async {
+  // TODO: fix the error handling currently not pushing to the error page
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
     // Run App Initialization
-    runApp(InitializationScreen());
+    runApp(WearInitializationScreen());
 
   }, (error, stackTrace) {
     debugPrint('Caught error: $error');
@@ -91,32 +58,69 @@ void main() async {
 
     navigatorKey.currentState?.push(
       MaterialPageRoute(
-        builder: (context) => ErrorPage(exception: error.toString()),
+        builder: (context) => WearErrorPage(exception: error.toString()),
       ),
     );
   });
 }
 
-class InitializationScreen extends StatelessWidget {
-  InitializationScreen({super.key});
+class WearInitializationScreen extends StatelessWidget {
+  WearInitializationScreen({super.key});
 
   // Place to store the initialization future
-  final Future<AppInitialization> _initialization = initializeApp();
+  final Future<WearAppInitialization> _initialization = initializeApp();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<AppInitialization>(
+    /*
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: WatchShape(
+            builder: (context, shape, child) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Shape: ${shape == WearShape.round ? 'round' : 'square'}',
+                  ),
+                  child!,
+                ],
+              );
+            },
+            child: SizedBox(),
+          ),
+        ),
+      ),
+    );
+     */
+
+    return FutureBuilder<WearAppInitialization>(
       future: _initialization,
       builder: (context, snapshot) {
         // Check if initialization is complete
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
             // Handle initialization error
-            return Scaffold(
-              body: Center(
-                child: Text(
-                  'Error initializing app: ${snapshot.error}',
-                  style: TextStyle(color: Colors.red),
+
+            return MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: WatchShape(
+                    builder: (context, shape, child) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Error initializing app: ${snapshot.error}',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          child!,
+                        ],
+                      );
+                    },
+                    child: SizedBox(),
+                  ),
                 ),
               ),
             );
@@ -129,9 +133,9 @@ class InitializationScreen extends StatelessWidget {
           var data = snapshot.data!;
 
           if (snapshot.data!.tokenCount == 0) {
-            screen = LoginScreen(data);
+            screen = WearLoginScreen(data);
           } else {
-            screen = HomeScreen(data);
+            screen = WearHomeScreen(data);
           }
 
           return MaterialApp(
@@ -143,8 +147,8 @@ class InitializationScreen extends StatelessWidget {
             ),
             home: screen,
             routes: {
-              '/login': (context) => LoginScreen(data),
-              '/debug': (context) => DebugScreen(data),
+              '/login': (context) => WearLoginScreen(data),
+              '/home': (context) => WearHomeScreen(data)
             },
           );
         }

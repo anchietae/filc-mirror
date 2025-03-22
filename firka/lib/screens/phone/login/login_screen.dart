@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:firka/helpers/api/consts.dart';
-import 'package:firka/screens/home/home_screen.dart';
-import '../../helpers/api/token_grant.dart';
+
+import '../../../helpers/api/token_grant.dart';
+import '../home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final AppInitialization data;
