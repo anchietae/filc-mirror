@@ -216,6 +216,8 @@ class KretaClient {
       err = ex.toString();
     }
 
+    items.sort((a, b) => a.start.compareTo(b.start));
+
     return ApiResponse(items, status, err, false);
   }
 
