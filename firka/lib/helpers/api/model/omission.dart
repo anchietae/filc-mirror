@@ -49,20 +49,20 @@ class Omission {
 
   @override
   String toString() {
-    return "Omission("
-      "uid: \"$uid\", "
-      "subject: $subject, "
-      "c: $c, "
-      "date: $date, "
-      "teacher: \"$teacher\", "
-      "type: $type, "
-      "mode: $mode, "
-      "lateForMin: $lateForMin, "
-      "createdAt: $createdAt, "
-      "state: \"$state\", "
-      "proofType: $proofType, "
-      "classGroup: $classGroup"
-    ")";
+    return 'Omission('
+      'uid: "$uid", '
+      'subject: $subject, '
+      'c: $c, '
+      'date: $date, '
+      'teacher: "$teacher", '
+      'type: $type, '
+      'mode: $mode, '
+      'lateForMin: $lateForMin, '
+      'createdAt: $createdAt, '
+      'state: "$state", '
+      'proofType: $proofType, '
+      'classGroup: $classGroup'
+    ')';
   }
 }
 
@@ -87,10 +87,10 @@ class Class {
 
   @override
   String toString() {
-    return "Class("
-      "start: \"$start\", "
-      "end: \"$end\", "
-      "classNo: $classNo"
-    ")";
+    return 'Class('
+      'start: "$start", '
+      'end: "$end", '
+      'classNo: $classNo'
+    ')';
   }
 }

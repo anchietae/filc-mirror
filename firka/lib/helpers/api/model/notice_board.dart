@@ -7,38 +7,38 @@ class NoticeBoardItem {
   final String contentHTML;
   final String contentText;
 
-  NoticeBoardItem(
-    this.uid,
-    this.author,
-    this.validFrom,
-    this.validTo,
-    this.title,
-    this.contentHTML,
-    this.contentText
-  );
+  NoticeBoardItem({
+    required this.uid,
+    required this.author,
+    required this.validFrom,
+    required this.validTo,
+    required this.title,
+    required this.contentHTML,
+    required this.contentText
+  });
 
   factory NoticeBoardItem.fromJson(Map<String, dynamic> json) {
     return NoticeBoardItem(
-      json['Uid'],
-      json['RogzitoNeve'],
-      DateTime.parse(json['ErvenyessegKezdete']),
-      DateTime.parse(json['ErvenyessegVege']),
-      json['Cim'],
-      json['Tartalom'],
-      json['TartalomText']
+      uid: json['Uid'],
+      author: json['RogzitoNeve'],
+      validFrom: DateTime.parse(json['ErvenyessegKezdete']),
+      validTo: DateTime.parse(json['ErvenyessegVege']),
+      title: json['Cim'],
+      contentHTML: json['Tartalom'],
+      contentText: json['TartalomText']
     );
   }
 
   @override
   String toString() {
-    return "NoticeBoardItem("
-        "uid: \"$uid\", "
-        "author: \"$author\", "
-        "validFrom: \"$validFrom\", "
-        "validTo: \"$validTo\", "
-        "title: \"$title\", "
-        "contentHTML: \"$contentHTML\", "
-        "contentText: \"$contentText\""
-      ")";
+    return 'NoticeBoardItem('
+      'uid: "$uid", '
+      'author: "$author", '
+      'validFrom: "$validFrom", '
+      'validTo: "$validTo", '
+      'title: "$title", '
+      'contentHTML: "$contentHTML", '
+      'contentText: "$contentText"'
+    ')';
   }
 }

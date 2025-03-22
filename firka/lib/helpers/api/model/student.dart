@@ -73,7 +73,7 @@ class Student {
     return Student(
       addressDataList: listToTyped<String>(json['Cimek']),
       bankAccount: BankAccount.fromJson(json['Bankszamla']),
-      birthdate: DateFormat("yyyy-M-d").parse(
+      birthdate: DateFormat('yyyy-M-d').parse(
           "${json['SzuletesiEv']}-${json['SzuletesiHonap']}-${json['SzuletesiNap']}"
       ),
       emailAddress: json['EmailCim'],
@@ -91,17 +91,17 @@ class Student {
   @override
   String toString() {
     return 'Student('
-    'addressDataList: [$addressDataList], '
-    'bankAccount: $bankAccount, '
-    'birthDate: $birthdate, '
-    'emailAddress: "$emailAddress", '
-    'name: "$name", '
-    'phoneNumber: "$phoneNumber", '
-    'schoolYearUID: "$schoolYearUID", '
-    'uid: "$uid", '
-    'guardianList: [$guardianList], '
-    'instituteCode: "$instituteCode", '
-    'instituteName: "$instituteName", '
+      'addressDataList: [$addressDataList], '
+      'bankAccount: $bankAccount, '
+      'birthDate: $birthdate, '
+      'emailAddress: "$emailAddress", '
+      'name: "$name", '
+      'phoneNumber: "$phoneNumber", '
+      'schoolYearUID: "$schoolYearUID", '
+      'uid: "$uid", '
+      'guardianList: [$guardianList], '
+      'instituteCode: "$instituteCode", '
+      'instituteName: "$instituteName", '
     ')';
   }
 }
@@ -122,20 +122,20 @@ class BankAccount {
   
   factory BankAccount.fromJson(Map<String, dynamic> json) {
     return BankAccount(
-        accountNumber: json['BankszamlaSzam'],
-        isReadOnly: json['IsReadOnly'],
-        ownerName: json['BankszamlaTulajdonosNeve'],
-        ownerType: json['BankszamlaTulajdonosTipusId']
+      accountNumber: json['BankszamlaSzam'],
+      isReadOnly: json['IsReadOnly'],
+      ownerName: json['BankszamlaTulajdonosNeve'],
+      ownerType: json['BankszamlaTulajdonosTipusId']
     );
   }
 
   @override
   String toString() {
     return 'BankAccount('
-        'accountNumber: "$accountNumber", '
-        'isReadOnly: "$isReadOnly", '
-        'ownerName: "$ownerName", '
-        'ownerType: "$ownerType"'
-        ')';
+      'accountNumber: "$accountNumber", '
+      'isReadOnly: "$isReadOnly", '
+      'ownerName: "$ownerName", '
+      'ownerType: "$ownerType"'
+    ')';
   }
 }

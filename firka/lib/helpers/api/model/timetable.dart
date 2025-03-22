@@ -31,12 +31,12 @@ class Lesson {
   final DateTime createdAt;
   final DateTime lastModifiedAt;
 
-  Lesson(
-    this.uid,
-    this.date,
-    this.start,
-    this.end,
-    this.name,
+  Lesson({
+    required this.uid,
+    required this.date,
+    required this.start,
+    required this.end,
+    required this.name,
     this.lessonNumber,
     this.lessonSeqNumber,
     this.classGroup,
@@ -44,24 +44,24 @@ class Lesson {
     this.subject,
     this.theme,
     this.roomName,
-    this.type,
+    required this.type,
     this.studentPresence,
-    this.state,
+    required this.state,
     this.substituteTeacher,
     this.homeworkUid,
     this.taskGroupUid,
     this.languageTaskGroupUid,
     this.assessmentUid,
-    this.canStudentEditHomework,
-    this.isHomeworkComplete,
-    this.attachments,
-    this.isDigitalLesson,
+    required this.canStudentEditHomework,
+    required this.isHomeworkComplete,
+    required this.attachments,
+    required this.isDigitalLesson,
     this.digitalDeviceList,
     this.digitalPlatformType,
-    this.digitalSupportDeviceTypeList,
-    this.createdAt,
-    this.lastModifiedAt,
-  );
+    required this.digitalSupportDeviceTypeList,
+    required this.createdAt,
+    required this.lastModifiedAt,
+  });
 
   factory Lesson.fromJson(Map<String, dynamic> json) {
     var attachments = List<NameUid>.empty(growable: true);
@@ -71,71 +71,77 @@ class Lesson {
       attachments.add(NameUid.fromJson(attachment));
     }
     return Lesson(
-      json['Uid'],
-      json['Datum'],
-      DateTime.parse(json['KezdetIdopont']),
-      DateTime.parse(json['VegIdopont']),
-      json['Nev'],
-      json['Oraszam'],
-      json['OraEvesSorszama'],
-      json['OsztalyCsoport'] != null ? NameUid.fromJson(json['OsztalyCsoport']) : null,
-      json['TanarNeve'],
-      json['Tantargy'] != null ?NameUidDesc.fromJson(json['Tantargy']) : null,
-      json['Tema'],
-      json['TeremNeve'],
-      NameUidDesc.fromJson(json['Tipus']),
-      json['TanuloJelenlet'] != null ? NameUidDesc.fromJson(json['TanuloJelenlet']) : null,
-      NameUidDesc.fromJson(json['Allapot']),
-      json['HelyettesTanarNeve'],
-      json['HaziFeladatUid'],
-      json['FeladatGroupUid'],
-      json['NyelviFeladatGroupUid'],
-      json['BejelentettSzamonkeresUid'],
-      json['IsTanuloHaziFeladatEnabled'],
-      json['IsHaziFeladatMegoldva'],
-      attachments,
-      json['IsDigitalisOra'],
-      json['DigitalisEszkozTipus'],
-      json['DigitalisPlatformTipus'],
-      json['DigitalisTamogatoEszkozTipusList'] != null ? List<String>.from(json['DigitalisTamogatoEszkozTipusList']) : List<String>.empty(),
-      DateTime.parse(json['Letrehozas']),
-      DateTime.parse(json['UtolsoModositas']),
+      uid: json['Uid'],
+      date: json['Datum'],
+      start: DateTime.parse(json['KezdetIdopont']),
+      end: DateTime.parse(json['VegIdopont']),
+      name: json['Nev'],
+      lessonNumber: json['Oraszam'],
+      lessonSeqNumber: json['OraEvesSorszama'],
+      classGroup: json['OsztalyCsoport'] != null
+          ? NameUid.fromJson(json['OsztalyCsoport']) : null,
+      teacher: json['TanarNeve'],
+      subject: json['Tantargy'] != null
+          ? NameUidDesc.fromJson(json['Tantargy']) : null,
+      theme: json['Tema'],
+      roomName: json['TeremNeve'],
+      type: NameUidDesc.fromJson(json['Tipus']),
+      studentPresence: json['TanuloJelenlet'] != null
+          ? NameUidDesc.fromJson(json['TanuloJelenlet']) : null,
+      state: NameUidDesc.fromJson(json['Allapot']),
+      substituteTeacher: json['HelyettesTanarNeve'],
+      homeworkUid: json['HaziFeladatUid'],
+      taskGroupUid: json['FeladatGroupUid'],
+      languageTaskGroupUid: json['NyelviFeladatGroupUid'],
+      assessmentUid: json['BejelentettSzamonkeresUid'],
+      canStudentEditHomework: json['IsTanuloHaziFeladatEnabled'],
+      isHomeworkComplete: json['IsHaziFeladatMegoldva'],
+      attachments: attachments,
+      isDigitalLesson: json['IsDigitalisOra'],
+      digitalDeviceList: json['DigitalisEszkozTipus'],
+      digitalPlatformType: json['DigitalisPlatformTipus'],
+      digitalSupportDeviceTypeList:
+        json['DigitalisTamogatoEszkozTipusList'] != null
+          ? List<String>.from(json['DigitalisTamogatoEszkozTipusList'])
+          : List<String>.empty(),
+      createdAt: DateTime.parse(json['Letrehozas']),
+      lastModifiedAt: DateTime.parse(json['UtolsoModositas']),
     );
   }
 
   @override
   String toString() {
-    return "TanitasiOra("
-      "uid: \"$uid\", "
-      "date: \"$date\", "
-      "start: $start, "
-      "end: $end, "
-      "name: \"$name\", "
-      "lessonNumber: $lessonNumber, "
-      "lessonSeqNumber: $lessonSeqNumber, "
-      "classGroup: $classGroup, "
-      "teacher: \"$teacher\", "
-      "subject: $subject, "
-      "theme: \"$theme\", "
-      "roomName: \"$roomName\", "
-      "type: $type, "
-      "studentPresence: $studentPresence, "
-      "state: $state, "
-      "substituteTeacher: \"$substituteTeacher\", "
-      "homeworkUid: \"$homeworkUid\", "
-      "taskGroupUid: \"$taskGroupUid\", "
-      "languageTaskGroupUid: \"$languageTaskGroupUid\", "
-      "assessmentUid: \"$assessmentUid\", "
-      "canStudentEditHomework: $canStudentEditHomework, "
-      "isHomeworkComplete: $isHomeworkComplete, "
-      "attachments: $attachments, "
-      "isDigitalLesson: $isDigitalLesson, "
-      "digitalDeviceList: \"$digitalDeviceList\", "
-      "digitalPlatformType: \"$digitalPlatformType\", "
-      "digitalSupportDeviceTypeList: $digitalSupportDeviceTypeList, "
-      "create: $createdAt, "
-      "lastModified: $lastModifiedAt"
-    ")";
+    return 'Lesson('
+      'uid: "$uid", '
+      'date: "$date", '
+      'start: $start, '
+      'end: $end, '
+      'name: "$name", '
+      'lessonNumber: $lessonNumber, '
+      'lessonSeqNumber: $lessonSeqNumber, '
+      'classGroup: $classGroup, '
+      'teacher: "$teacher", '
+      'subject: $subject, '
+      'theme: "$theme", '
+      'roomName: "$roomName", '
+      'type: $type, '
+      'studentPresence: $studentPresence, '
+      'state: $state, '
+      'substituteTeacher: "$substituteTeacher", '
+      'homeworkUid: "$homeworkUid", '
+      'taskGroupUid: "$taskGroupUid", '
+      'languageTaskGroupUid: "$languageTaskGroupUid", '
+      'assessmentUid: "$assessmentUid", '
+      'canStudentEditHomework: $canStudentEditHomework, '
+      'isHomeworkComplete: $isHomeworkComplete, '
+      'attachments: $attachments, '
+      'isDigitalLesson: $isDigitalLesson, '
+      'digitalDeviceList: "$digitalDeviceList", '
+      'digitalPlatformType: "$digitalPlatformType", '
+      'digitalSupportDeviceTypeList: $digitalSupportDeviceTypeList, '
+      'create: $createdAt, '
+      'lastModified: $lastModifiedAt'
+    ')';
   }
 }
 
@@ -163,11 +169,11 @@ class Subject {
 
   @override
   String toString() {
-    return "Subject("
-      "uid: \"$uid\", "
-      "name: \"$name\", "
-      "category: $category, "
-      "sortIndex: $sortIndex"
-    ")";
+    return 'Subject('
+      'uid: "$uid", '
+      'name: "$name", '
+      'category: $category, '
+      'sortIndex: $sortIndex'
+    ')';
   }
 }

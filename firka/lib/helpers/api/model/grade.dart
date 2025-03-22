@@ -21,71 +21,71 @@ class Grade {
   final int sortIndex;
 
 
-  Grade(
-    this.uid,
-    this.recordDate,
-    this.creationDate,
+  Grade({
+    required this.uid,
+    required this.recordDate,
+    required this.creationDate,
     this.ackDate,
-    this.subject,
+    required this.subject,
     this.topic,
-    this.type,
+    required this.type,
     this.mode,
-    this.valueType,
-    this.teacher,
+    required this.valueType,
+    required this.teacher,
     this.kind,
     this.numericValue,
-    this.strValue,
+    required this.strValue,
     this.weightPercentage,
     this.shortStrValue,
     this.classGroup,
-    this.sortIndex
-  );
+    required this.sortIndex
+  });
 
   factory Grade.fromJson(Map<String, dynamic> json) {
     return Grade(
-      json['Uid'],
-      DateTime.parse(json['RogzitesDatuma']),
-      DateTime.parse(json['KeszitesDatuma']),
-      json['LattamozasDatuma'] != null
+      uid: json['Uid'],
+      recordDate: DateTime.parse(json['RogzitesDatuma']),
+      creationDate: DateTime.parse(json['KeszitesDatuma']),
+      ackDate: json['LattamozasDatuma'] != null
           ? DateTime.parse(json['LattamozasDatuma']) : null,
-      Subject.fromJson(json['Tantargy']),
-      json['Tema'],
-      NameUidDesc.fromJson(json['Tipus']),
-      json['Mod'] != null ? NameUidDesc.fromJson(json['Mod']) : null,
-      NameUidDesc.fromJson(json['ErtekFajta']),
-      json['ErtekeloTanarNeve'],
-      json['Kind'],
-      json['SzamErtek'],
-      json['SzovegesErtek'],
-      json['SulySzazalekErteke'],
-      json['SzovegesErtekelesRovidNev'],
-      json['OsztalyCsoport'] != null ?
+      subject: Subject.fromJson(json['Tantargy']),
+      topic: json['Tema'],
+      type: NameUidDesc.fromJson(json['Tipus']),
+      mode: json['Mod'] != null ? NameUidDesc.fromJson(json['Mod']) : null,
+      valueType: NameUidDesc.fromJson(json['ErtekFajta']),
+      teacher: json['ErtekeloTanarNeve'],
+      kind: json['Kind'],
+      numericValue: json['SzamErtek'],
+      strValue: json['SzovegesErtek'],
+      weightPercentage: json['SulySzazalekErteke'],
+      shortStrValue: json['SzovegesErtekelesRovidNev'],
+      classGroup: json['OsztalyCsoport'] != null ?
         UidObj.fromJson(json['OsztalyCsoport']) : null,
-      json['SortIndex'],
+      sortIndex: json['SortIndex'],
     );
   }
 
   @override
   String toString() {
-    return "Grade("
-      "uid: \"$uid\", "
-      "recordDate: \"$recordDate\", "
-      "creationDate: \"$creationDate\", "
-      "ackDate: \"${ackDate ?? 'null'}\", "
-      "subject: $subject, "
-      "topic: \"${topic ?? 'null'}\", "
-      "type: $type, "
-      "mode: ${mode ?? 'null'}, "
-      "valueType: $valueType, "
-      "teacher: \"$teacher\", "
-      "kind: \"${kind ?? 'null'}\", "
-      "numericValue: ${numericValue ?? 'null'}, "
-      "strValue: \"$strValue\", "
-      "weightPercentage: ${weightPercentage ?? 'null'}, "
-      "shortStrValue: \"${shortStrValue ?? 'null'}\", "
-      "classGroup: ${classGroup ?? 'null'}, "
-      "sortIndex: $sortIndex"
-      ")";
+    return 'Grade('
+      'uid: "$uid", '
+      'recordDate: "$recordDate", '
+      'creationDate: "$creationDate", '
+      'ackDate: "${ackDate ?? 'null'}", '
+      'subject: $subject, '
+      'topic: "${topic ?? 'null'}", '
+      'type: $type, '
+      'mode: ${mode ?? 'null'}, '
+      'valueType: $valueType, '
+      'teacher: "$teacher", '
+      'kind: "${kind ?? 'null'}", '
+      'numericValue: ${numericValue ?? 'null'}, '
+      'strValue: "$strValue", '
+      'weightPercentage: ${weightPercentage ?? 'null'}, '
+      'shortStrValue: "${shortStrValue ?? 'null'}", '
+      'classGroup: ${classGroup ?? 'null'}, '
+      'sortIndex: $sortIndex'
+    ')';
   }
 }
 
@@ -95,19 +95,19 @@ class Subject {
   final NameUidDesc category;
   final int sortIndex;
 
-  Subject(
-    this.uid,
-    this.name,
-    this.category,
-    this.sortIndex
-  );
+  Subject({
+    required this.uid,
+    required this.name,
+    required this.category,
+    required this.sortIndex
+  });
 
   factory Subject.fromJson(Map<String, dynamic> json) {
     return Subject(
-      json['Uid'],
-      json['Nev'],
-      NameUidDesc.fromJson(json['Kategoria']),
-      json['SortIndex']
+      uid: json['Uid'],
+      name: json['Nev'],
+      category: NameUidDesc.fromJson(json['Kategoria']),
+      sortIndex: json['SortIndex']
     );
   }
 }

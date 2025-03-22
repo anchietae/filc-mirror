@@ -73,17 +73,16 @@ class CustomizationSettings {
   @override
   String toString() {
     return 'CustomizationSettings('
-        'delayForNotifications: $delayForNotifications, '
-        'isClassAverageVisible: $isClassAverageVisible, '
-        'isLessonsThemeVisible: $isLessonsThemeVisible, '
-        'nextServerDeployAsString: "$nextServerDeployAsString"'
-        ')';
+      'delayForNotifications: $delayForNotifications, '
+      'isClassAverageVisible: $isClassAverageVisible, '
+      'isLessonsThemeVisible: $isLessonsThemeVisible, '
+      'nextServerDeployAsString: "$nextServerDeployAsString"'
+    ')';
   }
 
 }
 
 class SystemModule {
-  
   final bool isActive;
   final String type;
   final String? url;
@@ -105,10 +104,10 @@ class SystemModule {
   @override
   String toString() {
     return 'SystemModule('
-        'isActive: $isActive, '
-        'type: "$type", '
-        'url: "$url"'
-        ')';
+      'isActive: $isActive, '
+      'type: "$type", '
+      'url: "$url"'
+    ')';
   }
 
 }

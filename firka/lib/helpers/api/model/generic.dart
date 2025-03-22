@@ -3,27 +3,27 @@ class NameUidDesc {
   final String? name;
   final String? description;
 
-  NameUidDesc(
-    this.uid,
-    this.name,
-    this.description
-  );
+  NameUidDesc({
+    required this.uid,
+    required this.name,
+    required this.description
+  });
 
   factory NameUidDesc.fromJson(Map<String, dynamic> json) {
     return NameUidDesc(
-        json['Uid'],
-        json['Nev'],
-        json['Leiras']
+      uid: json['Uid'],
+      name: json['Nev'],
+      description: json['Leiras']
     );
   }
 
   @override
   String toString() {
-    return "NameUidDesc("
-      "uid: \"$uid\", "
-      "name: \"$name\", "
-      "description: \"$description\""
-    ")";
+    return 'NameUidDesc('
+      'uid: "$uid", '
+      'name: "$name", '
+      'description: "$description"'
+    ')';
   }
 }
 
@@ -47,20 +47,20 @@ class NameUid {
 class UidObj {
   final String uid;
 
-  UidObj(
-    this.uid
-  );
+  UidObj({
+    required this.uid
+  });
 
   factory UidObj.fromJson(Map<String, dynamic> json) {
     return UidObj(
-      json['Uid'],
+      uid: json['Uid'],
     );
   }
 
   @override
   String toString() {
-    return "UidObj("
-      "uid: \"$uid\""
-    ")";
+    return 'UidObj('
+      'uid: "$uid"'
+    ')';
   }
 }
