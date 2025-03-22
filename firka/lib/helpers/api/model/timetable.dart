@@ -1,4 +1,5 @@
 import 'package:firka/helpers/api/model/generic.dart';
+import 'package:firka/helpers/api/model/subject.dart';
 
 class Lesson {
   final String uid;
@@ -10,7 +11,7 @@ class Lesson {
   final int? lessonSeqNumber;
   final NameUid? classGroup;
   final String? teacher;
-  final NameUidDesc? subject;
+  final Subject? subject;
   final String? theme;
   final String? roomName;
   final NameUidDesc type;
@@ -82,7 +83,7 @@ class Lesson {
           ? NameUid.fromJson(json['OsztalyCsoport']) : null,
       teacher: json['TanarNeve'],
       subject: json['Tantargy'] != null
-          ? NameUidDesc.fromJson(json['Tantargy']) : null,
+          ? Subject.fromJson(json['Tantargy']) : null,
       theme: json['Tema'],
       roomName: json['TeremNeve'],
       type: NameUidDesc.fromJson(json['Tipus']),
@@ -141,39 +142,6 @@ class Lesson {
       'digitalSupportDeviceTypeList: $digitalSupportDeviceTypeList, '
       'create: $createdAt, '
       'lastModified: $lastModifiedAt'
-    ')';
-  }
-}
-
-class Subject {
-  final String uid;
-  final String name;
-  final NameUidDesc category;
-  final int sortIndex;
-
-  Subject(
-    this.uid,
-    this.name,
-    this.category,
-    this.sortIndex,
-  );
-
-  factory Subject.fromJson(Map<String, dynamic> json) {
-    return Subject(
-      json['Uid'],
-      json['Nev'],
-      NameUidDesc.fromJson(json['Kategoria']),
-      json['SortIndex'],
-    );
-  }
-
-  @override
-  String toString() {
-    return 'Subject('
-      'uid: "$uid", '
-      'name: "$name", '
-      'category: $category, '
-      'sortIndex: $sortIndex'
     ')';
   }
 }
