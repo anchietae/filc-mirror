@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:firka/helpers/db/models/timetable_cache_model.dart';
-import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
+import 'package:firka/helpers/db/models/timetable_cache_model.dart';
+import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 
 import '../../db/models/token_model.dart';
@@ -309,6 +309,11 @@ class KretaClient {
     }
 
     lessons.sort((a, b) => a.start.compareTo(b.start));
+    lessons.where((lesson) =>
+      lesson.end.millisecondsSinceEpoch <= from.millisecondsSinceEpoch
+      &&
+      lesson.start.millisecondsSinceEpoch <= to.millisecondsSinceEpoch
+    );
 
     return ApiResponse(lessons, 200, err, cached);
   }
