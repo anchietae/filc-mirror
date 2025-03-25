@@ -63,7 +63,6 @@ Future<AppInitialization> initializeApp() async {
 }
 
 void main() async {
-  //TODO: fix the error handling currently not pushing to the error page
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
