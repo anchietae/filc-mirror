@@ -1,7 +1,8 @@
 import 'dart:async';
 
+import 'package:firka/helpers/db/models/generic_cache_model.dart';
+import 'package:firka/helpers/db/models/timetable_cache_model.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
-import 'package:firka/pages/error/wear_error_page.dart';
 import 'package:firka/screens/wear/home/home_screen.dart';
 import 'package:firka/screens/wear/login/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +11,14 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:wear_plus/wear_plus.dart';
 
+import 'helpers/api/client/kreta_client.dart';
+
 late Isar isar;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class WearAppInitialization {
   final Isar isar;
+  late KretaClient client;
   final int tokenCount;
 
   WearAppInitialization({
@@ -27,7 +31,7 @@ Future<Isar> initDB() async {
   final dir = await getApplicationDocumentsDirectory();
 
   return Isar.open(
-    [TokenModelSchema],
+    [TokenModelSchema, GenericCacheModelSchema, TimetableCacheModelSchema],
     inspector: true,
     directory: dir.path,
   );
@@ -41,27 +45,25 @@ Future<WearAppInitialization> initializeApp() async {
     tokenCount: await isar.tokenModels.count()
   );
 
+  resetOldTimeTableCache(isar);
+
+  // TODO: Account selection
+  if (init.tokenCount > 0) {
+    init.client = KretaClient(
+        (await isar.tokenModels.where().findFirst())!,
+        isar
+    );
+  }
+
   return init;
 }
 
 void wearMain(MethodChannel platform) async {
   // TODO: fix the error handling currently not pushing to the error page
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-    // Run App Initialization
-    runApp(WearInitializationScreen());
-
-  }, (error, stackTrace) {
-    debugPrint('Caught error: $error');
-    debugPrint('Stack trace: $stackTrace');
-
-    navigatorKey.currentState?.push(
-      MaterialPageRoute(
-        builder: (context) => WearErrorPage(exception: error.toString()),
-      ),
-    );
-  });
+  // Run App Initialization
+  runApp(WearInitializationScreen());
 }
 
 class WearInitializationScreen extends StatelessWidget {
