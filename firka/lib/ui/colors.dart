@@ -2,7 +2,7 @@ import 'dart:ui';
 
 class WearColors {
 
-  Color backgroundColor;
+  Color activeBackgroundColor;
   Color ambientBackgroundColor;
   Color radiusColor;
   Color primaryText;
@@ -10,7 +10,7 @@ class WearColors {
   Color tertiaryText;
 
   WearColors({
-    required this.backgroundColor,
+    required this.activeBackgroundColor,
     required this.ambientBackgroundColor,
     required this.radiusColor,
     required this.primaryText,
@@ -21,7 +21,7 @@ class WearColors {
 }
 
 WearColors defaultColors = WearColors(
-  backgroundColor: Color(0xff0c1201),
+  activeBackgroundColor: Color(0xff0c1201),
   ambientBackgroundColor: Color(0xff000000),
   radiusColor: Color(0xffa6dc22),
   primaryText: Color(0xffcbee71),

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/wear_main.dart';
 import 'package:flutter/material.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:wear_plus/wear_plus.dart';
 
 import '../../../ui/colors.dart';
 import '../../../ui/widgets/circular_progress_indicator.dart';
@@ -24,6 +26,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   DateTime now = DateTime.now();
   Timer? timer;
   bool init = false;
+  WearMode mode = WearMode.active;
 
   @override
   void initState() {
@@ -58,7 +61,9 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     });
   }
 
-  List<Widget> buildBody(BuildContext context) {
+  List<Widget> buildBody(BuildContext context, WearMode mode) {
+    WakelockPlus.enable();
+
     var body = List<Widget>.empty(growable: true);
     if (!init) {
       return body;
@@ -148,8 +153,11 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                   ),
                   Center(
                     child: Text(
-                      "${currentBreakProgress.inMinutes} "
-                          "min${currentBreakProgress.inMinutes == 1 ? '' : 's'} left",
+                      currentBreakProgress.inMinutes < 1
+                      ? "less than a minute left"
+                      : "${currentBreakProgress.inMinutes} "
+                        "min${currentBreakProgress.inMinutes == 1 ? '' : 's'} "
+                          "left",
                       style: TextStyle(color: defaultColors.secondaryText, fontSize: 16),
                     ),
                   ),
@@ -184,7 +192,9 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                   ),
                   Center(
                     child: Text(
-                      "${timeLeft.inMinutes} "
+                      timeLeft.inMinutes < 1
+                      ? "less than a minute left"
+                      : "${timeLeft.inMinutes} "
                           "min${timeLeft.inMinutes == 1 ? '' : 's'} left",
                       style: TextStyle(
                           color: defaultColors.secondaryText, fontSize: 16),
@@ -203,13 +213,46 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var body = buildBody(context);
     return Scaffold(
-      backgroundColor: defaultColors.ambientBackgroundColor,
+      backgroundColor: mode == WearMode.active
+          ? defaultColors.activeBackgroundColor
+          : defaultColors.ambientBackgroundColor,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: body,
+          children: [
+            WatchShape(builder: (context, shape, child) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  child!,
+                ],
+              );
+            },
+            child: AmbientMode(
+              builder: (context, mode, child) {
+                if (this.mode != mode) {
+                  Timer(Duration(milliseconds: 100), () {
+                    setState(() {
+                      this.mode = mode;
+                    });
+                  });
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // children: buildBody(context, mode),
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(top: 75),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: buildBody(context, mode),
+                      )
+                    ),
+                  ],
+                );
+              },
+            ),)
+          ],
         ),
       ),
     );

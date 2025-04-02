@@ -2,6 +2,7 @@
 
 import 'package:firka/wear_main.dart';
 import 'package:flutter/material.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class WearLoginScreen extends StatelessWidget {
   final WearAppInitialization data;
@@ -9,6 +10,7 @@ class WearLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WakelockPlus.disable();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Stub'),
