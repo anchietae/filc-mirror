@@ -4,12 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shake_gesture/shake_gesture.dart';
 import '../../screens/debug/debug_screen.dart';
+import 'package:majesticons_flutter/majesticons_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppInitialization data;
   const HomeScreen(this.data, {super.key});
 
   @override
+  // ignore: no_logic_in_create_state, will fix this later
   State<HomeScreen> createState() => _HomeScreenState(data);
 }
 
@@ -39,12 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
       systemNavigationBarColor: Color(0xFFDAE4F7),
     ));
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Home'),
-          centerTitle: true,
-        ),
         body: Column(
-          children: [],
-        ));
+      children: [
+        Stack(
+          children: [Row()],
+        )
+      ],
+    ));
   }
 }
