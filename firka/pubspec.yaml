@@ -57,6 +57,11 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   isar_generator:
     path: vendor/isar_generator
+  android_notification_icons: ^0.0.1
+
+android_notification_icons:
+  image_path: 'assets/images/logos/splash.png'
+  icon_name: 'ic_notification'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -65,7 +70,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/logos/colored_logo.png
+    - assets/images/logos/monochrome_icon.png
     - assets/images/carousel/
 
   fonts:
