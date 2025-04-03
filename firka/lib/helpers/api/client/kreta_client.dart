@@ -23,11 +23,11 @@ class ApiResponse<T> {
   bool cached;
 
   ApiResponse(
-    this.response,
-    this.statusCode,
-    this.err,
-    this.cached,
-  );
+      this.response,
+      this.statusCode,
+      this.err,
+      this.cached,
+      );
 
   @override
   String toString() {
@@ -211,7 +211,7 @@ class KretaClient {
     try {
       (resp, statusCode) = await _authJson("GET",
           "${KretaEndpoints.getTimeTable(model.iss!)}?"
-          "datumTol=$fromStr&datumIg=$toStr");
+              "datumTol=$fromStr&datumIg=$toStr");
 
       if (statusCode >= 400) {
         if (cache != null) {
@@ -309,11 +309,9 @@ class KretaClient {
     }
 
     lessons.sort((a, b) => a.start.compareTo(b.start));
-    lessons.where((lesson) =>
-      lesson.end.millisecondsSinceEpoch <= from.millisecondsSinceEpoch
-      &&
-      lesson.start.millisecondsSinceEpoch <= to.millisecondsSinceEpoch
-    );
+    lessons = lessons.where((lesson) =>
+    lesson.start.isAfter(from) && lesson.end.isBefore(to)
+    ).toList();
 
     return ApiResponse(lessons, 200, err, cached);
   }
