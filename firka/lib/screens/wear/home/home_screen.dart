@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/wear_main.dart';
 import 'package:flutter/material.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:wear_plus/wear_plus.dart';
 
 import '../../../ui/colors.dart';
@@ -62,8 +61,6 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   }
 
   List<Widget> buildBody(BuildContext context, WearMode mode) {
-    WakelockPlus.enable();
-
     var body = List<Widget>.empty(growable: true);
     if (!init) {
       return body;
