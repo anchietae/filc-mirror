@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
-import 'package:firka/wear_main.dart';
 import 'package:firka/screens/phone/debug/debug_screen.dart';
 import 'package:firka/screens/phone/home/home_screen.dart';
 import 'package:firka/screens/phone/login/login_screen.dart';
+import 'package:firka/wear_main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+
 import 'pages/error/error_page.dart';
 
 late Isar isar;
@@ -67,7 +69,6 @@ Future<AppInitialization> initializeApp() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   const platform = MethodChannel('firka.app/main');
   if (Platform.isAndroid) {
     var isWear = (await platform.invokeMethod("isWear")) as bool;
@@ -112,11 +113,13 @@ class InitializationScreen extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
             // Handle initialization error
-            return Scaffold(
-              body: Center(
-                child: Text(
-                  'Error initializing app: ${snapshot.error}',
-                  style: TextStyle(color: Colors.red),
+            return MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: Text(
+                    'Error initializing app: ${snapshot.error}',
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
               ),
             );

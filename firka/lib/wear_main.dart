@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:wear_plus/wear_plus.dart';
+import 'package:zear_plus/wear_plus.dart';
 
 import 'helpers/api/client/kreta_client.dart';
 
