@@ -1,15 +1,12 @@
 [submodule "firka/vendor/isar_generator"]
 	path = firka/vendor/isar_generator
-	url = https://git.qwit.cloud/refilc/isar_generator
+	url = https://git.qwit.cloud/firka/isar_generator
 [submodule "firka/vendor/isar"]
 	path = firka/vendor/isar
-	url = https://git.qwit.cloud/refilc/isar
+	url = https://git.qwit.cloud/firka/isar
 [submodule "firka/vendor/isar_flutter_libs"]
 	path = firka/vendor/isar_flutter_libs
-	url = https://git.qwit.cloud/refilc/isar_flutter_libs
-[submodule "firka/vendor/webview_flutter"]
-	path = firka/vendor/webview_flutter
-	url = https://git.qwit.cloud/firka/webview_flutter
+	url = https://git.qwit.cloud/firka/isar_flutter_libs
 [submodule "firka/vendor/wear_plus"]
 	path = firka/vendor/wear_plus
 	url = https://git.qwit.cloud/firka/wear_plus
