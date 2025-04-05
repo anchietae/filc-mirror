@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firka/helpers/api/model/timetable.dart';
+import 'package:firka/helpers/extensions.dart';
 import 'package:firka/wear_main.dart';
 import 'package:flutter/material.dart';
 import 'package:zear_plus/wear_plus.dart';
@@ -32,7 +33,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     super.initState();
     now = DateTime.now();
 
-    timer = Timer.periodic(Duration(seconds: 5), (timer) {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         now = DateTime.now();
       });
@@ -87,6 +88,17 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     if (now.isAfter(today.last.end)) {
       body.add(Text(
         "You don't have any more classes today",
+        style: TextStyle(color: defaultColors.secondaryText, fontSize: 18),
+        textAlign: TextAlign.center,
+      ));
+
+      return body;
+    }
+    if (now.isBefore(today.first.start)) {
+      var untilFirst = today.first.start.difference(now);
+
+      body.add(Text(
+        "Your first class is in:\n${untilFirst.formatDuration()}",
         style: TextStyle(color: defaultColors.secondaryText, fontSize: 18),
         textAlign: TextAlign.center,
       ));
