@@ -52,6 +52,7 @@ dependencies:
   zear_plus:
     path: vendor/wear_plus
   majesticons_flutter: ^0.0.1
+  watch_connectivity: ^0.2.1+1
 
 dev_dependencies:
   flutter_test:
