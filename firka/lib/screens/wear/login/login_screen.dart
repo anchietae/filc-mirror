@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/helpers/extensions.dart';
 import 'package:firka/screens/wear/home/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -60,12 +61,14 @@ class _WearLoginScreen extends State<WearLoginScreen> {
               data["expiryDate"]
             );
 
+            initData.client = KretaClient(tokenModel, initData.isar);
+
             await initData.isar.writeTxn(() async {
               await initData.isar.tokenModels.put(tokenModel);
             });
 
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => WearHomeScreen(widget.data)),
+              MaterialPageRoute(builder: (context) => WearHomeScreen(initData)),
                   (route) => false, // Remove all previous routes
             );
           }();
@@ -244,6 +247,7 @@ class _WearLoginScreen extends State<WearLoginScreen> {
 
   @override
   void dispose() {
+    super.dispose();
     connectionTimer.cancel();
   }
 }
