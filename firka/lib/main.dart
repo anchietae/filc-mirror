@@ -26,7 +26,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 class AppInitialization {
   final Isar isar;
   late KretaClient client;
-  final int tokenCount;
+  int tokenCount;
   bool hasWatchListener = false;
 
   AppInitialization({

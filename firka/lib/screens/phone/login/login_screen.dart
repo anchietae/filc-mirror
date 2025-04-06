@@ -1,12 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firka/helpers/api/client/kreta_client.dart';
+import 'package:firka/helpers/api/consts.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:firka/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:firka/helpers/api/consts.dart';
 
 import '../../../helpers/api/token_grant.dart';
 import '../home/home_screen.dart';
@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
             });
 
             widget.data.client = KretaClient(tokenModel, isar);
+            widget.data.tokenCount = await isar.tokenModels.count();
 
             if (!mounted) return NavigationDecision.prevent;
 
