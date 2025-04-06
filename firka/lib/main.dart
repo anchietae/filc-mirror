@@ -27,7 +27,6 @@ class AppInitialization {
   final Isar isar;
   late KretaClient client;
   final int tokenCount;
-  final watch = WatchConnectivity();
   bool hasWatchListener = false;
 
   AppInitialization({
@@ -135,7 +134,7 @@ class InitializationScreen extends StatelessWidget {
 
           assert(snapshot.data != null);
           var data = snapshot.data!;
-          var watch = data.watch;
+          var watch = WatchConnectivity();
 
           if (!data.hasWatchListener) {
             data.hasWatchListener = true;

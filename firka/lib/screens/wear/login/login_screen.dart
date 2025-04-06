@@ -49,7 +49,7 @@ class _WearLoginScreen extends State<WearLoginScreen> {
             isMessageSent = true;
           });
         }
-        case "token": {
+        case "auth": {
           () async {
             var data = msg["data"];
             var tokenModel = TokenModel.fromValues(

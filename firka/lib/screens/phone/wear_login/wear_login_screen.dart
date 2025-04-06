@@ -1,10 +1,10 @@
-import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/helpers/api/consts.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:firka/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:watch_connectivity/watch_connectivity.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../helpers/api/token_grant.dart';
@@ -22,6 +22,8 @@ class _WearLoginScreenState extends State<WearLoginScreen> {
   late WebViewController _webViewController;
   final AppInitialization data;
   _WearLoginScreenState(this.data);
+
+  final watch = WatchConnectivity();
 
   @override
   void initState() {
@@ -42,7 +44,6 @@ class _WearLoginScreenState extends State<WearLoginScreen> {
           var code = uri.queryParameters["code"]!;
 
           try {
-            var isar = widget.data.isar;
             var resp = await getAccessToken(code);
 
             if (kDebugMode) {
@@ -51,9 +52,9 @@ class _WearLoginScreenState extends State<WearLoginScreen> {
 
             var tokenModel = TokenModel.fromResp(resp);
 
-            debugPrint("[Phone -> Watch]: token");
-            data.watch.sendMessage({
-              "id": "token",
+            debugPrint("[Phone -> Watch]: auth");
+            watch.sendMessage({
+              "id": "auth",
               "data": {
                 "studentId": tokenModel.studentId,
                 "iss": tokenModel.iss,
@@ -63,8 +64,6 @@ class _WearLoginScreenState extends State<WearLoginScreen> {
                 "expiryDate": tokenModel.expiryDate!.millisecondsSinceEpoch
               }
             });
-
-            widget.data.client = KretaClient(tokenModel, isar);
 
             if (!mounted) return NavigationDecision.prevent;
 
