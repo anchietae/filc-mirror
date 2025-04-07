@@ -51,7 +51,7 @@ android {
             "Signing with:\n" +
                     "\t- store: ${store.name}\n" +
                     "\t- key: ${props["keyAlias"]}"
-        );
+        )
 
         signingConfigs {
             create("release") {
@@ -86,6 +86,9 @@ android {
             }
         }
     }
+}
+dependencies {
+    implementation("androidx.wear:wear-ongoing:1.0.0")
 }
 
 flutter {

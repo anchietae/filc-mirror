@@ -4,6 +4,7 @@ import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/helpers/extensions.dart';
 import 'package:firka/wear_main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:zear_plus/wear_plus.dart';
 
 import '../../../ui/colors.dart';
@@ -27,13 +28,14 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   Timer? timer;
   bool init = false;
   WearMode mode = WearMode.active;
+  final platform = MethodChannel('firka.app/main');
 
   @override
   void initState() {
     super.initState();
     now = DateTime.now();
 
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) async {
       setState(() {
         now = DateTime.now();
       });
@@ -83,6 +85,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         textAlign: TextAlign.center,
       ));
 
+      platform.invokeMethod('activity_cancel');
       return body;
     }
     if (now.isAfter(today.last.end)) {
@@ -92,6 +95,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         textAlign: TextAlign.center,
       ));
 
+      platform.invokeMethod('activity_cancel');
       return body;
     }
     if (now.isBefore(today.first.start)) {
@@ -103,6 +107,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         textAlign: TextAlign.center,
       ));
 
+      platform.invokeMethod('activity_update');
       return body;
     }
     if (now.isAfter(today.first.start)
@@ -174,6 +179,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
             )
         ));
 
+        platform.invokeMethod('activity_update');
         return body;
       } else {
         var duration = currentLesson.start.difference(currentLesson.end);
@@ -213,10 +219,12 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
             )
         ));
 
+        platform.invokeMethod('activity_update');
         return body;
       }
     }
 
+    platform.invokeMethod('activity_cancel');
     throw Exception("unexpected state");
   }
 

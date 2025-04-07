@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:zear_plus/wear_plus.dart';
 
 import 'helpers/api/client/kreta_client.dart';
@@ -59,8 +61,15 @@ Future<WearAppInitialization> initializeApp() async {
 }
 
 void wearMain(MethodChannel platform) async {
-  // TODO: fix the error handling currently not pushing to the error page
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (await Permission.notification.isDenied) {
+    var status = await Permission.notification.request();
+
+    if (status.isDenied) {
+      exit(-1);
+    }
+  }
 
   // Run App Initialization
   runApp(WearInitializationScreen());
