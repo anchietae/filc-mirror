@@ -1,26 +1,31 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:firka/helpers/api/client/kreta_client.dart';
+import 'package:firka/helpers/api/consts.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:firka/main.dart';
+import 'package:firka/screens/phone/login/login_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:watch_connectivity/watch_connectivity.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:firka/helpers/api/consts.dart';
-import 'package:firka/screens/home/home_screen.dart';
-import '../../helpers/api/token_grant.dart';
 
-class LoginScreen extends StatefulWidget {
+import '../../../helpers/api/token_grant.dart';
+import '../home/home_screen.dart';
+
+class WearLoginScreen extends StatefulWidget {
   final AppInitialization data;
 
-  const LoginScreen(this.data, {super.key});
+  const WearLoginScreen(this.data, {super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<WearLoginScreen> createState() => _WearLoginScreenState(data);
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _WearLoginScreenState extends State<WearLoginScreen> {
   late WebViewController _webViewController;
+  final AppInitialization data;
+  _WearLoginScreenState(this.data);
+
+  final watch = WatchConnectivity();
 
   @override
   void initState() {
@@ -41,7 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
           var code = uri.queryParameters["code"]!;
 
           try {
-            var isar = widget.data.isar;
             var resp = await getAccessToken(code);
 
             if (kDebugMode) {
@@ -50,18 +54,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
             var tokenModel = TokenModel.fromResp(resp);
 
-            await isar.writeTxn(() async {
-              await isar.tokenModels.put(tokenModel);
+            debugPrint("[Phone -> Watch]: auth");
+            watch.sendMessage({
+              "id": "auth",
+              "data": {
+                "studentId": tokenModel.studentId,
+                "iss": tokenModel.iss,
+                "idToken": tokenModel.idToken,
+                "accessToken": tokenModel.accessToken,
+                "refreshToken": tokenModel.refreshToken,
+                "expiryDate": tokenModel.expiryDate!.millisecondsSinceEpoch
+              }
             });
-
-            widget.data.client = KretaClient(tokenModel, isar);
 
             if (!mounted) return NavigationDecision.prevent;
 
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => HomeScreen(widget.data)),
-              (route) => false, // Remove all previous routes
-            );
+            if (widget.data.tokenCount > 0) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => HomeScreen(widget.data)),
+                    (route) => false, // Remove all previous routes
+              );
+            } else {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => LoginScreen(widget.data)),
+                    (route) => false, // Remove all previous routes
+              );
+            }
           } catch (ex) {
             if (kDebugMode) {
               print("oauthredirect failed: $ex");
@@ -90,30 +110,6 @@ class _LoginScreenState extends State<LoginScreen> {
         MediaQuery.of(context).size.width * 0.95;
     final contentWidth = MediaQuery.of(context).size.width * 0.95;
     final modalHeight = MediaQuery.of(context).size.height * 0.90;
-    final List<Map<String, String>> slides = [
-      {
-        'title': 'A romló tendenciádat tízféle képpen láthatod',
-        'subtitle':
-            'Annyi statisztikát láthatsz, hogy a 8 általánosos matek nem lesz elég a kisilabizálására.',
-        'picture': 'assets/images/carousel/slide1.png',
-      },
-      {
-        'title': 'Minden egy helyen',
-        'subtitle':
-            'Egyetlen kattintás és máris többet tudsz, mint az osztályfőnököd.',
-        'picture': 'assets/images/carousel/slide2.png',
-      },
-      {
-        'title': 'Könnyen érthető elemzések',
-        'subtitle': 'Több száz adatból szűrjük ki neked a lényeget.',
-        'picture': 'assets/images/carousel/slide3.png',
-      },
-      {
-        'title': 'Valós idejű frissítések',
-        'subtitle': 'A statisztikáid mindig naprakészen jelennek meg.',
-        'picture': 'assets/images/carousel/slide4.png',
-      }
-    ];
 
     return MaterialApp(
       home: Scaffold(
@@ -159,64 +155,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Expanded(
-                  child: CarouselSlider.builder(
-                    itemCount: slides.length,
-                    itemBuilder: (context, index, realIndex) => Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: paddingWidthHorizontal),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            slides[index]['title']!,
-                            style: const TextStyle(
-                              color: Color(0xFF394B0A),
-                              fontSize: 19,
-                              fontFamily: 'Montserrat',
-                              fontVariations: [
-                                FontVariation('wght', 700),
-                              ],
-                            ),
-                            softWrap: true,
-                            overflow: TextOverflow.visible,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            slides[index]['subtitle']!,
-                            style: const TextStyle(
-                              color: Color(0xFF394B0A),
-                              fontSize: 17,
-                              fontFamily: 'Montserrat',
-                              fontVariations: [
-                                FontVariation('wght', 400),
-                              ],
-                              height: 1.30,
-                            ),
-                            softWrap: true,
-                            overflow: TextOverflow.visible,
-                          ),
-                          const SizedBox(height: 38),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Image(
-                              image: AssetImage(slides[index]['picture']!),
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              alignment: Alignment.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    options: CarouselOptions(
-                      height: double.infinity,
-                      autoPlay: true,
-                      autoPlayInterval: const Duration(milliseconds: 4000),
-                      viewportFraction: 1.0,
-                      enableInfiniteScroll: true,
-                    ),
+                Container(
+                  padding: EdgeInsets.only(top: 16, left: 16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Placeholder :3',
+                        style: TextStyle(
+                          color: Color(0xFF394B0A),
+                          fontSize: 24,
+                          fontFamily: 'Montserrat',
+                          fontVariations: [
+                            FontVariation('wght', 700),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ],

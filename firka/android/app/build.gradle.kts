@@ -34,7 +34,7 @@ android {
         applicationId = "app.firka.naplo"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23
+        minSdk = 29
         targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -51,7 +51,7 @@ android {
             "Signing with:\n" +
                     "\t- store: ${store.name}\n" +
                     "\t- key: ${props["keyAlias"]}"
-        );
+        )
 
         signingConfigs {
             create("release") {
@@ -86,6 +86,9 @@ android {
             }
         }
     }
+}
+dependencies {
+    implementation("androidx.wear:wear-ongoing:1.0.0")
 }
 
 flutter {

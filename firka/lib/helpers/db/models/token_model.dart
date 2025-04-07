@@ -16,9 +16,10 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import 'package:firka/helpers/api/resp/token_grant.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:firka/helpers/api/resp/token_grant.dart';
 import 'package:isar/isar.dart';
+
 part 'token_model.g.dart';
 
 @collection
@@ -31,6 +32,20 @@ class TokenModel {
   DateTime? expiryDate;
 
   TokenModel();
+
+  factory TokenModel.fromValues(Id studentId, String iss, String idToken,
+    String accessToken, String refreshToken, int expiryDate) {
+    var m = TokenModel();
+
+    m.studentId = studentId;
+    m.iss = iss;
+    m.idToken = idToken;
+    m.accessToken = accessToken;
+    m.refreshToken = refreshToken;
+    m.expiryDate = DateTime.fromMillisecondsSinceEpoch(expiryDate);
+
+    return m;
+  }
 
   factory TokenModel.fromResp(TokenGrantResponse resp) {
     var m = TokenModel();
