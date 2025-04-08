@@ -3,6 +3,7 @@ import 'dart:ui';
 class Colors {
   Color background;
   Color accent;
+  Color accentSecondary;
   Color primaryText;
   Color card;
   Color grade1;
@@ -14,6 +15,7 @@ class Colors {
   Colors({
     required this.background,
     required this.accent,
+    required this.accentSecondary,
     required this.primaryText,
     required this.card,
     required this.grade1,
@@ -29,6 +31,7 @@ class Colors {
 final Colors defaultColors = Colors(
   background: Color(0xFFFAFFF0),
   accent: Color(0xFFA7DC22),
+  accentSecondary: Color(0xFF6E8F1B),
   primaryText: Color(0xFF394C0A),
   card: Color(0xFFF3FBDE),
 
