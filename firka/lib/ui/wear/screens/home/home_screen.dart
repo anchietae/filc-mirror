@@ -150,6 +150,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
           throw Exception("currentBreakProgress == null");
         }
 
+        var minutes = currentBreakProgress.inMinutes + 1;
+
         body.add(CustomPaint(
             painter: CircularProgressPainter(
                 progress: currentBreakProgress.inMilliseconds / currentBreak.inMilliseconds,
@@ -163,17 +165,19 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                   Center(
                     child: Text(
                       "Break",
-                      style: TextStyle(color: defaultColors.secondaryText, fontSize: 20),
+                      style: TextStyle(
+                        color: defaultColors.secondaryText,
+                        fontSize: 20
+                      ),
                     ),
                   ),
                   Center(
                     child: Text(
-                      currentBreakProgress.inMinutes < 1
-                      ? "less than a minute left"
-                      : "${currentBreakProgress.inMinutes} "
-                        "min${currentBreakProgress.inMinutes == 1 ? '' : 's'} "
-                          "left",
-                      style: TextStyle(color: defaultColors.secondaryText, fontSize: 16),
+                      "$minutes min${minutes == 1 ? '' : 's'} left",
+                      style: TextStyle(
+                        color: defaultColors.secondaryText,
+                        fontSize: 16
+                      ),
                     ),
                   ),
                 ]
@@ -186,6 +190,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         var duration = currentLesson.start.difference(currentLesson.end);
         var elapsed = currentLesson.start.difference(now);
         var timeLeft = currentLesson.end.difference(now);
+
+        var minutes = timeLeft.inMinutes + 1;
 
         body.add(CustomPaint(
             painter: CircularProgressPainter(
@@ -208,12 +214,11 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                   ),
                   Center(
                     child: Text(
-                      timeLeft.inMinutes < 1
-                      ? "less than a minute left"
-                      : "${timeLeft.inMinutes} "
-                          "min${timeLeft.inMinutes == 1 ? '' : 's'} left",
+                      "$minutes min${minutes == 1 ? '' : 's'} left",
                       style: TextStyle(
-                          color: defaultColors.secondaryText, fontSize: 16),
+                        color: defaultColors.secondaryText,
+                        fontSize: 16
+                      ),
                     ),
                   ),
                 ]
