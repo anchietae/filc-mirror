@@ -13,9 +13,13 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState(data);
 }
 
+enum ActiveHomePage { home, grades, timetable, other }
+
 class _HomeScreenState extends State<HomeScreen> {
   final AppInitialization data;
   _HomeScreenState(this.data);
+
+  ActiveHomePage page = ActiveHomePage.home;
 
   @override
   void initState() {
@@ -43,8 +47,54 @@ class _HomeScreenState extends State<HomeScreen> {
           title: const Text('Home'),
           centerTitle: true,
         ),
-        body: Column(
-          children: [],
-        ));
+        body: SafeArea(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Top Text"),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            Colors.white,
+                            Colors.white.withOpacity(0.0),
+                          ],
+                          stops: const [0.0, 1.0],
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+    );
   }
 }
