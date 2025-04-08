@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:zear_plus/wear_plus.dart';
 
-import '../../../ui/colors.dart';
-import '../../../ui/widgets/circular_progress_indicator.dart';
+import '../../model/colors.dart';
+import '../../widgets/circular_progress_indicator.dart';
+
 
 class WearHomeScreen extends StatefulWidget {
   final WearAppInitialization data;

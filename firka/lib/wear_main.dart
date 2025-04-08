@@ -4,8 +4,7 @@ import 'dart:io';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
-import 'package:firka/screens/wear/home/home_screen.dart';
-import 'package:firka/screens/wear/login/login_screen.dart';
+import 'package:firka/ui/wear/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:isar/isar.dart';
@@ -14,6 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:zear_plus/wear_plus.dart';
 
 import 'helpers/api/client/kreta_client.dart';
+import 'ui/wear/screens/home/home_screen.dart';
 
 late Isar isar;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

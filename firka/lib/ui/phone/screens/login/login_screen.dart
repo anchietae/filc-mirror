@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../helpers/api/token_grant.dart';
+import '../../../../helpers/api/token_grant.dart';
 import '../home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {

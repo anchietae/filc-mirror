@@ -6,10 +6,11 @@ import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:firka/helpers/extensions.dart';
-import 'package:firka/screens/phone/debug/debug_screen.dart';
-import 'package:firka/screens/phone/home/home_screen.dart';
-import 'package:firka/screens/phone/login/login_screen.dart';
-import 'package:firka/screens/phone/wear_login/wear_login_screen.dart';
+import 'package:firka/ui/phone/pages/error/error_page.dart';
+import 'package:firka/ui/phone/screens/debug/debug_screen.dart';
+import 'package:firka/ui/phone/screens/home/home_screen.dart';
+import 'package:firka/ui/phone/screens/login/login_screen.dart';
+import 'package:firka/ui/phone/screens/wear_login/wear_login_screen.dart';
 import 'package:firka/wear_main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,6 @@ import 'package:flutter/services.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:watch_connectivity/watch_connectivity.dart';
-
-import 'pages/error/error_page.dart';
 
 late Isar isar;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

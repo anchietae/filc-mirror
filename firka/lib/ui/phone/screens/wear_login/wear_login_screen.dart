@@ -1,15 +1,15 @@
 import 'package:firka/helpers/api/consts.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:firka/main.dart';
-import 'package:firka/screens/phone/login/login_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:watch_connectivity/watch_connectivity.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../helpers/api/token_grant.dart';
+import '../../../../helpers/api/token_grant.dart';
 import '../home/home_screen.dart';
+import '../login/login_screen.dart';
 
 class WearLoginScreen extends StatefulWidget {
   final AppInitialization data;

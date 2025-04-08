@@ -4,14 +4,14 @@ import 'dart:async';
 
 import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/helpers/extensions.dart';
-import 'package:firka/screens/wear/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:watch_connectivity/watch_connectivity.dart';
 import 'package:zear_plus/wear_plus.dart';
 
-import '../../../helpers/db/models/token_model.dart';
-import '../../../ui/colors.dart';
-import '../../../wear_main.dart';
+import '../../../../helpers/db/models/token_model.dart';
+import '../../../../wear_main.dart';
+import '../../model/colors.dart';
+import '../home/home_screen.dart';
 
 class WearLoginScreen extends StatefulWidget {
   final WearAppInitialization data;
