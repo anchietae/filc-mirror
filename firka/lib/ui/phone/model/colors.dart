@@ -5,6 +5,7 @@ class Colors {
   Color accent;
   Color accentSecondary;
   Color primaryText;
+  Color secondaryText;
   Color card;
   Color grade1;
   Color grade2;
@@ -17,6 +18,7 @@ class Colors {
     required this.accent,
     required this.accentSecondary,
     required this.primaryText,
+    required this.secondaryText,
     required this.card,
     required this.grade1,
     required this.grade2,
@@ -33,6 +35,7 @@ final Colors defaultColors = Colors(
   accent: Color(0xFFA7DC22),
   accentSecondary: Color(0xFF6E8F1B),
   primaryText: Color(0xFF394C0A),
+  secondaryText: Color.fromARGB(204, 57, 76, 10),
   card: Color(0xFFF3FBDE),
 
   //Grades
