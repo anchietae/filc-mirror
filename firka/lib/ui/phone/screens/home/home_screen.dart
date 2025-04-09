@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shake_gesture/shake_gesture.dart';
 import '../debug/debug_screen.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
-import 'package:firka/ui/phone/model/colors.dart' as appcolors;
+import 'package:firka/ui/model/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppInitialization data;
@@ -100,18 +100,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     page == ActiveHomePage.home
                                         ? Majesticon(Majesticon.homeSolid,
-                                                color: appcolors.colors.accent,
+                                                color: appColors.accent,
                                                 size: 24)
                                             .build(context)
                                         : Majesticon(Majesticon.homeLine,
-                                                color: appcolors.colors.accentSecondary,
+                                                color: appColors.secondary,
                                                 size: 24)
                                             .build(context),
                                     const SizedBox(height: 4),
                                     Text(
                                       'Kezdőlap',
                                       style: TextStyle(
-                                        color: appcolors.colors.primaryText,
+                                        color: appColors.textPrimary,
                                         fontSize: 13,
                                         fontFamily: 'Figtree',
                                         fontVariations: const [
@@ -140,18 +140,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     page == ActiveHomePage.grades
                                         ? Majesticon(Majesticon.bookmarkSolid,
-                                                color: appcolors.colors.accent,
+                                                color: appColors.accent,
                                                 size: 24)
                                             .build(context)
                                         : Majesticon(Majesticon.bookmarkLine,
-                                                color: appcolors.colors.accentSecondary,
+                                                color: appColors.secondary,
                                                 size: 24)
                                             .build(context),
                                     const SizedBox(height: 4),
                                     Text(
                                       'Jegyek',
                                       style: TextStyle(
-                                        color: appcolors.colors.primaryText,
+                                        color: appColors.textPrimary,
                                         fontSize: 13,
                                         fontFamily: 'Figtree',
                                         fontVariations: const [
@@ -180,18 +180,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     page == ActiveHomePage.timetable
                                         ? Majesticon(Majesticon.calendarSolid,
-                                                color: appcolors.colors.accent,
+                                                color: appColors.accent,
                                                 size: 24)
                                             .build(context)
                                         : Majesticon(Majesticon.calendarLine,
-                                                color: appcolors.colors.accentSecondary,
+                                                color: appColors.secondary,
                                                 size: 24)
                                             .build(context),
                                     const SizedBox(height: 4),
                                     Text(
                                       'Órarend',
                                       style: TextStyle(
-                                        color: appcolors.colors.primaryText,
+                                        color: appColors.textPrimary,
                                         fontSize: 13,
                                         fontFamily: 'Figtree',
                                         fontVariations: const [
@@ -220,18 +220,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     page == ActiveHomePage.other
                                         ? Majesticon(Majesticon.globeEarthSolid,
-                                                color: appcolors.colors.accent,
+                                                color: appColors.accent,
                                                 size: 24)
                                             .build(context)
                                         : Majesticon(Majesticon.globeEarthLine,
-                                                color: appcolors.colors.accentSecondary,
+                                                color: appColors.secondary,
                                                 size: 24)
                                             .build(context),
                                     const SizedBox(height: 4),
                                     Text(
                                       'Több',
                                       style: TextStyle(
-                                        color: appcolors.colors.primaryText,
+                                        color: appColors.textPrimary,
                                         fontSize: 13,
                                         fontFamily: 'Figtree',
                                         fontVariations: const [

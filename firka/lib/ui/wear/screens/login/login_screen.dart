@@ -10,7 +10,7 @@ import 'package:zear_plus/wear_plus.dart';
 
 import '../../../../helpers/db/models/token_model.dart';
 import '../../../../wear_main.dart';
-import '../../model/colors.dart';
+import '../../../model/colors.dart';
 import '../home/home_screen.dart';
 
 class WearLoginScreen extends StatefulWidget {
@@ -105,7 +105,7 @@ class _WearLoginScreen extends State<WearLoginScreen> {
           "Loading...",
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: defaultColors.secondaryText,
+              color: wearColors.textPrimary,
               fontSize: 18
           ),
         ),
@@ -118,7 +118,7 @@ class _WearLoginScreen extends State<WearLoginScreen> {
           "Watch not paired with your phone",
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: defaultColors.secondaryText,
+              color: wearColors.textPrimary,
               fontSize: 18
           )
         ),
@@ -130,20 +130,20 @@ class _WearLoginScreen extends State<WearLoginScreen> {
             "Watch not connected\n to your phone",
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: defaultColors.secondaryText,
+                color: wearColors.textPrimary,
                 fontSize: 18
             )
         ),
       ], 65);
     }
 
-    if (isMessageSending) {
+    if (!isMessageSent && isMessageSending) {
       return (<Widget>[
         Text(
           "Sending request...",
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: defaultColors.secondaryText,
+              color: wearColors.textPrimary,
               fontSize: 18
           )
         ),
@@ -158,18 +158,24 @@ class _WearLoginScreen extends State<WearLoginScreen> {
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.pressed)) {
-                return Colors.green;
+                return wearColors.accent;
               }
-              return Colors.blue;
+              return wearColors.accent;
             }),
             foregroundColor: WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.pressed)) {
-                return Colors.white;
+                return wearColors.accent;
               }
-              return Colors.white;
+              return wearColors.accent;
             }),
           ),
-          child: const Text('Try again'),
+          child: Text(
+              'Try again',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: wearColors.textPrimary
+              )
+          ),
         ),
       ], 45);
     }
@@ -180,18 +186,48 @@ class _WearLoginScreen extends State<WearLoginScreen> {
             "Check your phone!",
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: defaultColors.secondaryText,
+                color: wearColors.textPrimary,
                 fontSize: 18
             )
         ),
-      ], 65);
+        ElevatedButton(
+          onPressed: () async {
+            debugPrint("[Watch -> Phone]: ping");
+            watch.sendMessage({
+              'id': 'ping'
+            });
+          },
+          // TODO: This is a placeholder, style this properly
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.pressed)) {
+                return wearColors.accent;
+              }
+              return wearColors.accent;
+            }),
+            foregroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.pressed)) {
+                return wearColors.accent;
+              }
+              return wearColors.accent;
+            }),
+          ),
+          child: Text(
+              'Try again',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: wearColors.textPrimary
+              )
+          ),
+        ),
+      ], 45);
     }
 
     return (<Widget>[
       Text(
         "Unexpected state",
         style: TextStyle(
-            color: defaultColors.secondaryText,
+            color: wearColors.textPrimary,
             fontSize: 18
         ),
         textAlign: TextAlign.center
@@ -204,7 +240,7 @@ class _WearLoginScreen extends State<WearLoginScreen> {
     var (body, offset) = buildBody(context);
 
     return Scaffold(
-      backgroundColor: defaultColors.activeBackgroundColor,
+      backgroundColor: wearColors.background,
       body: Center(
         child: Column(
           children: [
@@ -216,7 +252,7 @@ class _WearLoginScreen extends State<WearLoginScreen> {
                     "Login",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: defaultColors.secondaryText,
+                      color: wearColors.textPrimary,
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),

@@ -7,9 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:zear_plus/wear_plus.dart';
 
-import '../../model/colors.dart';
+import '../../../model/colors.dart';
 import '../../widgets/circular_progress_indicator.dart';
-
 
 class WearHomeScreen extends StatefulWidget {
   final WearAppInitialization data;
@@ -73,7 +72,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     if (today.isEmpty && apiError != "") {
       body.add(Text(
         apiError,
-        style: TextStyle(color: defaultColors.secondaryText, fontSize: 18),
+        style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
         textAlign: TextAlign.center,
       ));
 
@@ -82,7 +81,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     if (today.isEmpty) {
       body.add(Text(
         "You don't have any classes today",
-        style: TextStyle(color: defaultColors.secondaryText, fontSize: 18),
+        style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
         textAlign: TextAlign.center,
       ));
 
@@ -92,7 +91,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     if (now.isAfter(today.last.end)) {
       body.add(Text(
         "You don't have any more classes today",
-        style: TextStyle(color: defaultColors.secondaryText, fontSize: 18),
+        style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
         textAlign: TextAlign.center,
       ));
 
@@ -104,7 +103,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
 
       body.add(Text(
         "Your first class is in:\n${untilFirst.formatDuration()}",
-        style: TextStyle(color: defaultColors.secondaryText, fontSize: 18),
+        style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
         textAlign: TextAlign.center,
       ));
 
@@ -157,7 +156,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                 progress: currentBreakProgress.inMilliseconds / currentBreak.inMilliseconds,
                 screenSize: MediaQuery.of(context).size,
                 strokeWidth: 4,
-                color: defaultColors.radiusColor
+                color: wearColors.accent
             ),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -166,7 +165,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     child: Text(
                       "Break",
                       style: TextStyle(
-                        color: defaultColors.secondaryText,
+                        color: wearColors.textPrimary,
                         fontSize: 20
                       ),
                     ),
@@ -175,7 +174,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     child: Text(
                       "$minutes min${minutes == 1 ? '' : 's'} left",
                       style: TextStyle(
-                        color: defaultColors.secondaryText,
+                        color: wearColors.textPrimary,
                         fontSize: 16
                       ),
                     ),
@@ -200,7 +199,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     .of(context)
                     .size,
                 strokeWidth: 4,
-                color: defaultColors.radiusColor
+                color: wearColors.accent
             ),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -209,14 +208,14 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     child: Text(
                       currentLesson.name,
                       style: TextStyle(
-                          color: defaultColors.secondaryText, fontSize: 20),
+                          color: wearColors.textPrimary, fontSize: 20),
                     ),
                   ),
                   Center(
                     child: Text(
                       "$minutes min${minutes == 1 ? '' : 's'} left",
                       style: TextStyle(
-                        color: defaultColors.secondaryText,
+                        color: wearColors.textPrimary,
                         fontSize: 16
                       ),
                     ),
@@ -238,8 +237,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mode == WearMode.active
-          ? defaultColors.activeBackgroundColor
-          : defaultColors.ambientBackgroundColor,
+          ? wearColors.background
+          : wearColors.backgroundAmoled,
       body: Center(
         child: Column(
           children: [
