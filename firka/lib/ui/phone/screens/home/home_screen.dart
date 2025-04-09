@@ -87,6 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           // Home Button
                           BottomNavIcon(() {
+                              if (page != ActiveHomePage.home) HapticFeedback.lightImpact();
+
                               setState(() {
                                 page = ActiveHomePage.home;
                               });
@@ -102,6 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // Grades Button
                           BottomNavIcon(() {
+                              if (page != ActiveHomePage.grades) HapticFeedback.lightImpact();
+
                               setState(() {
                                 page = ActiveHomePage.grades;
                               });
@@ -117,6 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // Timetable Button
                           BottomNavIcon(() {
+                              if (page != ActiveHomePage.timetable) HapticFeedback.lightImpact();
+
                               setState(() {
                                 page = ActiveHomePage.timetable;
                               });
@@ -132,6 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // More Button
                           BottomNavIcon(() {
+                              if (page != ActiveHomePage.other) HapticFeedback.lightImpact();
+
                               setState(() {
                                 page = ActiveHomePage.other;
                               });
