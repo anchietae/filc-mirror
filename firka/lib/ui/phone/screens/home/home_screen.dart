@@ -1,4 +1,5 @@
 import 'package:firka/main.dart';
+import 'package:firka/ui/phone/widgets/bottom_nav_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
@@ -85,164 +86,64 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // Home Button
-                          Expanded(
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                setState(() {
-                                  page = ActiveHomePage.home;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    page == ActiveHomePage.home
-                                        ? Majesticon(Majesticon.homeSolid,
-                                                color: appColors.accent,
-                                                size: 24)
-                                            .build(context)
-                                        : Majesticon(Majesticon.homeLine,
-                                                color: appColors.secondary,
-                                                size: 24)
-                                            .build(context),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      'Kezdőlap',
-                                      style: TextStyle(
-                                        color: appColors.textPrimary,
-                                        fontSize: 13,
-                                        fontFamily: 'Figtree',
-                                        fontVariations: const [
-                                          FontVariation('wght', 640),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          BottomNavIcon(() {
+                              setState(() {
+                                page = ActiveHomePage.home;
+                              });
+                            },
+                            page == ActiveHomePage.home
+                              ? Majesticon.homeSolid
+                              : Majesticon.homeLine,
+                            "Kezdőlap",
+                            page == ActiveHomePage.home
+                              ? appColors.accent
+                              : appColors.secondary,
+                            appColors.textPrimary
                           ),
                           // Grades Button
-                          Expanded(
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                setState(() {
-                                  page = ActiveHomePage.grades;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    page == ActiveHomePage.grades
-                                        ? Majesticon(Majesticon.bookmarkSolid,
-                                                color: appColors.accent,
-                                                size: 24)
-                                            .build(context)
-                                        : Majesticon(Majesticon.bookmarkLine,
-                                                color: appColors.secondary,
-                                                size: 24)
-                                            .build(context),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      'Jegyek',
-                                      style: TextStyle(
-                                        color: appColors.textPrimary,
-                                        fontSize: 13,
-                                        fontFamily: 'Figtree',
-                                        fontVariations: const [
-                                          FontVariation('wght', 640),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          BottomNavIcon(() {
+                              setState(() {
+                                page = ActiveHomePage.grades;
+                              });
+                            },
+                            page == ActiveHomePage.grades
+                              ? Majesticon.bookmarkSolid
+                              : Majesticon.bookmarkLine,
+                            "Jegyek",
+                            page == ActiveHomePage.grades
+                              ? appColors.accent
+                              : appColors.secondary,
+                            appColors.textPrimary
                           ),
                           // Timetable Button
-                          Expanded(
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                setState(() {
-                                  page = ActiveHomePage.timetable;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    page == ActiveHomePage.timetable
-                                        ? Majesticon(Majesticon.calendarSolid,
-                                                color: appColors.accent,
-                                                size: 24)
-                                            .build(context)
-                                        : Majesticon(Majesticon.calendarLine,
-                                                color: appColors.secondary,
-                                                size: 24)
-                                            .build(context),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      'Órarend',
-                                      style: TextStyle(
-                                        color: appColors.textPrimary,
-                                        fontSize: 13,
-                                        fontFamily: 'Figtree',
-                                        fontVariations: const [
-                                          FontVariation('wght', 640),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          BottomNavIcon(() {
+                              setState(() {
+                                page = ActiveHomePage.timetable;
+                              });
+                            },
+                            page == ActiveHomePage.timetable
+                              ? Majesticon.calendarSolid
+                              : Majesticon.calendarLine,
+                            "Órarend",
+                            page == ActiveHomePage.timetable
+                              ? appColors.accent
+                              : appColors.secondary,
+                            appColors.textPrimary
                           ),
                           // More Button
-                          Expanded(
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                setState(() {
-                                  page = ActiveHomePage.other;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    page == ActiveHomePage.other
-                                        ? Majesticon(Majesticon.globeEarthSolid,
-                                                color: appColors.accent,
-                                                size: 24)
-                                            .build(context)
-                                        : Majesticon(Majesticon.globeEarthLine,
-                                                color: appColors.secondary,
-                                                size: 24)
-                                            .build(context),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      'Több',
-                                      style: TextStyle(
-                                        color: appColors.textPrimary,
-                                        fontSize: 13,
-                                        fontFamily: 'Figtree',
-                                        fontVariations: const [
-                                          FontVariation('wght', 640),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          BottomNavIcon(() {
+                              setState(() {
+                                page = ActiveHomePage.other;
+                              });
+                            },
+                            page == ActiveHomePage.other
+                              ? Majesticon.globeEarthSolid
+                              : Majesticon.globeEarthLine,
+                            "Több",
+                            page == ActiveHomePage.other
+                              ? appColors.accent
+                              : appColors.secondary,
+                            appColors.textPrimary
                           ),
                         ],
                       ),
