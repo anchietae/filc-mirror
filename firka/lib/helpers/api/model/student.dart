@@ -108,10 +108,10 @@ class Student {
 
 class BankAccount {
 
-  final String accountNumber;
-  final bool isReadOnly;
-  final String ownerName;
-  final int ownerType;
+  final String? accountNumber;
+  final bool? isReadOnly;
+  final String? ownerName;
+  final int? ownerType;
 
   BankAccount({
     required this.accountNumber,
