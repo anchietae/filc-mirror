@@ -10,8 +10,11 @@ pipeline {
                     dir('src') {
                     	checkout scm
                     }
+					script {
+                        sh 'cd src && git submodule update --init --recursive'
+                    }
                 }
-            }
+            }            
 
             stage('Make work dir') {
                 steps {
