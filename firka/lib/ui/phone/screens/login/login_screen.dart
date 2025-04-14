@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Color(0xFFDAE4F7),
+      systemNavigationBarColor: Color(0xFFFAFFF0),
     ));
   }
 
@@ -94,9 +94,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final modalHeight = MediaQuery.of(context).size.height * 0.90;
     final List<Map<String, String>> slides = [
       {
-        'title': 'A romló tendenciádat tízféle képpen láthatod',
+        'title': 'Egy pillantásra tudhatsz mindent',
         'subtitle':
-            'Annyi statisztikát láthatsz, hogy a 8 általánosos matek nem lesz elég a kisilabizálására.',
+            'A főoldal tetjén hasznos információkat láthatsz a napodról.',
         'picture': 'assets/images/carousel/slide1.png',
       },
       {
@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             fit: BoxFit.cover,
                           ),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
+                              borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -232,8 +232,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Color(0x00DAE4F7),
-                        Color(0xFFDAE4F7)
+                        Color(0x00FAFFF0),
+                        Color(0xFFFAFFF0)
                       ], // customize colors
                       stops: [0.0, 0.5], // percentages (0% → 50% → 100%)
                       begin: Alignment.topCenter,
