@@ -30,6 +30,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   WearMode mode = WearMode.active;
   final platform = MethodChannel('firka.app/main');
 
+  bool disposed = false;
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +54,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     var todayEnd = todayStart.add(Duration(hours: 23, minutes: 59));
     var classes = await kreta.getTimeTable(todayStart, todayEnd);
 
+    if (disposed) return;
     setState(() {
       if (classes.response != null) today = classes.response!;
       if (classes.statusCode != 200) {
@@ -284,5 +287,6 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   void dispose() {
     super.dispose();
     timer?.cancel();
+    disposed = true;
   }
 }

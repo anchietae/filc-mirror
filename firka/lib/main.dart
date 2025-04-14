@@ -19,8 +19,9 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:watch_connectivity/watch_connectivity.dart';
 
-late Isar isar;
+Isar? isarInit;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+late AppInitialization initData;
 
 class AppInitialization {
   final Isar isar;
@@ -35,13 +36,16 @@ class AppInitialization {
 }
 
 Future<Isar> initDB() async {
+  if (isarInit != null) return isarInit!;
   final dir = await getApplicationDocumentsDirectory();
 
-  return Isar.open(
+  isarInit = await Isar.open(
     [TokenModelSchema, GenericCacheModelSchema, TimetableCacheModelSchema],
     inspector: true,
     directory: dir.path,
   );
+
+  return isarInit!;
 }
 
 Future<AppInitialization> initializeApp() async {
@@ -82,7 +86,6 @@ void main() async {
     }
   }
 
-  //TODO: fix the error handling currently not pushing to the error page
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -95,7 +98,7 @@ void main() async {
 
     navigatorKey.currentState?.push(
       MaterialPageRoute(
-        builder: (context) => ErrorPage(exception: error.toString()),
+        builder: (context) => ErrorPage(key: ValueKey('errorPage'), exception: error.toString()),
       ),
     );
   });
@@ -117,6 +120,7 @@ class InitializationScreen extends StatelessWidget {
           if (snapshot.hasError) {
             // Handle initialization error
             return MaterialApp(
+              key: ValueKey('errorPage'),
               home: Scaffold(
                 body: Center(
                   child: Text(
@@ -132,11 +136,11 @@ class InitializationScreen extends StatelessWidget {
           Widget screen;
 
           assert(snapshot.data != null);
-          var data = snapshot.data!;
+          initData = snapshot.data!;
           var watch = WatchConnectivity();
 
-          if (!data.hasWatchListener) {
-            data.hasWatchListener = true;
+          if (!initData.hasWatchListener) {
+            initData.hasWatchListener = true;
 
             watch.messageStream.listen((e) {
               var msg = e.entries.toMap();
@@ -151,7 +155,7 @@ class InitializationScreen extends StatelessWidget {
                   });
                   navigatorKey.currentState?.push(
                     MaterialPageRoute(
-                      builder: (context) => WearLoginScreen(data),
+                      builder: (context) => WearLoginScreen(initData),
                     ),
                   );
               }
@@ -159,13 +163,14 @@ class InitializationScreen extends StatelessWidget {
           }
 
           if (snapshot.data!.tokenCount == 0) {
-            screen = LoginScreen(data);
+            screen = LoginScreen(initData, key: ValueKey('loginScreen'),);
           } else {
-            screen = HomeScreen(data);
+            screen = HomeScreen(initData, key: ValueKey('homeScreen'),);
           }
 
           return MaterialApp(
             title: 'Firka',
+            key: ValueKey('firkaApp'),
             navigatorKey: navigatorKey, // Use the global navigator key
             theme: ThemeData(
               primarySwatch: Colors.lightGreen,
@@ -173,8 +178,10 @@ class InitializationScreen extends StatelessWidget {
             ),
             home: screen,
             routes: {
-              '/login': (context) => LoginScreen(data),
-              '/debug': (context) => DebugScreen(data),
+              '/login': (context) => LoginScreen(initData,
+                key: ValueKey('loginScreen'),),
+              '/debug': (context) => DebugScreen(initData,
+                key: ValueKey('debugScreen'),),
             },
           );
         }

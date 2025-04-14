@@ -15,7 +15,7 @@ import 'package:zear_plus/wear_plus.dart';
 import 'helpers/api/client/kreta_client.dart';
 import 'ui/wear/screens/home/home_screen.dart';
 
-late Isar isar;
+Isar? isarInit;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class WearAppInitialization {
@@ -30,13 +30,16 @@ class WearAppInitialization {
 }
 
 Future<Isar> initDB() async {
+  if (isarInit != null) return isarInit!;
   final dir = await getApplicationDocumentsDirectory();
 
-  return Isar.open(
+  isarInit = await Isar.open(
     [TokenModelSchema, GenericCacheModelSchema, TimetableCacheModelSchema],
     inspector: true,
     directory: dir.path,
   );
+
+  return isarInit!;
 }
 
 Future<WearAppInitialization> initializeApp() async {
@@ -115,6 +118,7 @@ class WearInitializationScreen extends StatelessWidget {
             // Handle initialization error
 
             return MaterialApp(
+              key: ValueKey('firkaErrorPage'),
               home: Scaffold(
                 body: Center(
                   child: WatchShape(
@@ -144,12 +148,13 @@ class WearInitializationScreen extends StatelessWidget {
           var data = snapshot.data!;
 
           if (snapshot.data!.tokenCount == 0) {
-            screen = WearLoginScreen(data);
+            screen = WearLoginScreen(data, key: ValueKey('wearLoginScreen'));
           } else {
-            screen = WearHomeScreen(data);
+            screen = WearHomeScreen(data, key: ValueKey('wearHomeScreen'));
           }
 
           return MaterialApp(
+            key: ValueKey('firkaWearApp'),
             title: 'Firka',
             navigatorKey: navigatorKey, // Use the global navigator key
             theme: ThemeData(
@@ -158,8 +163,10 @@ class WearInitializationScreen extends StatelessWidget {
             ),
             home: screen,
             routes: {
-              '/login': (context) => WearLoginScreen(data),
-              '/home': (context) => WearHomeScreen(data)
+              '/login': (context) => WearLoginScreen(data,
+                  key: ValueKey('wearLoginScreen')),
+              '/home': (context) => WearHomeScreen(data,
+                  key: ValueKey('wearHomeScreen'))
             },
           );
         }
