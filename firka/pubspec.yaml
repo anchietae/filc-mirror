@@ -62,6 +62,8 @@ dev_dependencies:
   isar_generator:
     path: vendor/isar_generator
   android_notification_icons: ^0.0.1
+  integration_test:
+    sdk: flutter
 
 android_notification_icons:
   image_path: 'assets/images/logos/monochrome_logo.png'
