@@ -58,10 +58,6 @@ class _HomeScreenState extends State<HomeScreen> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return Scaffold(
       backgroundColor: appColors.background,
-      appBar: AppBar(
-        title: const Text('Home'),
-        centerTitle: true,
-      ),
       body: SafeArea(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
