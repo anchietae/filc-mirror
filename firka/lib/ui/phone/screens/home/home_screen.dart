@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         end: Alignment.topCenter,
                         colors: [
                           appColors.background,
-                          appColors.background.withOpacity(0.0),
+                          appColors.background.withValues(alpha: 0.0),
                         ],
                         stops: const [0.0, 1.0],
                       ),
