@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shake_gesture/shake_gesture.dart';
 import '../debug/debug_screen.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
-import 'package:firka/ui/model/colors.dart';
+import 'package:firka/ui/model/colors.dart'; 
 
 class HomeScreen extends StatefulWidget {
   final AppInitialization data;
@@ -27,6 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateSystemUI();
+    });
+
     // TODO: move this to a button inside the settings page when it's implemented
     if (kDebugMode) {
       ShakeGesture.registerCallback(onShake: () {
@@ -36,16 +40,24 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  void _updateSystemUI() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Color(0xFFDAE4F7),
+      systemNavigationBarColor: appColors.background,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarDividerColor: Colors.transparent,
     ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _updateSystemUI(); // Update system UI on every build, to compensate for the android system being dumb
+
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return Scaffold(
+      backgroundColor: appColors.background,
       appBar: AppBar(
         title: const Text('Home'),
         centerTitle: true,
@@ -73,8 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
                         colors: [
-                          Colors.white,
-                          Colors.white.withOpacity(0.0),
+                          appColors.background,
+                          appColors.background.withOpacity(0.0),
                         ],
                         stops: const [0.0, 1.0],
                       ),
