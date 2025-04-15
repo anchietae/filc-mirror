@@ -16,6 +16,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:isar/isar.dart';
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:watch_connectivity/watch_connectivity.dart';
 
@@ -28,6 +29,7 @@ class AppInitialization {
   late KretaClient client;
   int tokenCount;
   bool hasWatchListener = false;
+  Uint8List? profilePicture;
 
   AppInitialization({
     required this.isar,
@@ -65,10 +67,15 @@ Future<AppInitialization> initializeApp() async {
 
   // TODO: Account selection
   if (tokenCount > 0) {
-    init.client = KretaClient(
-      (await isar.tokenModels.where().findFirst())!,
-      isar
-    );
+    init.client =
+        KretaClient((await isar.tokenModels.where().findFirst())!, isar);
+  }
+
+  final dataDir = await getApplicationDocumentsDirectory();
+  var pfpFile = File(p.join(dataDir.path, "profile.png"));
+
+  if (await pfpFile.exists()) {
+    init.profilePicture = await pfpFile.readAsBytes();
   }
 
   return init;
@@ -91,14 +98,14 @@ void main() async {
 
     // Run App Initialization
     runApp(InitializationScreen());
-
   }, (error, stackTrace) {
     debugPrint('Caught error: $error');
     debugPrint('Stack trace: $stackTrace');
 
     navigatorKey.currentState?.push(
       MaterialPageRoute(
-        builder: (context) => ErrorPage(key: ValueKey('errorPage'), exception: error.toString()),
+        builder: (context) =>
+            ErrorPage(key: ValueKey('errorPage'), exception: error.toString()),
       ),
     );
   });
@@ -150,9 +157,7 @@ class InitializationScreen extends StatelessWidget {
               switch (msg["id"]) {
                 case "ping":
                   debugPrint("[Phone -> Watch]: pong");
-                  watch.sendMessage({
-                    "id": "pong"
-                  });
+                  watch.sendMessage({"id": "pong"});
                   navigatorKey.currentState?.push(
                     MaterialPageRoute(
                       builder: (context) => WearLoginScreen(initData),
@@ -163,9 +168,15 @@ class InitializationScreen extends StatelessWidget {
           }
 
           if (snapshot.data!.tokenCount == 0) {
-            screen = LoginScreen(initData, key: ValueKey('loginScreen'),);
+            screen = LoginScreen(
+              initData,
+              key: ValueKey('loginScreen'),
+            );
           } else {
-            screen = HomeScreen(initData, key: ValueKey('homeScreen'),);
+            screen = HomeScreen(
+              initData,
+              key: ValueKey('homeScreen'),
+            );
           }
 
           return MaterialApp(
@@ -178,10 +189,14 @@ class InitializationScreen extends StatelessWidget {
             ),
             home: screen,
             routes: {
-              '/login': (context) => LoginScreen(initData,
-                key: ValueKey('loginScreen'),),
-              '/debug': (context) => DebugScreen(initData,
-                key: ValueKey('debugScreen'),),
+              '/login': (context) => LoginScreen(
+                    initData,
+                    key: ValueKey('loginScreen'),
+                  ),
+              '/debug': (context) => DebugScreen(
+                    initData,
+                    key: ValueKey('debugScreen'),
+                  ),
             },
           );
         }
