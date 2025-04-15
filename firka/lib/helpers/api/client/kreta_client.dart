@@ -198,6 +198,8 @@ class KretaClient {
       err = ex.toString();
     }
 
+    items.sort((a, b) => b.recordDate.compareTo(a.recordDate));
+
     return ApiResponse(items, status, err, cached);
   }
 
