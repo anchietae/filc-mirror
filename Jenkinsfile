@@ -2,6 +2,13 @@ pipeline {
     agent any
 
         stages {
+            stage('Cleanup') {
+                steps {
+                    script {
+                        sh 'rm -rf firka-builder'
+                    }
+                }
+            }
             stage('Clone firka') {
                 steps {
                     script {
@@ -14,7 +21,7 @@ pipeline {
                         sh 'cd src && git submodule update --init --recursive'
                     }
                 }
-            }            
+            }
 
             stage('Make work dir') {
                 steps {
@@ -54,9 +61,7 @@ pipeline {
 
             stage('Build firka') {
                 steps {
-                    dir('firka-builder') {
-                        sh 'docker compose up --build --exit-code-from firka-builder'
-                    }
+                    sh 'python3 wrapper.py'
                 }
             }
 
@@ -65,6 +70,8 @@ pipeline {
            	       branch 'main'
   	           	}
             	steps {
+            	    zip zipFile: 'coverage.zip', archive: false, dir: 'work/firka/coverage'
+           			archiveArtifacts artifacts: 'coverage.zip', fingerprint: true
            			archiveArtifacts artifacts: 'work/firka/build/app/outputs/apk/release/app-*-release.apk', fingerprint: true
            		}
             }
@@ -76,6 +83,8 @@ pipeline {
            			}
            		}
            		steps {
+                    zip zipFile: 'coverage.zip', archive: false, dir: 'work/firka/coverage'
+                    archiveArtifacts artifacts: 'coverage.zip', fingerprint: true
            			archiveArtifacts artifacts: 'work/firka/build/app/outputs/apk/debug/app-debug.apk', fingerprint: true
            		}
             }
