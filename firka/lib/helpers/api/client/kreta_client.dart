@@ -23,11 +23,11 @@ class ApiResponse<T> {
   bool cached;
 
   ApiResponse(
-      this.response,
-      this.statusCode,
-      this.err,
-      this.cached,
-      );
+    this.response,
+    this.statusCode,
+    this.err,
+    this.cached,
+  );
 
   @override
   String toString() {
@@ -47,7 +47,6 @@ class KretaClient {
 
   KretaClient(this.model, this.isar);
 
-
   Future<T> _mutexCallback<T>(Future<T> Function() callback) async {
     while (_tokenMutex) {
       await Future.delayed(const Duration(milliseconds: 50));
@@ -60,12 +59,12 @@ class KretaClient {
     }
   }
 
-  Future<Response> _authReq(String method, String url,
-      [Object? data]) async {
+  Future<Response> _authReq(String method, String url, [Object? data]) async {
     var localToken = await _mutexCallback<String>(() async {
       var now = DateTime.now();
 
-      if (now.millisecondsSinceEpoch >= model.expiryDate!.millisecondsSinceEpoch) {
+      if (now.millisecondsSinceEpoch >=
+          model.expiryDate!.millisecondsSinceEpoch) {
         var extended = await extendToken(model);
         var tokenModel = TokenModel.fromResp(extended);
 
@@ -87,28 +86,31 @@ class KretaClient {
       "apiKey": "21ff6c25-d1da-4a68-a811-c881a6057463"
     };
 
-    return await dio.get(url, options: Options(
-        method: method,
-        headers: headers
-    ), data: data);
+    return await dio.get(url,
+        options: Options(method: method, headers: headers), data: data);
   }
 
-  Future<(dynamic, int)> _authJson(String method, String url, [Object? data]) async {
+  Future<(dynamic, int)> _authJson(String method, String url,
+      [Object? data]) async {
     var resp = await _authReq(method, url, data);
 
     return (resp.data, resp.statusCode!);
   }
 
-  Future<(dynamic, int, Object?, bool)> _cachingGet(CacheId id, String url) async {
+  Future<(dynamic, int, Object?, bool)> _cachingGet(
+      CacheId id, String url, bool forceCache) async {
     // it would be *ideal* to use xor and left shift here, however
     // binary operations seem to round the number down to
     // 32 bits for some reason???
-    var cacheKey = model.studentId! + ((id.index+1) * pow(10, 11));
+    var cacheKey = model.studentId! + ((id.index + 1) * pow(10, 11));
     var cache = await isar.genericCacheModels.get(cacheKey as int);
 
     dynamic resp;
     int statusCode;
     try {
+      if (forceCache && cache != null) {
+        return (jsonDecode(cache.cacheData!), 200, null, true);
+      }
       (resp, statusCode) = await _authJson("GET", url);
 
       if (statusCode >= 400) {
@@ -135,9 +137,9 @@ class KretaClient {
     return (resp, statusCode, null, false);
   }
 
-  Future<ApiResponse<Student>> getStudent() async {
+  Future<ApiResponse<Student>> getStudent({bool forceCache = true}) async {
     var (resp, status, ex, cached) = await _cachingGet(CacheId.getStudent,
-        KretaEndpoints.getStudentUrl(model.iss!));
+        KretaEndpoints.getStudentUrl(model.iss!), forceCache);
 
     Student? student;
     String? err;
@@ -154,9 +156,10 @@ class KretaClient {
     return ApiResponse(student, status, err, cached);
   }
 
-  Future<ApiResponse<List<NoticeBoardItem>>> getNoticeBoard() async {
+  Future<ApiResponse<List<NoticeBoardItem>>> getNoticeBoard(
+      {bool forceCache = true}) async {
     var (resp, status, ex, cached) = await _cachingGet(CacheId.getNoticeBoard,
-        KretaEndpoints.getNoticeBoard(model.iss!));
+        KretaEndpoints.getNoticeBoard(model.iss!), forceCache);
 
     var items = List<NoticeBoardItem>.empty(growable: true);
     String? err;
@@ -176,9 +179,9 @@ class KretaClient {
     return ApiResponse(items, status, err, cached);
   }
 
-  Future<ApiResponse<List<Grade>>> getGrades() async {
-    var (resp, status, ex, cached) = await _cachingGet(CacheId.getGrades,
-        KretaEndpoints.getGrades(model.iss!));
+  Future<ApiResponse<List<Grade>>> getGrades({bool forceCache = true}) async {
+    var (resp, status, ex, cached) = await _cachingGet(
+        CacheId.getGrades, KretaEndpoints.getGrades(model.iss!), forceCache);
 
     var items = List<Grade>.empty(growable: true);
     String? err;
@@ -198,7 +201,8 @@ class KretaClient {
     return ApiResponse(items, status, err, cached);
   }
 
-  Future<(dynamic, int, Object?, bool)> _getTimeTableCached(DateTime from, DateTime to) async {
+  Future<(dynamic, int, Object?, bool)> _getTimeTableCached(
+      DateTime from, DateTime to, bool forceCache) async {
     var cacheKey = genCacheKey(from, model.studentId!);
     var cache = await isar.timetableCacheModels.get(cacheKey);
     var formatter = DateFormat('yyyy-MM-dd');
@@ -209,7 +213,16 @@ class KretaClient {
     dynamic resp;
     int statusCode;
     try {
-      (resp, statusCode) = await _authJson("GET",
+      if (forceCache && cache != null) {
+        var items = List<dynamic>.empty(growable: true);
+        for (var item in cache.classes!) {
+          items.add(jsonDecode(item));
+        }
+
+        return (items, 200, null, true);
+      }
+      (resp, statusCode) = await _authJson(
+          "GET",
           "${KretaEndpoints.getTimeTable(model.iss!)}?"
               "datumTol=$fromStr&datumIg=$toStr");
 
@@ -235,13 +248,10 @@ class KretaClient {
     }
 
     // only cache stuff in a 1 month frame
-    if (from.millisecondsSinceEpoch >= now
-        .subtract(Duration(days: 30))
-        .millisecondsSinceEpoch
-        &&
-        to.millisecondsSinceEpoch <= now
-            .add(Duration(days: 30))
-            .millisecondsSinceEpoch) {
+    if (from.millisecondsSinceEpoch >=
+            now.subtract(Duration(days: 30)).millisecondsSinceEpoch &&
+        to.millisecondsSinceEpoch <=
+            now.add(Duration(days: 30)).millisecondsSinceEpoch) {
       await isar.writeTxn(() async {
         var cache = TimetableCacheModel();
         var rawClasses = List<String>.empty(growable: true);
@@ -261,8 +271,10 @@ class KretaClient {
   }
 
   /// Expects from and to to be 7 days apart
-  Future<ApiResponse<List<Lesson>>> _getTimeTable(DateTime from, DateTime to) async {
-    var (resp, status, ex, cached) = await _getTimeTableCached(from, to);
+  Future<ApiResponse<List<Lesson>>> _getTimeTable(
+      DateTime from, DateTime to, bool forceCache) async {
+    var (resp, status, ex, cached) =
+        await _getTimeTableCached(from, to, forceCache);
 
     var items = List<Lesson>.empty(growable: true);
     String? err;
@@ -283,18 +295,20 @@ class KretaClient {
   }
 
   /// Automatically aligns requests to start at Monday and end at Sunday
-  Future<ApiResponse<List<Lesson>>> getTimeTable(DateTime from, DateTime to) async {
-
+  Future<ApiResponse<List<Lesson>>> getTimeTable(DateTime from, DateTime to,
+      {bool forceCache = true}) async {
     var lessons = List<Lesson>.empty(growable: true);
     String? err;
     bool cached = true;
 
-    for (var i = from.millisecondsSinceEpoch; i < to.millisecondsSinceEpoch; i += 604800000) {
+    for (var i = from.millisecondsSinceEpoch;
+        i < to.millisecondsSinceEpoch;
+        i += 604800000) {
       var from = DateTime.fromMillisecondsSinceEpoch(i);
       var start = from.subtract(Duration(days: from.weekday - 1));
       var end = start.add(Duration(days: 6));
 
-      var resp = await _getTimeTable(start, end);
+      var resp = await _getTimeTable(start, end, forceCache);
       if (resp.err != null) {
         err = resp.err;
         if (!resp.cached) {
@@ -309,16 +323,18 @@ class KretaClient {
     }
 
     lessons.sort((a, b) => a.start.compareTo(b.start));
-    lessons = lessons.where((lesson) =>
-    lesson.start.isAfter(from) && lesson.end.isBefore(to)
-    ).toList();
+    lessons = lessons
+        .where(
+            (lesson) => lesson.start.isAfter(from) && lesson.end.isBefore(to))
+        .toList();
 
     return ApiResponse(lessons, 200, err, cached);
   }
 
-  Future<ApiResponse<List<Omission>>> getOmissions() async {
+  Future<ApiResponse<List<Omission>>> getOmissions(
+      {bool forceCache = true}) async {
     var (resp, status, ex, cached) = await _cachingGet(CacheId.getOmissions,
-        KretaEndpoints.getOmissions(model.iss!));
+        KretaEndpoints.getOmissions(model.iss!), forceCache);
 
     var items = List<Omission>.empty(growable: true);
     String? err;
@@ -339,5 +355,4 @@ class KretaClient {
 
     return ApiResponse(items, status, err, cached);
   }
-
 }

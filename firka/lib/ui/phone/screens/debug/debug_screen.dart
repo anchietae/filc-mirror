@@ -23,6 +23,8 @@ class _DebugScreen extends State<DebugScreen> {
   late ImagePicker _picker;
   Uint8List? profilePictureData;
 
+  bool useCache = true;
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +57,20 @@ class _DebugScreen extends State<DebugScreen> {
               ),
             ),
             const SizedBox(height: 20),
+            Row(
+              children: [
+                Text('use cache'),
+                Switch(
+                  value: useCache,
+                  onChanged: (bool value) {
+                    setState(() {
+                      useCache = value;
+                    });
+                  },
+                )
+              ],
+            ),
+            const SizedBox(height: 20),
             profilePicture,
             ElevatedButton(
               onPressed: () async {
@@ -77,20 +93,22 @@ class _DebugScreen extends State<DebugScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                print("getStudent(): ${await data.client.getStudent()}");
+                print(
+                    "getStudent(): ${await data.client.getStudent(forceCache: useCache)}");
               },
               child: const Text('getStudent()'),
             ),
             ElevatedButton(
               onPressed: () async {
                 print(
-                    "getNoticeBoard(): ${await data.client.getNoticeBoard()}");
+                    "getNoticeBoard(): ${await data.client.getNoticeBoard(forceCache: useCache)}");
               },
               child: const Text('getNoticeBoard()'),
             ),
             ElevatedButton(
               onPressed: () async {
-                print("getGrades(): ${await data.client.getGrades()}");
+                print(
+                    "getGrades(): ${await data.client.getGrades(forceCache: useCache)}");
               },
               child: const Text('getGrades()'),
             ),
@@ -102,13 +120,14 @@ class _DebugScreen extends State<DebugScreen> {
                 var end = now.add(Duration(days: 7));
 
                 print(
-                    "getLessons(): ${await data.client.getTimeTable(start, end)}");
+                    "getLessons(): ${await data.client.getTimeTable(start, end, forceCache: useCache)}");
               },
               child: const Text('getLessons()'),
             ),
             ElevatedButton(
               onPressed: () async {
-                print("getOmissions(): ${await data.client.getOmissions()}");
+                print(
+                    "getOmissions(): ${await data.client.getOmissions(forceCache: useCache)}");
               },
               child: const Text('getOmissions()'),
             ),
