@@ -3,9 +3,11 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:firka/helpers/api/model/homework.dart';
+import 'package:firka/helpers/api/model/test.dart';
 import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:firka/helpers/db/models/homework_cache_model.dart';
+import 'package:firka/helpers/db/models/test_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
@@ -211,14 +213,14 @@ class KretaClient {
           IsarCollection<T> cacheModel,
           String endpoint,
           DateTime from,
-          DateTime to,
+          DateTime? to,
           bool forceCache,
           Future<void> Function(dynamic, int) storeCache) async {
     var cacheKey = genCacheKey(from, model.studentId!);
     var cache = await cacheModel.get(cacheKey);
     var formatter = DateFormat('yyyy-MM-dd');
     var fromStr = formatter.format(from);
-    var toStr = formatter.format(to);
+    var toStr = to != null ? formatter.format(to) : null;
     var now = DateTime.now();
 
     if (cache != null && (cache as dynamic).values == null) {
@@ -236,10 +238,17 @@ class KretaClient {
 
         return (items, 200, null, true);
       }
-      (resp, statusCode) = await _authJson(
-          "GET",
-          "$endpoint?"
-              "datumTol=$fromStr&datumIg=$toStr");
+      if (toStr == null) {
+        (resp, statusCode) = await _authJson(
+            "GET",
+            "$endpoint?"
+                "datumTol=$fromStr");
+      } else {
+        (resp, statusCode) = await _authJson(
+            "GET",
+            "$endpoint?"
+                "datumTol=$fromStr&datumIg=$toStr");
+      }
 
       if (statusCode >= 400) {
         if (cache != null) {
@@ -264,12 +273,14 @@ class KretaClient {
 
     // only cache stuff in a 1 month frame
     if (from.millisecondsSinceEpoch >=
-            now.subtract(Duration(days: 30)).millisecondsSinceEpoch &&
-        to.millisecondsSinceEpoch <=
-            now.add(Duration(days: 30)).millisecondsSinceEpoch) {
-      await isar.writeTxn(() async {
-        await storeCache(resp, cacheKey);
-      });
+        now.subtract(Duration(days: 30)).millisecondsSinceEpoch) {
+      if (to == null ||
+          to.millisecondsSinceEpoch <=
+              now.add(Duration(days: 30)).millisecondsSinceEpoch) {
+        await isar.writeTxn(() async {
+          await storeCache(resp, cacheKey);
+        });
+      }
     }
 
     return (resp, statusCode, null, false);
@@ -323,7 +334,7 @@ class KretaClient {
         isar.homeworkCacheModels,
         KretaEndpoints.getHomework(model.iss!),
         from,
-        to,
+        null,
         forceCache, (dynamic resp, int cacheKey) async {
       HomeworkCacheModel cache = HomeworkCacheModel();
       var rawClasses = List<String>.empty(growable: true);
@@ -356,10 +367,50 @@ class KretaClient {
     return ApiResponse(items, status, err, cached);
   }
 
+  /// Expects from and to to be 7 days apart
+  Future<ApiResponse<List<Test>>> _getTests(
+      DateTime from, DateTime to, bool forceCache) async {
+    var (resp, status, ex, cached) = await _timedCachingGet<TestCacheModel>(
+        isar.testCacheModels,
+        KretaEndpoints.getHomework(model.iss!),
+        from,
+        to,
+        forceCache, (dynamic resp, int cacheKey) async {
+      TestCacheModel cache = TestCacheModel();
+      var rawClasses = List<String>.empty(growable: true);
+
+      for (var obj in resp) {
+        rawClasses.add(jsonEncode(obj));
+      }
+
+      cache.cacheKey = cacheKey;
+      cache.values = rawClasses;
+
+      await isar.testCacheModels.put(cache as dynamic);
+    });
+
+    var items = List<Test>.empty(growable: true);
+    String? err;
+    try {
+      List<dynamic> rawItems = resp;
+      for (var item in rawItems) {
+        items.add(Test.fromJson(item));
+      }
+    } catch (ex) {
+      err = ex.toString();
+    }
+
+    if (ex != null) {
+      err = ex.toString();
+    }
+
+    return ApiResponse(items, status, err, cached);
+  }
+
   /// Automatically aligns requests to start at Monday and end at Sunday
-  Future<ApiResponse<List<dynamic>>> getHomework(DateTime from, DateTime to,
+  Future<ApiResponse<List<Homework>>> getHomework(DateTime from, DateTime to,
       {bool forceCache = true}) async {
-    var homework = List<dynamic>.empty(growable: true);
+    var homework = List<Homework>.empty(growable: true);
     String? err;
     bool cached = true;
 
@@ -384,13 +435,9 @@ class KretaClient {
       if (!resp.cached) cached = false;
     }
 
-    /*
-    homework.sort((a, b) => a.start.compareTo(b.start));
-    homework = homework
-        .where(
-            (h) => h.start.isAfter(from) && h.end.isBefore(to))
-        .toList();
-     */
+    homework.sort((a, b) => a.startDate.compareTo(b.startDate));
+    homework =
+        homework.where((h) => h.dueDate.isAfter(DateTime.now())).toList();
 
     return ApiResponse(homework, 200, err, cached);
   }
