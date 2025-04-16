@@ -139,6 +139,13 @@ class _DebugScreen extends State<DebugScreen> {
             ElevatedButton(
               onPressed: () async {
                 print(
+                    "getTests(): ${await data.client.getTests(forceCache: useCache)}");
+              },
+              child: const Text('getTests()'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                print(
                     "getOmissions(): ${await data.client.getOmissions(forceCache: useCache)}");
               },
               child: const Text('getOmissions()'),

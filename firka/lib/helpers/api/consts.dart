@@ -47,4 +47,6 @@ class KretaEndpoints {
       "${kreta(iss)}/ellenorzo/v3/sajat/Mulasztasok";
   static String getHomework(String iss) =>
       "${kreta(iss)}/ellenorzo/v3/sajat/HaziFeladatok";
+  static String getTests(String iss) =>
+      "${kreta(iss)}/ellenorzo/v3/sajat/BejelentettSzamonkeresek";
 }
