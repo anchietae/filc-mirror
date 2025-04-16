@@ -1,3 +1,4 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/helpers/api/consts.dart';
@@ -92,27 +93,25 @@ class _LoginScreenState extends State<LoginScreen> {
         MediaQuery.of(context).size.width * 0.95;
     final contentWidth = MediaQuery.of(context).size.width * 0.95;
     final modalHeight = MediaQuery.of(context).size.height * 0.90;
-    final List<Map<String, String>> slides = [
+    List<Map<String, String>> slides = [
       {
-        'title': 'Egy pillantásra tudhatsz mindent',
-        'subtitle':
-            'A főoldal tetjén hasznos információkat láthatsz a napodról.',
+        'title': AppLocalizations.of(context)!.title1,
+        'subtitle': AppLocalizations.of(context)!.subtitle1,
         'picture': 'assets/images/carousel/slide1.png',
       },
       {
-        'title': 'Minden egy helyen',
-        'subtitle':
-            'Egyetlen kattintás és máris többet tudsz, mint az osztályfőnököd.',
+        'title': AppLocalizations.of(context)!.title2,
+        'subtitle': AppLocalizations.of(context)!.subtitle2,
         'picture': 'assets/images/carousel/slide2.png',
       },
       {
-        'title': 'Könnyen érthető elemzések',
-        'subtitle': 'Több száz adatból szűrjük ki neked a lényeget.',
+        'title': AppLocalizations.of(context)!.title3,
+        'subtitle': AppLocalizations.of(context)!.subtitle3,
         'picture': 'assets/images/carousel/slide3.png',
       },
       {
-        'title': 'Valós idejű frissítések',
-        'subtitle': 'A statisztikáid mindig naprakészen jelennek meg.',
+        'title': AppLocalizations.of(context)!.title4,
+        'subtitle': AppLocalizations.of(context)!.subtitle4,
         'picture': 'assets/images/carousel/slide4.png',
       }
     ];
@@ -338,11 +337,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               )
                             ],
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
-                              'Bejelentkezés E-Kréta fiókkal',
+                              AppLocalizations.of(context)!.loginBtn,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(0xFF394B0A), // Text-Primary
                                 fontSize: 17,
                                 fontFamily: 'Montserrat',
