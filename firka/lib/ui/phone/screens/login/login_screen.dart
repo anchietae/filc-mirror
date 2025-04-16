@@ -357,10 +357,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    'Adatvédelmi tájékoztató',
+                  Text(
+                    AppLocalizations.of(context)!.privacyLabel,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0x7F394C0A) /* Text-Teritary */,
                       fontSize: 14,
                       fontFamily: 'Montserrat',
