@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:firka/helpers/db/models/homework_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
@@ -8,6 +9,7 @@ import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:firka/ui/wear/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -85,29 +87,6 @@ class WearInitializationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: WatchShape(
-            builder: (context, shape, child) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Shape: ${shape == WearShape.round ? 'round' : 'square'}',
-                  ),
-                  child!,
-                ],
-              );
-            },
-            child: SizedBox(),
-          ),
-        ),
-      ),
-    );
-     */
-
     return FutureBuilder<WearAppInitialization>(
       future: _initialization,
       builder: (context, snapshot) {
@@ -160,6 +139,13 @@ class WearInitializationScreen extends StatelessWidget {
               primarySwatch: Colors.lightGreen,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
             home: screen,
             routes: {
               '/login': (context) =>

@@ -1,3 +1,4 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firka/main.dart';
 import 'package:firka/ui/phone/widgets/bottom_nav_icon.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             page == ActiveHomePage.home
                               ? Majesticon.homeSolid
                               : Majesticon.homeLine,
-                            "Kezdőlap",
+                            AppLocalizations.of(context)!.home,
                             page == ActiveHomePage.home
                               ? appColors.accent
                               : appColors.secondary,
@@ -123,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             page == ActiveHomePage.grades
                               ? Majesticon.bookmarkSolid
                               : Majesticon.bookmarkLine,
-                            "Jegyek",
+                            AppLocalizations.of(context)!.grades,
                             page == ActiveHomePage.grades
                               ? appColors.accent
                               : appColors.secondary,
@@ -140,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             page == ActiveHomePage.timetable
                               ? Majesticon.calendarSolid
                               : Majesticon.calendarLine,
-                            "Órarend",
+                            AppLocalizations.of(context)!.timetable,
                             page == ActiveHomePage.timetable
                               ? appColors.accent
                               : appColors.secondary,
@@ -164,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             page == ActiveHomePage.other
                               ? Majesticon.globeEarthSolid
                               : Majesticon.globeEarthLine,
-                            "Több",
+                            AppLocalizations.of(context)!.other,
                             page == ActiveHomePage.other
                               ? appColors.accent
                               : appColors.secondary,

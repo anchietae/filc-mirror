@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/helpers/extensions.dart';
 import 'package:firka/wear_main.dart';
@@ -83,7 +84,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     }
     if (today.isEmpty) {
       body.add(Text(
-        "You don't have any classes today",
+        AppLocalizations.of(context)!.noClasses,
         style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
         textAlign: TextAlign.center,
       ));
@@ -93,7 +94,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     }
     if (now.isAfter(today.last.end)) {
       body.add(Text(
-        "You don't have any more classes today",
+        AppLocalizations.of(context)!.noMoreClasses,
         style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
         textAlign: TextAlign.center,
       ));
@@ -105,7 +106,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
       var untilFirst = today.first.start.difference(now);
 
       body.add(Text(
-        "Your first class is in:\n${untilFirst.formatDuration()}",
+        AppLocalizations.of(context)!.firstIn(untilFirst.formatDuration()),
         style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
         textAlign: TextAlign.center,
       ));
@@ -166,7 +167,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                 children: [
                   Center(
                     child: Text(
-                      "Break",
+                      AppLocalizations.of(context)!.breakTxt,
                       style: TextStyle(
                         color: wearColors.textPrimary,
                         fontSize: 20
@@ -175,7 +176,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                   ),
                   Center(
                     child: Text(
-                      "$minutes min${minutes == 1 ? '' : 's'} left",
+                    AppLocalizations.of(context)!.timeLeft(minutes),
                       style: TextStyle(
                         color: wearColors.textPrimary,
                         fontSize: 16
@@ -216,7 +217,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                   ),
                   Center(
                     child: Text(
-                      "$minutes min${minutes == 1 ? '' : 's'} left",
+                      AppLocalizations.of(context)!.timeLeft(minutes),
                       style: TextStyle(
                         color: wearColors.textPrimary,
                         fontSize: 16
