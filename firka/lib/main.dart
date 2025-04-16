@@ -20,6 +20,8 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:watch_connectivity/watch_connectivity.dart';
 
+import 'helpers/db/models/homework_cache_model.dart';
+
 Isar? isarInit;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 late AppInitialization initData;
@@ -42,7 +44,12 @@ Future<Isar> initDB() async {
   final dir = await getApplicationDocumentsDirectory();
 
   isarInit = await Isar.open(
-    [TokenModelSchema, GenericCacheModelSchema, TimetableCacheModelSchema],
+    [
+      TokenModelSchema,
+      GenericCacheModelSchema,
+      TimetableCacheModelSchema,
+      HomeworkCacheModelSchema
+    ],
     inspector: true,
     directory: dir.path,
   );

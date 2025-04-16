@@ -2,13 +2,16 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:firka/helpers/api/model/homework.dart';
 import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
+import 'package:firka/helpers/db/models/homework_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 
 import '../../db/models/token_model.dart';
+import '../../db/util.dart';
 import '../consts.dart';
 import '../model/grade.dart';
 import '../model/notice_board.dart';
@@ -203,21 +206,31 @@ class KretaClient {
     return ApiResponse(items, status, err, cached);
   }
 
-  Future<(dynamic, int, Object?, bool)> _getTimeTableCached(
-      DateTime from, DateTime to, bool forceCache) async {
+  Future<(List<dynamic>, int, Object?, bool)>
+      _timedCachingGet<T extends DatedCacheEntry>(
+          IsarCollection<T> cacheModel,
+          String endpoint,
+          DateTime from,
+          DateTime to,
+          bool forceCache,
+          Future<void> Function(dynamic, int) storeCache) async {
     var cacheKey = genCacheKey(from, model.studentId!);
-    var cache = await isar.timetableCacheModels.get(cacheKey);
+    var cache = await cacheModel.get(cacheKey);
     var formatter = DateFormat('yyyy-MM-dd');
     var fromStr = formatter.format(from);
     var toStr = formatter.format(to);
     var now = DateTime.now();
 
-    dynamic resp;
+    if (cache != null && (cache as dynamic).values == null) {
+      (cache as dynamic).values = List<String>.empty(growable: true);
+    }
+
+    List<dynamic> resp;
     int statusCode;
     try {
       if (forceCache && cache != null) {
         var items = List<dynamic>.empty(growable: true);
-        for (var item in cache.classes!) {
+        for (var item in (cache as dynamic).values) {
           items.add(jsonDecode(item));
         }
 
@@ -225,13 +238,13 @@ class KretaClient {
       }
       (resp, statusCode) = await _authJson(
           "GET",
-          "${KretaEndpoints.getTimeTable(model.iss!)}?"
+          "$endpoint?"
               "datumTol=$fromStr&datumIg=$toStr");
 
       if (statusCode >= 400) {
         if (cache != null) {
           var items = List<dynamic>.empty(growable: true);
-          for (var item in cache.classes!) {
+          for (var item in (cache as dynamic).values) {
             items.add(jsonDecode(item));
           }
           return (items, statusCode, null, true);
@@ -240,12 +253,12 @@ class KretaClient {
     } catch (ex) {
       if (cache != null) {
         var items = List<dynamic>.empty(growable: true);
-        for (var item in cache.classes!) {
+        for (var item in (cache as dynamic).values) {
           items.add(jsonDecode(item));
         }
         return (items, 0, ex, true);
       } else {
-        return (null, 0, ex, false);
+        return (List<dynamic>.empty(growable: true), 0, ex, false);
       }
     }
 
@@ -255,17 +268,7 @@ class KretaClient {
         to.millisecondsSinceEpoch <=
             now.add(Duration(days: 30)).millisecondsSinceEpoch) {
       await isar.writeTxn(() async {
-        var cache = TimetableCacheModel();
-        var rawClasses = List<String>.empty(growable: true);
-
-        for (var obj in resp) {
-          rawClasses.add(jsonEncode(obj));
-        }
-
-        cache.cacheKey = cacheKey;
-        cache.classes = rawClasses;
-
-        await isar.timetableCacheModels.put(cache);
+        await storeCache(resp, cacheKey);
       });
     }
 
@@ -276,7 +279,24 @@ class KretaClient {
   Future<ApiResponse<List<Lesson>>> _getTimeTable(
       DateTime from, DateTime to, bool forceCache) async {
     var (resp, status, ex, cached) =
-        await _getTimeTableCached(from, to, forceCache);
+        await _timedCachingGet<TimetableCacheModel>(
+            isar.timetableCacheModels,
+            KretaEndpoints.getTimeTable(model.iss!),
+            from,
+            to,
+            forceCache, (dynamic resp, int cacheKey) async {
+      TimetableCacheModel cache = TimetableCacheModel();
+      var rawClasses = List<String>.empty(growable: true);
+
+      for (var obj in resp) {
+        rawClasses.add(jsonEncode(obj));
+      }
+
+      cache.cacheKey = cacheKey;
+      cache.values = rawClasses;
+
+      await isar.timetableCacheModels.put(cache as dynamic);
+    });
 
     var items = List<Lesson>.empty(growable: true);
     String? err;
@@ -294,6 +314,85 @@ class KretaClient {
     }
 
     return ApiResponse(items, status, err, cached);
+  }
+
+  /// Expects from and to to be 7 days apart
+  Future<ApiResponse<List<Homework>>> _getHomework(
+      DateTime from, DateTime to, bool forceCache) async {
+    var (resp, status, ex, cached) = await _timedCachingGet<HomeworkCacheModel>(
+        isar.homeworkCacheModels,
+        KretaEndpoints.getHomework(model.iss!),
+        from,
+        to,
+        forceCache, (dynamic resp, int cacheKey) async {
+      HomeworkCacheModel cache = HomeworkCacheModel();
+      var rawClasses = List<String>.empty(growable: true);
+
+      for (var obj in resp) {
+        rawClasses.add(jsonEncode(obj));
+      }
+
+      cache.cacheKey = cacheKey;
+      cache.values = rawClasses;
+
+      await isar.homeworkCacheModels.put(cache as dynamic);
+    });
+
+    var items = List<Homework>.empty(growable: true);
+    String? err;
+    try {
+      List<dynamic> rawItems = resp;
+      for (var item in rawItems) {
+        items.add(Homework.fromJson(item));
+      }
+    } catch (ex) {
+      err = ex.toString();
+    }
+
+    if (ex != null) {
+      err = ex.toString();
+    }
+
+    return ApiResponse(items, status, err, cached);
+  }
+
+  /// Automatically aligns requests to start at Monday and end at Sunday
+  Future<ApiResponse<List<dynamic>>> getHomework(DateTime from, DateTime to,
+      {bool forceCache = true}) async {
+    var homework = List<dynamic>.empty(growable: true);
+    String? err;
+    bool cached = true;
+
+    for (var i = from.millisecondsSinceEpoch;
+        i < to.millisecondsSinceEpoch;
+        i += 604800000) {
+      var from = DateTime.fromMillisecondsSinceEpoch(i);
+      var start = from.subtract(Duration(days: from.weekday - 1));
+      var end = start.add(Duration(days: 6));
+
+      var resp = await _getHomework(start, end, forceCache);
+      if (resp.err != null) {
+        err = resp.err;
+        if (!resp.cached) {
+          return resp;
+        } else {
+          homework.addAll(resp.response!);
+        }
+      } else {
+        homework.addAll(resp.response!);
+      }
+      if (!resp.cached) cached = false;
+    }
+
+    /*
+    homework.sort((a, b) => a.start.compareTo(b.start));
+    homework = homework
+        .where(
+            (h) => h.start.isAfter(from) && h.end.isBefore(to))
+        .toList();
+     */
+
+    return ApiResponse(homework, 200, err, cached);
   }
 
   /// Automatically aligns requests to start at Monday and end at Sunday

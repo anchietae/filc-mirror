@@ -3,16 +3,16 @@ import 'package:isar/isar.dart';
 
 import '../util.dart';
 
-part 'timetable_cache_model.g.dart';
+part 'homework_cache_model.g.dart';
 
 @collection
-class TimetableCacheModel extends DatedCacheEntry {
-  TimetableCacheModel();
+class HomeworkCacheModel extends DatedCacheEntry {
+  HomeworkCacheModel();
 }
 
-Future<void> resetOldTimeTableCache(Isar isar) async {
+Future<void> resetOldHomeworkCache(Isar isar) async {
   var now = DateTime.now();
-  var weeks = await isar.timetableCacheModels.where().findAll();
+  var weeks = await isar.homeworkCacheModels.where().findAll();
   var weeksToRemove = List<Id>.empty(growable: true);
 
   for (var week in weeks) {
@@ -24,6 +24,6 @@ Future<void> resetOldTimeTableCache(Isar isar) async {
     }
   }
   await isar.writeTxn(() async {
-    await isar.timetableCacheModels.deleteAll(weeksToRemove);
+    await isar.homeworkCacheModels.deleteAll(weeksToRemove);
   });
 }

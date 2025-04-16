@@ -126,6 +126,18 @@ class _DebugScreen extends State<DebugScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
+                var now = DateTime.now();
+
+                var start = now.subtract(Duration(days: 7));
+                var end = now.add(Duration(days: 14));
+
+                print(
+                    "getHomework(): ${await data.client.getHomework(start, end, forceCache: useCache)}");
+              },
+              child: const Text('getHomework()'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
                 print(
                     "getOmissions(): ${await data.client.getOmissions(forceCache: useCache)}");
               },

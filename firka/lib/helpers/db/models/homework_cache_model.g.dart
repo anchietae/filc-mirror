@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'timetable_cache_model.dart';
+part of 'homework_cache_model.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,14 +9,14 @@ part of 'timetable_cache_model.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetTimetableCacheModelCollection on Isar {
-  IsarCollection<TimetableCacheModel> get timetableCacheModels =>
+extension GetHomeworkCacheModelCollection on Isar {
+  IsarCollection<HomeworkCacheModel> get homeworkCacheModels =>
       this.collection();
 }
 
-const TimetableCacheModelSchema = CollectionSchema(
-  name: r'TimetableCacheModel',
-  id: -8626340955125680275,
+const HomeworkCacheModelSchema = CollectionSchema(
+  name: r'HomeworkCacheModel',
+  id: -356692531669197690,
   properties: {
     r'values': PropertySchema(
       id: 0,
@@ -24,22 +24,22 @@ const TimetableCacheModelSchema = CollectionSchema(
       type: IsarType.stringList,
     )
   },
-  estimateSize: _timetableCacheModelEstimateSize,
-  serialize: _timetableCacheModelSerialize,
-  deserialize: _timetableCacheModelDeserialize,
-  deserializeProp: _timetableCacheModelDeserializeProp,
+  estimateSize: _homeworkCacheModelEstimateSize,
+  serialize: _homeworkCacheModelSerialize,
+  deserialize: _homeworkCacheModelDeserialize,
+  deserializeProp: _homeworkCacheModelDeserializeProp,
   idName: r'cacheKey',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _timetableCacheModelGetId,
-  getLinks: _timetableCacheModelGetLinks,
-  attach: _timetableCacheModelAttach,
+  getId: _homeworkCacheModelGetId,
+  getLinks: _homeworkCacheModelGetLinks,
+  attach: _homeworkCacheModelAttach,
   version: '3.1.0+1',
 );
 
-int _timetableCacheModelEstimateSize(
-  TimetableCacheModel object,
+int _homeworkCacheModelEstimateSize(
+  HomeworkCacheModel object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -59,8 +59,8 @@ int _timetableCacheModelEstimateSize(
   return bytesCount;
 }
 
-void _timetableCacheModelSerialize(
-  TimetableCacheModel object,
+void _homeworkCacheModelSerialize(
+  HomeworkCacheModel object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -68,19 +68,19 @@ void _timetableCacheModelSerialize(
   writer.writeStringList(offsets[0], object.values);
 }
 
-TimetableCacheModel _timetableCacheModelDeserialize(
+HomeworkCacheModel _homeworkCacheModelDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = TimetableCacheModel();
+  final object = HomeworkCacheModel();
   object.cacheKey = id;
   object.values = reader.readStringList(offsets[0]);
   return object;
 }
 
-P _timetableCacheModelDeserializeProp<P>(
+P _homeworkCacheModelDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -94,23 +94,23 @@ P _timetableCacheModelDeserializeProp<P>(
   }
 }
 
-Id _timetableCacheModelGetId(TimetableCacheModel object) {
+Id _homeworkCacheModelGetId(HomeworkCacheModel object) {
   return object.cacheKey ?? Isar.autoIncrement;
 }
 
-List<IsarLinkBase<dynamic>> _timetableCacheModelGetLinks(
-    TimetableCacheModel object) {
+List<IsarLinkBase<dynamic>> _homeworkCacheModelGetLinks(
+    HomeworkCacheModel object) {
   return [];
 }
 
-void _timetableCacheModelAttach(
-    IsarCollection<dynamic> col, Id id, TimetableCacheModel object) {
+void _homeworkCacheModelAttach(
+    IsarCollection<dynamic> col, Id id, HomeworkCacheModel object) {
   object.cacheKey = id;
 }
 
-extension TimetableCacheModelQueryWhereSort
-    on QueryBuilder<TimetableCacheModel, TimetableCacheModel, QWhere> {
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterWhere>
+extension HomeworkCacheModelQueryWhereSort
+    on QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QWhere> {
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterWhere>
       anyCacheKey() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
@@ -118,9 +118,9 @@ extension TimetableCacheModelQueryWhereSort
   }
 }
 
-extension TimetableCacheModelQueryWhere
-    on QueryBuilder<TimetableCacheModel, TimetableCacheModel, QWhereClause> {
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterWhereClause>
+extension HomeworkCacheModelQueryWhere
+    on QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QWhereClause> {
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterWhereClause>
       cacheKeyEqualTo(Id cacheKey) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
@@ -130,7 +130,7 @@ extension TimetableCacheModelQueryWhere
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterWhereClause>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterWhereClause>
       cacheKeyNotEqualTo(Id cacheKey) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
@@ -153,7 +153,7 @@ extension TimetableCacheModelQueryWhere
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterWhereClause>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterWhereClause>
       cacheKeyGreaterThan(Id cacheKey, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -162,7 +162,7 @@ extension TimetableCacheModelQueryWhere
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterWhereClause>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterWhereClause>
       cacheKeyLessThan(Id cacheKey, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -171,7 +171,7 @@ extension TimetableCacheModelQueryWhere
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterWhereClause>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterWhereClause>
       cacheKeyBetween(
     Id lowerCacheKey,
     Id upperCacheKey, {
@@ -189,9 +189,9 @@ extension TimetableCacheModelQueryWhere
   }
 }
 
-extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
-    TimetableCacheModel, QFilterCondition> {
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+extension HomeworkCacheModelQueryFilter
+    on QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QFilterCondition> {
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       cacheKeyIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -200,7 +200,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       cacheKeyIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -209,7 +209,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       cacheKeyEqualTo(Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -219,7 +219,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       cacheKeyGreaterThan(
     Id? value, {
     bool include = false,
@@ -233,7 +233,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       cacheKeyLessThan(
     Id? value, {
     bool include = false,
@@ -247,7 +247,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       cacheKeyBetween(
     Id? lower,
     Id? upper, {
@@ -265,7 +265,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -274,7 +274,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -283,7 +283,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesElementEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -297,7 +297,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesElementGreaterThan(
     String value, {
     bool include = false,
@@ -313,7 +313,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesElementLessThan(
     String value, {
     bool include = false,
@@ -329,7 +329,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesElementBetween(
     String lower,
     String upper, {
@@ -349,7 +349,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesElementStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -363,7 +363,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesElementEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -377,7 +377,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesElementContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -388,7 +388,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesElementMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -399,7 +399,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesElementIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -409,7 +409,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesElementIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -419,7 +419,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
@@ -432,7 +432,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
@@ -445,7 +445,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
@@ -458,7 +458,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesLengthLessThan(
     int length, {
     bool include = false,
@@ -474,7 +474,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesLengthGreaterThan(
     int length, {
     bool include = false,
@@ -490,7 +490,7 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterFilterCondition>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterFilterCondition>
       valuesLengthBetween(
     int lower,
     int upper, {
@@ -509,25 +509,25 @@ extension TimetableCacheModelQueryFilter on QueryBuilder<TimetableCacheModel,
   }
 }
 
-extension TimetableCacheModelQueryObject on QueryBuilder<TimetableCacheModel,
-    TimetableCacheModel, QFilterCondition> {}
+extension HomeworkCacheModelQueryObject
+    on QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QFilterCondition> {}
 
-extension TimetableCacheModelQueryLinks on QueryBuilder<TimetableCacheModel,
-    TimetableCacheModel, QFilterCondition> {}
+extension HomeworkCacheModelQueryLinks
+    on QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QFilterCondition> {}
 
-extension TimetableCacheModelQuerySortBy
-    on QueryBuilder<TimetableCacheModel, TimetableCacheModel, QSortBy> {}
+extension HomeworkCacheModelQuerySortBy
+    on QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QSortBy> {}
 
-extension TimetableCacheModelQuerySortThenBy
-    on QueryBuilder<TimetableCacheModel, TimetableCacheModel, QSortThenBy> {
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterSortBy>
+extension HomeworkCacheModelQuerySortThenBy
+    on QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QSortThenBy> {
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterSortBy>
       thenByCacheKey() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cacheKey', Sort.asc);
     });
   }
 
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QAfterSortBy>
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QAfterSortBy>
       thenByCacheKeyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cacheKey', Sort.desc);
@@ -535,9 +535,9 @@ extension TimetableCacheModelQuerySortThenBy
   }
 }
 
-extension TimetableCacheModelQueryWhereDistinct
-    on QueryBuilder<TimetableCacheModel, TimetableCacheModel, QDistinct> {
-  QueryBuilder<TimetableCacheModel, TimetableCacheModel, QDistinct>
+extension HomeworkCacheModelQueryWhereDistinct
+    on QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QDistinct> {
+  QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QDistinct>
       distinctByValues() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'values');
@@ -545,15 +545,15 @@ extension TimetableCacheModelQueryWhereDistinct
   }
 }
 
-extension TimetableCacheModelQueryProperty
-    on QueryBuilder<TimetableCacheModel, TimetableCacheModel, QQueryProperty> {
-  QueryBuilder<TimetableCacheModel, int, QQueryOperations> cacheKeyProperty() {
+extension HomeworkCacheModelQueryProperty
+    on QueryBuilder<HomeworkCacheModel, HomeworkCacheModel, QQueryProperty> {
+  QueryBuilder<HomeworkCacheModel, int, QQueryOperations> cacheKeyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'cacheKey');
     });
   }
 
-  QueryBuilder<TimetableCacheModel, List<String>?, QQueryOperations>
+  QueryBuilder<HomeworkCacheModel, List<String>?, QQueryOperations>
       valuesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'values');

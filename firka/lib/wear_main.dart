@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
+import 'package:firka/helpers/db/models/homework_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:firka/ui/wear/screens/login/login_screen.dart';
@@ -23,10 +24,7 @@ class WearAppInitialization {
   late KretaClient client;
   final int tokenCount;
 
-  WearAppInitialization({
-    required this.isar,
-    required this.tokenCount
-  });
+  WearAppInitialization({required this.isar, required this.tokenCount});
 }
 
 Future<Isar> initDB() async {
@@ -34,7 +32,12 @@ Future<Isar> initDB() async {
   final dir = await getApplicationDocumentsDirectory();
 
   isarInit = await Isar.open(
-    [TokenModelSchema, GenericCacheModelSchema, TimetableCacheModelSchema],
+    [
+      TokenModelSchema,
+      GenericCacheModelSchema,
+      TimetableCacheModelSchema,
+      HomeworkCacheModelSchema
+    ],
     inspector: true,
     directory: dir.path,
   );
@@ -46,18 +49,14 @@ Future<WearAppInitialization> initializeApp() async {
   final isar = await initDB();
 
   var init = WearAppInitialization(
-    isar: isar,
-    tokenCount: await isar.tokenModels.count()
-  );
+      isar: isar, tokenCount: await isar.tokenModels.count());
 
   resetOldTimeTableCache(isar);
 
   // TODO: Account selection
   if (init.tokenCount > 0) {
-    init.client = KretaClient(
-        (await isar.tokenModels.where().findFirst())!,
-        isar
-    );
+    init.client =
+        KretaClient((await isar.tokenModels.where().findFirst())!, isar);
   }
 
   return init;
@@ -163,10 +162,10 @@ class WearInitializationScreen extends StatelessWidget {
             ),
             home: screen,
             routes: {
-              '/login': (context) => WearLoginScreen(data,
-                  key: ValueKey('wearLoginScreen')),
-              '/home': (context) => WearHomeScreen(data,
-                  key: ValueKey('wearHomeScreen'))
+              '/login': (context) =>
+                  WearLoginScreen(data, key: ValueKey('wearLoginScreen')),
+              '/home': (context) =>
+                  WearHomeScreen(data, key: ValueKey('wearHomeScreen'))
             },
           );
         }
