@@ -7,6 +7,7 @@ import 'package:shake_gesture/shake_gesture.dart';
 import '../debug/debug_screen.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:firka/ui/model/colors.dart'; 
+import '../../pages/extras/extras.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppInitialization data;
@@ -23,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   _HomeScreenState(this.data);
 
   ActiveHomePage page = ActiveHomePage.home;
+  late ActiveHomePage previousPage;
 
   @override
   void initState() {
@@ -146,11 +148,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // More Button
                           BottomNavIcon(() {
-                              if (page != ActiveHomePage.other) HapticFeedback.lightImpact();
-
-                              setState(() {
-                                page = ActiveHomePage.other;
-                              });
+                              if (page != ActiveHomePage.other) {
+                                HapticFeedback.lightImpact();
+                                previousPage = page;
+                                setState(() {
+                                  page = ActiveHomePage.other;
+                                });
+                                
+                                showExtrasBottomSheet(context);
+                                setState(() {
+                                  page = previousPage;
+                                });
+                              }
                             },
                             page == ActiveHomePage.other
                               ? Majesticon.globeEarthSolid
