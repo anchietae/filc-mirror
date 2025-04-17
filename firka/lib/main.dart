@@ -73,6 +73,7 @@ Future<AppInitialization> initializeApp() async {
   );
 
   resetOldTimeTableCache(isar);
+  resetOldHomeworkCache(isar);
 
   // TODO: Account selection
   if (tokenCount > 0) {

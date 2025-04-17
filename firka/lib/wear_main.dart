@@ -55,6 +55,7 @@ Future<WearAppInitialization> initializeApp() async {
       isar: isar, tokenCount: await isar.tokenModels.count());
 
   resetOldTimeTableCache(isar);
+  resetOldHomeworkCache(isar);
 
   // TODO: Account selection
   if (init.tokenCount > 0) {
