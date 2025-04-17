@@ -6,6 +6,7 @@ import 'package:firka/helpers/extensions.dart';
 import 'package:firka/wear_main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zear_plus/wear_plus.dart';
 
 import '../../../model/colors.dart';
@@ -239,6 +240,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context);
+
     return Scaffold(
       backgroundColor: mode == WearMode.active
           ? wearColors.background
@@ -268,7 +271,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                   // children: buildBody(context, mode),
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(top: 75),
+                      padding: EdgeInsets.only(top: 255.h),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: buildBody(context, mode),
