@@ -23,7 +23,7 @@ class Constants {
 class KretaEndpoints {
   static String kretaBase = "e-kreta.hu";
   static String kreta(String iss) {
-    if (iss == "unit-test") {
+    if (iss == "firka-test") {
       return kretaBase;
     } else {
       return "https://$iss.$kretaBase";
