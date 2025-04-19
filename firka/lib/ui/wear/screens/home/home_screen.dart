@@ -9,6 +9,7 @@ import 'package:firka/wear_main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:zear_plus/wear_plus.dart';
 
 import '../../../model/colors.dart';
@@ -176,7 +177,11 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                       AppLocalizations.of(context)!.breakTxt,
                       style: TextStyle(
                         color: wearColors.textPrimary,
-                        fontSize: 20
+                        fontSize: 14,
+                        fontFamily: 'Montserrat',
+                        fontVariations: [
+                          FontVariation('wght', 600),
+                        ],
                       ),
                     ),
                   ),
@@ -185,11 +190,15 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     AppLocalizations.of(context)!.timeLeft(minutes),
                       style: TextStyle(
                         color: wearColors.textPrimary,
-                        fontSize: 16
+                        fontSize: 12,
+                        fontFamily: 'Montserrat',
+                        fontVariations: [
+                          FontVariation('wght', 400),
+                        ],
                       ),
                     ),
-                  ),
-                ]
+                  )
+                ],
             )
         ));
 
@@ -212,13 +221,26 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                 color: wearColors.accent
             ),
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(
+                    child: Majesticon(
+                      Majesticon.bookSolid, // TODO: placeholder
+                      color: wearColors.accent,
+                      size: 12
+                    ).build(context),
+                  ),
+                  const SizedBox(height: 4),
+                  Center(
                     child: Text(
-                      currentLesson.name,
+                      "${currentLesson.name}, ${currentLesson.roomName}",
                       style: TextStyle(
-                          color: wearColors.textPrimary, fontSize: 20),
+                        color: wearColors.textPrimary,
+                        fontSize: 14,
+                        fontFamily: 'Montserrat',
+                        fontVariations: [
+                          FontVariation('wght', 600),
+                        ],
+                      ),
                     ),
                   ),
                   Center(
@@ -226,7 +248,25 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                       AppLocalizations.of(context)!.timeLeft(minutes),
                       style: TextStyle(
                         color: wearColors.textPrimary,
-                        fontSize: 16
+                        fontSize: 12,
+                        fontFamily: 'Montserrat',
+                        fontVariations: [
+                          FontVariation('wght', 400),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Center(
+                    child: Text(
+                      "→ meow meow :3",
+                      style: TextStyle(
+                        color: wearColors.textPrimary,
+                        fontSize: 12,
+                        fontFamily: 'Montserrat',
+                        fontVariations: [
+                          FontVariation('wght', 400),
+                        ],
                       ),
                     ),
                   ),
@@ -255,7 +295,14 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         startAngle: pi / 180,
         startAngleAlignment: StartAngleAlignment.center,
         text: AppLocalizations.of(context)!.wearTitle(currentLessonNo!),
-        textStyle: TextStyle(fontSize: 13, color: wearColors.secondary),
+        textStyle: TextStyle(
+            fontSize: 12,
+            color: wearColors.secondary,
+            fontFamily: 'Montserrat',
+            fontVariations: [
+              FontVariation('wght', 500),
+            ],
+        ),
         placement: Placement.inside,
       );
     }
@@ -297,7 +344,9 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                               padding: EdgeInsets.only(top: 255.h),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: buildBody(context, mode),
+                                children: [
+                                  ...buildBody(context, mode)
+                                ],
                               )
                           ),
                         ],
