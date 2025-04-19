@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:flutter_arc_text/flutter_arc_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/helpers/extensions.dart';
@@ -24,6 +26,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   final WearAppInitialization data;
   _WearHomeScreenState(this.data);
 
+  int? currentLessonNo;
   List<Lesson> today = List.empty(growable: true);
   String apiError = "";
   DateTime now = DateTime.now();
@@ -126,6 +129,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         var lesson = today[i];
         if (now.isAfter(lesson.start) && now.isBefore(lesson.end)) {
           currentLesson = lesson;
+          currentLessonNo = i+1;
           break;
         }
         if (now.isAfter(lesson.end)) {
@@ -159,6 +163,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         body.add(CustomPaint(
             painter: CircularProgressPainter(
                 progress: currentBreakProgress.inMilliseconds / currentBreak.inMilliseconds,
+                // progress: 5 / 10,
                 screenSize: MediaQuery.of(context).size,
                 strokeWidth: 4,
                 color: wearColors.accent
@@ -242,47 +247,67 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
 
+    Widget titleBar = SizedBox();
+
+    if (currentLessonNo != null) {
+      titleBar = ArcText(
+        radius: 99,
+        startAngle: pi / 180,
+        startAngleAlignment: StartAngleAlignment.center,
+        text: AppLocalizations.of(context)!.wearTitle(currentLessonNo!),
+        textStyle: TextStyle(fontSize: 13, color: wearColors.secondary),
+        placement: Placement.inside,
+      );
+    }
+
     return Scaffold(
       backgroundColor: mode == WearMode.active
           ? wearColors.background
           : wearColors.backgroundAmoled,
-      body: Center(
-        child: Column(
-          children: [
-            WatchShape(builder: (context, shape, child) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  child!,
-                ],
-              );
-            },
-            child: AmbientMode(
-              builder: (context, mode, child) {
-                if (this.mode != mode) {
-                  Timer(Duration(milliseconds: 100), () {
-                    setState(() {
-                      this.mode = mode;
-                    });
-                  });
-                }
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // children: buildBody(context, mode),
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(top: 255.h),
-                      child: Column(
+      body: Stack(
+        children: [
+          Center(
+            child: titleBar,
+          ),
+          Center(
+            child: Column(
+              children: [
+                WatchShape(builder: (context, shape, child) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      child!,
+                    ],
+                  );
+                },
+                  child: AmbientMode(
+                    builder: (context, mode, child) {
+                      if (this.mode != mode) {
+                        Timer(Duration(milliseconds: 100), () {
+                          setState(() {
+                            this.mode = mode;
+                          });
+                        });
+                      }
+                      return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: buildBody(context, mode),
-                      )
-                    ),
-                  ],
-                );
-              },
-            ),)
-          ],
-        ),
+                        // children: buildBody(context, mode),
+                        children: <Widget>[
+                          Container(
+                              padding: EdgeInsets.only(top: 255.h),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: buildBody(context, mode),
+                              )
+                          ),
+                        ],
+                      );
+                    },
+                  ),)
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

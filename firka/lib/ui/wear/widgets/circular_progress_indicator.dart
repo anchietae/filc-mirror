@@ -8,7 +8,8 @@ class CircularProgressIndicator extends StatefulWidget {
   final Color color;
   final Size screenSize;
 
-  CircularProgressIndicator({
+  const CircularProgressIndicator({
+    super.key,
     required this.progress,
     required this.screenSize,
     this.strokeWidth = 8.0,
@@ -78,16 +79,25 @@ class CircularProgressPainter extends CustomPainter {
     final center = Offset(screenSize.width / 2, screenSize.height / 7.4);
     final radius = min(screenSize.width, screenSize.height) / 2 - strokeWidth / 2;
     final startAngle = -pi / 2;
-    final sweepAngle = 2 * pi * progress;
+    var sweepAngle = 2 * pi * progress;
 
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
 
+    if (sweepAngle >= 6) {
+      sweepAngle -= 0.6;
+    } else {
+      sweepAngle -= 0.35;
+
+      if (sweepAngle > 5.4) sweepAngle = 5.4;
+    }
+    if (sweepAngle <= 0) sweepAngle = 0;
+
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      startAngle,
+      startAngle+0.3,
       sweepAngle,
       false,
       paint,
