@@ -2,10 +2,13 @@
 
 import 'dart:typed_data';
 
+import 'package:firka/helpers/icon_helper.dart';
 import 'package:firka/helpers/profile_picture.dart';
 import 'package:firka/main.dart';
+import 'package:firka/ui/widget/class_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:majesticons_flutter/majesticons_flutter.dart';
 
 class DebugScreen extends StatefulWidget {
   final AppInitialization data;
@@ -150,6 +153,45 @@ class _DebugScreen extends State<DebugScreen> {
                       "getOmissions(): ${await data.client.getOmissions(forceCache: useCache)}");
                 },
                 child: const Text('getOmissions()'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+
+                  });
+                },
+                child: const Text('re-render'),
+              ),
+              SizedBox(
+                height: 600,
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  children: ClassIcon.values.map((e) {
+                    return Column(
+                      children: [
+                        Center(
+                          child: Text(
+                            e.name,
+                            style: TextTheme.of(context).headlineSmall,
+                          ),
+                        ),
+                        Center(
+                          child:Majesticon(getIconData(e), color: Colors.black),
+                        )
+                      ],
+                    );
+                  }).toList(),
+                  /*
+                  children: List.generate(100, (index) {
+                    return Center(
+                      child: Text(
+                        'Item $index',
+                        style: TextTheme.of(context).headlineSmall,
+                      ),
+                    );
+                  }),
+                  */
+                ),
               ),
               SizedBox(height: 32),
             ],
