@@ -83,13 +83,13 @@ Map<ClassIcon, Uint8List> _iconMap = {
 
 ClassIcon? getIconType(String uid, String className, String category) {
   ClassIcon? icon;
-  if (category == "matematika") {
+  if (category.toLowerCase() == "matematika") {
     icon = ClassIcon.mathematics;
   }
 
   if (icon == null) {
     for (var desc in _descriptors.entries) {
-      if (desc.value.hasMatch(className)) {
+      if (desc.value.hasMatch(className.toLowerCase())) {
         icon = desc.key;
 
         break;
