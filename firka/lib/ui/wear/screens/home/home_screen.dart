@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:firka/ui/widget/class_icon_widget.dart';
 import 'package:flutter_arc_text/flutter_arc_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firka/helpers/api/model/timetable.dart';
@@ -72,10 +73,12 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     });
   }
 
-  List<Widget> buildBody(BuildContext context, WearMode mode) {
+  (List<Widget>, double) buildBody(BuildContext context, WearMode mode) {
+    ScreenUtil.init(context);
+
     var body = List<Widget>.empty(growable: true);
     if (!init) {
-      return body;
+      return (body, 255.h);
     }
 
     if (today.isEmpty && apiError != "") {
@@ -85,7 +88,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         textAlign: TextAlign.center,
       ));
 
-      return body;
+      return (body, 255.h);
     }
     if (today.isEmpty) {
       body.add(Text(
@@ -95,7 +98,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
       ));
 
       platform.invokeMethod('activity_cancel');
-      return body;
+      return (body, 255.h);
     }
     if (now.isAfter(today.last.end)) {
       body.add(Text(
@@ -105,7 +108,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
       ));
 
       platform.invokeMethod('activity_cancel');
-      return body;
+      return (body, 300.h);
     }
     if (now.isBefore(today.first.start)) {
       var untilFirst = today.first.start.difference(now);
@@ -117,13 +120,14 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
       ));
 
       platform.invokeMethod('activity_update');
-      return body;
+      return (body, 255.h);
     }
     if (now.isAfter(today.first.start)
         && now.isBefore(today.last.end)) {
       Lesson? currentLesson;
       Lesson? lastLesson; // last as in the last lesson that you've been to
       Lesson? next;
+      Lesson? nextLesson;
       Duration? currentBreak;
       Duration? currentBreakProgress;
       for (int i = 0; i < today.length; i++) {
@@ -131,6 +135,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         if (now.isAfter(lesson.start) && now.isBefore(lesson.end)) {
           currentLesson = lesson;
           currentLessonNo = i+1;
+
+          if (i+2 < today.length) nextLesson = today[i+1];
           break;
         }
         if (now.isAfter(lesson.end)) {
@@ -172,6 +178,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: 55.h),
                   Center(
                     child: Text(
                       AppLocalizations.of(context)!.breakTxt,
@@ -203,13 +210,31 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         ));
 
         platform.invokeMethod('activity_update');
-        return body;
+        return (body, 200.h);
       } else {
         var duration = currentLesson.start.difference(currentLesson.end);
         var elapsed = currentLesson.start.difference(now);
         var timeLeft = currentLesson.end.difference(now);
 
         var minutes = timeLeft.inMinutes + 1;
+
+        Widget nextLessonWidget = SizedBox();
+
+        if (nextLesson != null) {
+          nextLessonWidget = Center(
+            child: Text(
+              "→ ${nextLesson.name}, ${nextLesson.roomName}",
+              style: TextStyle(
+                color: wearColors.textPrimary,
+                fontSize: 12,
+                fontFamily: 'Montserrat',
+                fontVariations: [
+                  FontVariation('wght', 400),
+                ],
+              ),
+            ),
+          );
+        }
 
         body.add(CustomPaint(
             painter: CircularProgressPainter(
@@ -222,11 +247,14 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
             ),
             child: Column(
                 children: [
+                  SizedBox(height: nextLesson == null ? 20.h : 0),
                   Center(
-                    child: Majesticon(
-                      Majesticon.bookSolid, // TODO: placeholder
+                    child: ClassIconWidget(
                       color: wearColors.accent,
-                      size: 12
+                      size: 16,
+                      uid: currentLesson.uid,
+                      className: currentLesson.name,
+                      category: currentLesson.subject?.name ?? '',
                     ).build(context),
                   ),
                   const SizedBox(height: 4),
@@ -257,25 +285,13 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Center(
-                    child: Text(
-                      "→ meow meow :3",
-                      style: TextStyle(
-                        color: wearColors.textPrimary,
-                        fontSize: 12,
-                        fontFamily: 'Montserrat',
-                        fontVariations: [
-                          FontVariation('wght', 400),
-                        ],
-                      ),
-                    ),
-                  ),
+                  nextLessonWidget,
                 ]
             )
         ));
 
         platform.invokeMethod('activity_update');
-        return body;
+        return (body, 200.h);
       }
     }
 
@@ -285,8 +301,6 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context);
-
     Widget titleBar = SizedBox();
 
     if (currentLessonNo != null) {
@@ -336,16 +350,18 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                           });
                         });
                       }
+
+                      var (body, padding) = buildBody(context, mode);
+
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        // children: buildBody(context, mode),
                         children: <Widget>[
                           Container(
-                              padding: EdgeInsets.only(top: 255.h),
+                              padding: EdgeInsets.only(top: padding),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ...buildBody(context, mode)
+                                  ...body
                                 ],
                               )
                           ),

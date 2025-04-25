@@ -76,7 +76,7 @@ class CircularProgressPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final center = Offset(screenSize.width / 2, screenSize.height / 7.4);
+    final center = Offset(screenSize.width / 2, screenSize.height / 4.7);
     final radius = min(screenSize.width, screenSize.height) / 2 - strokeWidth / 2;
     final startAngle = -pi / 2;
     var sweepAngle = 2 * pi * progress;
