@@ -22,7 +22,7 @@ class ClassIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var iconCategory = getIconType(_uid, _className, _category);
 
-    return Majesticon(getIconData(iconCategory!), color: color, size: size);
+    return Majesticon(getIconData(iconCategory), color: color, size: size);
   }
 
 }

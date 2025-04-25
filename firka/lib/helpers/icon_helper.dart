@@ -100,7 +100,9 @@ ClassIcon? getIconType(String uid, String className, String category) {
   return icon;
 }
 
-Uint8List getIconData(ClassIcon icon) {
+Uint8List getIconData(ClassIcon? icon) {
+  if (icon == null) return Majesticon.alertCircleSolid;
+
   var iconData = _iconMap[icon];
   iconData ??= Majesticon.alertCircleSolid;
 
