@@ -122,6 +122,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
       platform.invokeMethod('activity_update');
       return (body, 255.h);
     }
+    currentLessonNo = null;
     if (now.isAfter(today.first.start)
         && now.isBefore(today.last.end)) {
       Lesson? currentLesson;
