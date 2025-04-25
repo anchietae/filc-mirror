@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firka/helpers/db/models/app_settings_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
@@ -35,11 +36,26 @@ class AppInitialization {
   int tokenCount;
   bool hasWatchListener = false;
   Uint8List? profilePicture;
+  AppSettingsModel settings;
 
   AppInitialization({
     required this.isar,
     required this.tokenCount,
+    required this.settings,
   });
+
+  bool _writing = false;
+  
+  Future<void> saveSettings() async {
+    while (_writing) {
+      await Future.delayed(const Duration(milliseconds: 50));
+    }
+    _writing = true;
+    await isar.writeTxn(() async {
+      await isar.appSettingsModels.put(settings);
+    });
+    _writing = false;
+  }
 }
 
 Future<Isar> initDB() async {
@@ -51,7 +67,8 @@ Future<Isar> initDB() async {
       TokenModelSchema,
       GenericCacheModelSchema,
       TimetableCacheModelSchema,
-      HomeworkCacheModelSchema
+      HomeworkCacheModelSchema,
+      AppSettingsModelSchema,
     ],
     inspector: true,
     directory: dir.path,
@@ -63,14 +80,31 @@ Future<Isar> initDB() async {
 Future<AppInitialization> initializeApp() async {
   final isar = await initDB();
   final tokenCount = await isar.tokenModels.count();
+  var settings = AppSettingsModel();
+  settings.id = 0;
 
   if (kDebugMode) {
     print('Token count: $tokenCount');
   }
 
+  if (await isar.appSettingsModels.count() != 0) {
+    settings = (await isar.appSettingsModels.where().findFirst())!;
+  }
+
+  if (settings.useCustomHost != null && settings.useCustomHost!) {
+    var host = settings.customHost!;
+
+    KretaEndpoints.kretaBase = "https://$host";
+    KretaEndpoints.kretaIdp = KretaEndpoints.kretaBase;
+    KretaEndpoints.kretaLoginUrl =
+    "${KretaEndpoints.kretaBase}/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fprompt%3Dlogin%26nonce%3DwylCrqT4oN6PPgQn2yQB0euKei9nJeZ6_ffJ-VpSKZU%26response_type%3Dcode%26code_challenge_method%3DS256%26scope%3Dopenid%2520email%2520offline_access%2520kreta-ellenorzo-webapi.public%2520kreta-eugyintezes-webapi.public%2520kreta-fileservice-webapi.public%2520kreta-mobile-global-webapi.public%2520kreta-dkt-webapi.public%2520kreta-ier-webapi.public%26code_challenge%3DHByZRRnPGb-Ko_wTI7ibIba1HQ6lor0ws4bcgReuYSQ%26redirect_uri%3Dhttps%253A%252F%252Fmobil.e-kreta.hu%252Fellenorzo-student%252Fprod%252Foauthredirect%26client_id%3Dkreta-ellenorzo-student-mobile-ios%26state%3Dkreta_student_mobile%26suppressed_prompt%3Dlogin";
+    KretaEndpoints.tokenGrantUrl = "${KretaEndpoints.kretaBase}/connect/token";
+  }
+
   var init = AppInitialization(
     isar: isar,
     tokenCount: tokenCount,
+    settings: settings,
   );
 
   resetOldTimeTableCache(isar);
@@ -136,6 +170,8 @@ class InitializationScreen extends StatelessWidget {
         // Check if initialization is complete
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
+            debugPrintStack(label: snapshot.error.toString());
+
             // Handle initialization error
             return MaterialApp(
               key: ValueKey('errorPage'),
