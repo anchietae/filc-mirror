@@ -26,7 +26,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late WebViewController _webViewController;
-  late Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -511,7 +511,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       startTimer();
                     },
                     onTapUp: (_) {
-                      _timer.cancel();
+                      _timer?.cancel();
                     },
                   )
                 ],
