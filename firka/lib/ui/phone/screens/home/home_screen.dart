@@ -75,10 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: HomeSubPage(page, data),
-                      ),
+                      HomeSubPage(page, data)
                     ],
                   ),
                   Container(
