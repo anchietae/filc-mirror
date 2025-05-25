@@ -1,4 +1,5 @@
 import 'package:firka/helpers/ui/firka_card.dart';
+import 'package:firka/helpers/ui/grade_helpers.dart';
 import 'package:firka/helpers/ui/stateless_async_widget.dart';
 import 'package:firka/ui/widget/grade_small_card.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +16,12 @@ class HomeGradesScreen extends StatelessAsyncWidget {
 
   @override
   Future<Widget> buildAsync(BuildContext context) async {
-
     var now = DateTime.now();
     var start = now.subtract(Duration(days: now.weekday - 1));
     var end = start.add(Duration(days: 6));
 
     var grades = await data.client.getGrades();
-    var subjectAvgs = <String, double>{};
-    var gradeAvg = 0.00;
+    var subjectAvg = 0.00;
     var week = await data.client.getTimeTable(start, end);
     final List<Subject> subjects = List<Subject>.empty(growable: true);
     final List<Widget> gradeCards = [];
@@ -37,26 +36,12 @@ class HomeGradesScreen extends StatelessAsyncWidget {
 
     for (var subject in subjects) {
       gradeCards.add(GradeSmallCard(grades.response!, subject));
-
-      var weightTotal = 0.00;
-      for (var grade in grades.response!) {
-        if (grade.subject.uid == subject.uid) {
-          if (grade.numericValue != null) {
-            var weight = (grade.weightPercentage ?? 100) / 100.0;
-            weightTotal += weight;
-
-            subjectAvgs[subject.uid] = (subjectAvgs[subject.uid] ?? 0)
-              + grade.numericValue! * weight;
-          }
-        }
-      }
-      subjectAvgs[subject.uid] = (subjectAvgs[subject.uid] ?? 0) / weightTotal;
+      subjectAvg += grades.response!.getAverageBySubject(subject);
     }
 
-    for (var n in subjectAvgs.values) {
-      gradeAvg += n;
-    }
-    gradeAvg /= subjectAvgs.length;
+    subjectAvg /= subjects.length;
+
+    var subjectAvgColor = getGradeColor(subjectAvg);
 
     return Flexible(
       child: Padding(
@@ -106,15 +91,22 @@ class HomeGradesScreen extends StatelessAsyncWidget {
                       Text(
                         AppLocalizations.of(context)!.subject_avg,
                         style: appStyle.fonts.B_16SB.apply(
-                            color: appStyle.colors.textPrimary
+                          color: appStyle.colors.textPrimary
                         ),
                       ),
                     ],
                     right: [
-                      Text(
-                        gradeAvg.toStringAsFixed(2),
-                        style: appStyle.fonts.B_16SB.apply(
-                            color: appStyle.colors.textPrimary
+                      Card(
+                        shadowColor: Colors.transparent,
+                        color: subjectAvgColor.withAlpha(38),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
+                          child: Text(
+                            subjectAvg.toStringAsFixed(2),
+                            style: appStyle.fonts.B_16SB.apply(
+                                color: subjectAvgColor
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -132,7 +124,7 @@ class HomeGradesScreen extends StatelessAsyncWidget {
                       Text(
                         AppLocalizations.of(context)!.class_n,
                         style: appStyle.fonts.B_16SB.apply(
-                            color: appStyle.colors.textPrimary
+                          color: appStyle.colors.textPrimary
                         ),
                       ),
                     ],

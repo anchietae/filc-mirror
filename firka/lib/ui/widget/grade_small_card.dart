@@ -1,8 +1,8 @@
 import 'package:firka/helpers/api/model/grade.dart';
 import 'package:firka/helpers/api/model/subject.dart';
 import 'package:firka/helpers/ui/firka_card.dart';
+import 'package:firka/helpers/ui/grade_helpers.dart';
 import 'package:firka/ui/widget/class_icon_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../model/style.dart';
@@ -20,12 +20,29 @@ class GradeSmallCard extends FirkaCard {
       color: appStyle.colors.accent,
     ),
     SizedBox(width: 4,),
-    Text(
-      subject.name,
-      style: appStyle.fonts.B_16SB.apply(
+    SizedBox(
+      width: 200,
+      child: Text(
+        subject.name,
+        style: appStyle.fonts.B_16SB.apply(
           color: appStyle.colors.textPrimary
+        ),
       ),
-    )
+    ),
+  ], right: [
+    Card(
+      shadowColor: Colors.transparent,
+      color: getGradeColor(grades.getAverageBySubject(subject)).withAlpha(38),
+      child: Padding(
+        padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
+        child: Text(
+          grades.getAverageBySubject(subject).toStringAsFixed(2),
+          style: appStyle.fonts.B_16SB.apply(
+            color: getGradeColor(grades.getAverageBySubject(subject))
+          ),
+        ),
+      ),
+    ),
   ]);
 
 }

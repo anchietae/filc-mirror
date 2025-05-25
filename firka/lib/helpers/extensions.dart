@@ -1,3 +1,5 @@
+import 'api/model/subject.dart';
+
 extension IterableExtension on Iterable<MapEntry<String, dynamic>> {
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
