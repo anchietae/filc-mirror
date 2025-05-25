@@ -1,3 +1,5 @@
+import 'package:firka/ui/phone/pages/home/home_grades.dart';
+import 'package:firka/ui/phone/pages/home/home_main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firka/main.dart';
 import 'package:firka/ui/phone/widgets/bottom_nav_icon.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shake_gesture/shake_gesture.dart';
+import '../../pages/home/home_timetable.dart';
 import '../debug/debug_screen.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:firka/ui/model/colors.dart'; 
@@ -18,7 +21,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState(data);
 }
 
-enum ActiveHomePage { home, grades, timetable, other }
+enum ActiveHomePage { home, grades, timetable }
 
 class _HomeScreenState extends State<HomeScreen> {
   final AppInitialization data;
@@ -74,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("Top Text"),
+                        child: HomeSubPage(page, data),
                       ),
                     ],
                   ),
@@ -149,26 +152,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // More Button
                           BottomNavIcon(() {
-                              if (page != ActiveHomePage.other) {
-                                HapticFeedback.lightImpact();
-                                previousPage = page;
-                                setState(() {
-                                  page = ActiveHomePage.other;
-                                });
-                                
-                                showExtrasBottomSheet(context);
-                                setState(() {
-                                  page = previousPage;
-                                });
-                              }
+                              HapticFeedback.lightImpact();
+                              showExtrasBottomSheet(context);
                             },
-                            page == ActiveHomePage.other
-                              ? Majesticon.globeEarthSolid
-                              : Majesticon.globeEarthLine,
+                            Majesticon.globeEarthLine,
                             AppLocalizations.of(context)!.other,
-                            page == ActiveHomePage.other
-                              ? appColors.accent
-                              : appColors.secondary,
+                            appColors.secondary,
                             appColors.textPrimary
                           ),
                         ],
@@ -183,4 +172,23 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+class HomeSubPage extends StatelessWidget {
+  final ActiveHomePage page;
+  final AppInitialization data;
+  const HomeSubPage(this.page, this.data, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    switch (page) {
+      case ActiveHomePage.home:
+        return HomeMainScreen(data);
+      case ActiveHomePage.grades:
+        return HomeGradesScreen(data);
+      case ActiveHomePage.timetable:
+        return HomeTimetableScreen(data);
+    }
+  }
+
 }
