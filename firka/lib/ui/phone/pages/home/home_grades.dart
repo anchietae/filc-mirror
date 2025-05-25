@@ -110,12 +110,14 @@ class HomeGradesScreen extends StatelessAsyncWidget {
                         ),
                       ),
                     ],
-                    right: Text(
-                      gradeAvg.toStringAsFixed(2),
-                      style: appStyle.fonts.B_16SB.apply(
-                          color: appStyle.colors.textPrimary
+                    right: [
+                      Text(
+                        gradeAvg.toStringAsFixed(2),
+                        style: appStyle.fonts.B_16SB.apply(
+                            color: appStyle.colors.textPrimary
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                   FirkaCard(left: [
                     Text(
@@ -134,12 +136,14 @@ class HomeGradesScreen extends StatelessAsyncWidget {
                         ),
                       ),
                     ],
-                    right: Text(
-                      week.response!.length.toString(),
-                      style: appStyle.fonts.B_16SB.apply(
-                        color: appStyle.colors.textPrimary
+                    right: [
+                        Text(
+                        week.response!.length.toString(),
+                        style: appStyle.fonts.B_16SB.apply(
+                          color: appStyle.colors.textPrimary
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
