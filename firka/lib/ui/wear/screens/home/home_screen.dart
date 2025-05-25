@@ -13,7 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:zear_plus/wear_plus.dart';
 
-import '../../../model/colors.dart';
+import '../../../model/style.dart';
 import '../../widgets/circular_progress_indicator.dart';
 
 class WearHomeScreen extends StatefulWidget {
@@ -84,7 +84,9 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     if (today.isEmpty && apiError != "") {
       body.add(Text(
         apiError,
-        style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
+        style: wearStyle.fonts.H_18px.apply(
+          color: wearStyle.colors.textPrimary
+        ),
         textAlign: TextAlign.center,
       ));
 
@@ -93,7 +95,9 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     if (today.isEmpty) {
       body.add(Text(
         AppLocalizations.of(context)!.noClasses,
-        style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
+        style: wearStyle.fonts.H_18px.apply(
+          color: wearStyle.colors.textPrimary
+        ),
         textAlign: TextAlign.center,
       ));
 
@@ -103,7 +107,9 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     if (now.isAfter(today.last.end)) {
       body.add(Text(
         AppLocalizations.of(context)!.noMoreClasses,
-        style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
+        style: wearStyle.fonts.H_18px.apply(
+          color: wearStyle.colors.textPrimary
+        ),
         textAlign: TextAlign.center,
       ));
 
@@ -115,7 +121,9 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
 
       body.add(Text(
         AppLocalizations.of(context)!.firstIn(untilFirst.formatDuration()),
-        style: TextStyle(color: wearColors.textPrimary, fontSize: 18),
+        style: wearStyle.fonts.H_18px.apply(
+          color: wearStyle.colors.textPrimary
+        ),
         textAlign: TextAlign.center,
       ));
 
@@ -174,7 +182,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                 // progress: 5 / 10,
                 screenSize: MediaQuery.of(context).size,
                 strokeWidth: 4,
-                color: wearColors.accent
+                color: wearStyle.colors.accent
             ),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -184,7 +192,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     child: Text(
                       AppLocalizations.of(context)!.breakTxt,
                       style: TextStyle(
-                        color: wearColors.textPrimary,
+                        color: wearStyle.colors.textPrimary,
                         fontSize: 14,
                         fontFamily: 'Montserrat',
                         fontVariations: [
@@ -197,7 +205,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     child: Text(
                     AppLocalizations.of(context)!.timeLeft(minutes),
                       style: TextStyle(
-                        color: wearColors.textPrimary,
+                        color: wearStyle.colors.textPrimary,
                         fontSize: 12,
                         fontFamily: 'Montserrat',
                         fontVariations: [
@@ -226,7 +234,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
             child: Text(
               "→ ${nextLesson.name}, ${nextLesson.roomName}",
               style: TextStyle(
-                color: wearColors.textPrimary,
+                color: wearStyle.colors.textPrimary,
                 fontSize: 12,
                 fontFamily: 'Montserrat',
                 fontVariations: [
@@ -244,14 +252,14 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     .of(context)
                     .size,
                 strokeWidth: 4,
-                color: wearColors.accent
+                color: wearStyle.colors.accent
             ),
             child: Column(
                 children: [
                   SizedBox(height: nextLesson == null ? 20.h : 0),
                   Center(
                     child: ClassIconWidget(
-                      color: wearColors.accent,
+                      color: wearStyle.colors.accent,
                       size: 16,
                       uid: currentLesson.uid,
                       className: currentLesson.name,
@@ -263,7 +271,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     child: Text(
                       "${currentLesson.name}, ${currentLesson.roomName}",
                       style: TextStyle(
-                        color: wearColors.textPrimary,
+                        color: wearStyle.colors.textPrimary,
                         fontSize: 14,
                         fontFamily: 'Montserrat',
                         fontVariations: [
@@ -276,7 +284,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                     child: Text(
                       AppLocalizations.of(context)!.timeLeft(minutes),
                       style: TextStyle(
-                        color: wearColors.textPrimary,
+                        color: wearStyle.colors.textPrimary,
                         fontSize: 12,
                         fontFamily: 'Montserrat',
                         fontVariations: [
@@ -312,7 +320,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         text: AppLocalizations.of(context)!.wearTitle(currentLessonNo!),
         textStyle: TextStyle(
             fontSize: 12,
-            color: wearColors.secondary,
+            color: wearStyle.colors.secondary,
             fontFamily: 'Montserrat',
             fontVariations: [
               FontVariation('wght', 500),
@@ -324,8 +332,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
 
     return Scaffold(
       backgroundColor: mode == WearMode.active
-          ? wearColors.background
-          : wearColors.backgroundAmoled,
+          ? wearStyle.colors.background
+          : wearStyle.colors.backgroundAmoled,
       body: Stack(
         children: [
           Center(

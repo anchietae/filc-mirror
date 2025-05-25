@@ -10,7 +10,7 @@ import 'package:shake_gesture/shake_gesture.dart';
 import '../../pages/home/home_timetable.dart';
 import '../debug/debug_screen.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
-import 'package:firka/ui/model/colors.dart'; 
+import 'package:firka/ui/model/style.dart';
 import '../../pages/extras/extras.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.transparent,
-      systemNavigationBarColor: appColors.background,
+      systemNavigationBarColor: appStyle.colors.background,
       systemNavigationBarIconBrightness: Brightness.dark,
       systemNavigationBarDividerColor: Colors.transparent,
     ));
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return Scaffold(
-      backgroundColor: appColors.background,
+      backgroundColor: appStyle.colors.background,
       body: SafeArea(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
@@ -87,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
                         colors: [
-                          appColors.background,
-                          appColors.background.withValues(alpha: 0.0),
+                          appStyle.colors.background,
+                          appStyle.colors.background.withValues(alpha: 0.0),
                         ],
                         stops: const [0.0, 1.0],
                       ),
@@ -112,9 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               : Majesticon.homeLine,
                             AppLocalizations.of(context)!.home,
                             page == ActiveHomePage.home
-                              ? appColors.accent
-                              : appColors.secondary,
-                            appColors.textPrimary
+                              ? appStyle.colors.accent
+                              : appStyle.colors.secondary,
+                            appStyle.colors.textPrimary
                           ),
                           // Grades Button
                           BottomNavIcon(() {
@@ -129,9 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               : Majesticon.bookmarkLine,
                             AppLocalizations.of(context)!.grades,
                             page == ActiveHomePage.grades
-                              ? appColors.accent
-                              : appColors.secondary,
-                            appColors.textPrimary
+                              ? appStyle.colors.accent
+                              : appStyle.colors.secondary,
+                            appStyle.colors.textPrimary
                           ),
                           // Timetable Button
                           BottomNavIcon(() {
@@ -146,9 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               : Majesticon.calendarLine,
                             AppLocalizations.of(context)!.timetable,
                             page == ActiveHomePage.timetable
-                              ? appColors.accent
-                              : appColors.secondary,
-                            appColors.textPrimary
+                              ? appStyle.colors.accent
+                              : appStyle.colors.secondary,
+                            appStyle.colors.textPrimary
                           ),
                           // More Button
                           BottomNavIcon(() {
@@ -157,8 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                             Majesticon.globeEarthLine,
                             AppLocalizations.of(context)!.other,
-                            appColors.secondary,
-                            appColors.textPrimary
+                            appStyle.colors.secondary,
+                            appStyle.colors.textPrimary
                           ),
                         ],
                       ),

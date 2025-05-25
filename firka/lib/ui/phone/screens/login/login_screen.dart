@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../helpers/api/token_grant.dart';
-import '../../../model/colors.dart';
+import '../../../model/style.dart';
 import '../home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: appColors.card,
+                    color: appStyle.colors.card,
                     borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                   ),
                   child: Padding(
