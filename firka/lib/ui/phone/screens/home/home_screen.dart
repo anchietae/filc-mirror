@@ -41,6 +41,9 @@ class ActiveHomePage {
   }
 }
 
+bool _fetching = true;
+bool _prefetched = false;
+
 class _HomeScreenState extends State<HomeScreen> {
   final AppInitialization data;
 
@@ -49,11 +52,66 @@ class _HomeScreenState extends State<HomeScreen> {
   ActiveHomePage page = ActiveHomePage(HomePages.home);
   late ActiveHomePage previousPage;
 
+  Widget? toast;
+
   void setPageCB(ActiveHomePage newPage) {
     setState(() {
       previousPage = page;
       page = newPage;
     });
+  }
+
+  void prefetch() async {
+    if (_prefetched) return;
+
+    try {
+      _prefetched = true;
+
+      await data.client.getGrades(forceCache: false);
+
+      var now = DateTime.now();
+      var start = now.subtract(Duration(days: now.weekday - 1));
+      var end = start.add(Duration(days: 6));
+
+      await data.client.getTimeTable(start, end, forceCache: false);
+    } catch (e) {
+      setState(() {
+        // TODO: Make this and the error toast more rounded
+        toast = Positioned(
+          top: MediaQuery.of(context).size.height / 1.6,
+          left: 0.0,
+          right: 0.0,
+          bottom: 0,
+          child: Center(
+            child: Card(
+              color: appStyle.colors.errorCard,
+              shadowColor: Colors.transparent,
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  // Use min to prevent filling the width
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.api_error,
+                      style: appStyle.fonts.B_14SB
+                          .copyWith(color: appStyle.colors.errorText),
+                    ),
+                    SizedBox(width: 8),
+                    Majesticon(Majesticon.questionCircleSolid,
+                        color: appStyle.colors.errorAccent, size: 24)
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      });
+    } finally {
+      setState(() {
+        _fetching = false;
+      });
+    }
   }
 
   @override
@@ -70,6 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
             MaterialPageRoute(builder: (context) => DebugScreen(data)));
       });
     }
+
+    prefetch();
   }
 
   void _updateSystemUI() {
@@ -86,6 +146,45 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     _updateSystemUI(); // Update system UI on every build, to compensate for the android system being dumb
+
+    if (_fetching) {
+      setState(() {
+        toast = Positioned(
+          top: MediaQuery.of(context).size.height / 1.6,
+          left: 0.0,
+          right: 0.0,
+          bottom: 0,
+          child: Center(
+            child: Card(
+              color: appStyle.colors.card,
+              shadowColor: Colors.transparent,
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  // Use min to prevent filling the width
+                  children: [
+                    SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        color: appStyle.colors.accent,
+                      ),
+                    ),
+                    SizedBox(width: 16),
+                    Text(
+                      AppLocalizations.of(context)!.refreshing,
+                      style: appStyle.fonts.B_14SB
+                          .copyWith(color: appStyle.colors.textPrimary),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      });
+    }
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return PopScope(
@@ -195,6 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+                toast ?? SizedBox(),
               ],
             ),
           ),
