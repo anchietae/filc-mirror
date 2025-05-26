@@ -73,13 +73,13 @@ class _WearLoginScreenState extends State<WearLoginScreen> {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => HomeScreen(widget.data)),
-                    (route) => false, // Remove all previous routes
+                (route) => false, // Remove all previous routes
               );
             } else {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => LoginScreen(widget.data)),
-                    (route) => false, // Remove all previous routes
+                (route) => false, // Remove all previous routes
               );
             }
           } catch (ex) {

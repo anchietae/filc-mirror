@@ -10,8 +10,9 @@ class BottomNavIcon extends StatelessWidget {
   Color iconColor;
   Color textColor;
 
-  BottomNavIcon(this.onTap, this.icon, this.text,
-      this.iconColor, this.textColor, {super.key});
+  BottomNavIcon(
+      this.onTap, this.icon, this.text, this.iconColor, this.textColor,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,5 +46,4 @@ class BottomNavIcon extends StatelessWidget {
       ),
     );
   }
-
 }

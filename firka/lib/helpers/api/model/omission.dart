@@ -44,26 +44,28 @@ class Omission {
       createdAt: DateTime.parse(json['KeszitesDatuma']),
       state: json['IgazolasAllapota'],
       proofType: NameUidDesc.fromJson(json['IgazolasTipusa']),
-      classGroup: json['OsztalyCsoport'] != null ? UidObj.fromJson(json['OsztalyCsoport']) : null,
+      classGroup: json['OsztalyCsoport'] != null
+          ? UidObj.fromJson(json['OsztalyCsoport'])
+          : null,
     );
   }
 
   @override
   String toString() {
     return 'Omission('
-      'uid: "$uid", '
-      'subject: $subject, '
-      'c: $c, '
-      'date: $date, '
-      'teacher: "$teacher", '
-      'type: $type, '
-      'mode: $mode, '
-      'lateForMin: $lateForMin, '
-      'createdAt: $createdAt, '
-      'state: "$state", '
-      'proofType: $proofType, '
-      'classGroup: $classGroup'
-    ')';
+        'uid: "$uid", '
+        'subject: $subject, '
+        'c: $c, '
+        'date: $date, '
+        'teacher: "$teacher", '
+        'type: $type, '
+        'mode: $mode, '
+        'lateForMin: $lateForMin, '
+        'createdAt: $createdAt, '
+        'state: "$state", '
+        'proofType: $proofType, '
+        'classGroup: $classGroup'
+        ')';
   }
 }
 
@@ -89,9 +91,9 @@ class Class {
   @override
   String toString() {
     return 'Class('
-      'start: "$start", '
-      'end: "$end", '
-      'classNo: $classNo'
-    ')';
+        'start: "$start", '
+        'end: "$end", '
+        'classNo: $classNo'
+        ')';
   }
 }

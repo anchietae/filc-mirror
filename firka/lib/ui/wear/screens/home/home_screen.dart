@@ -56,8 +56,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     var kreta = data.client;
 
     now = DateTime.now();
-    var todayStart = now.subtract(Duration(hours: now.hour, minutes: now.minute
-        , seconds: now.second));
+    var todayStart = now.subtract(
+        Duration(hours: now.hour, minutes: now.minute, seconds: now.second));
     var todayEnd = todayStart.add(Duration(hours: 23, minutes: 59));
     var classes = await kreta.getTimeTable(todayStart, todayEnd);
 
@@ -84,9 +84,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     if (today.isEmpty && apiError != "") {
       body.add(Text(
         apiError,
-        style: wearStyle.fonts.H_18px.apply(
-          color: wearStyle.colors.textPrimary
-        ),
+        style:
+            wearStyle.fonts.H_18px.apply(color: wearStyle.colors.textPrimary),
         textAlign: TextAlign.center,
       ));
 
@@ -95,9 +94,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     if (today.isEmpty) {
       body.add(Text(
         AppLocalizations.of(context)!.noClasses,
-        style: wearStyle.fonts.H_18px.apply(
-          color: wearStyle.colors.textPrimary
-        ),
+        style:
+            wearStyle.fonts.H_18px.apply(color: wearStyle.colors.textPrimary),
         textAlign: TextAlign.center,
       ));
 
@@ -107,9 +105,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     if (now.isAfter(today.last.end)) {
       body.add(Text(
         AppLocalizations.of(context)!.noMoreClasses,
-        style: wearStyle.fonts.H_18px.apply(
-          color: wearStyle.colors.textPrimary
-        ),
+        style:
+            wearStyle.fonts.H_18px.apply(color: wearStyle.colors.textPrimary),
         textAlign: TextAlign.center,
       ));
 
@@ -121,9 +118,8 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
 
       body.add(Text(
         AppLocalizations.of(context)!.firstIn(untilFirst.formatDuration()),
-        style: wearStyle.fonts.H_18px.apply(
-          color: wearStyle.colors.textPrimary
-        ),
+        style:
+            wearStyle.fonts.H_18px.apply(color: wearStyle.colors.textPrimary),
         textAlign: TextAlign.center,
       ));
 
@@ -131,8 +127,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
       return (body, 255.h);
     }
     currentLessonNo = null;
-    if (now.isAfter(today.first.start)
-        && now.isBefore(today.last.end)) {
+    if (now.isAfter(today.first.start) && now.isBefore(today.last.end)) {
       Lesson? currentLesson;
       Lesson? lastLesson; // last as in the last lesson that you've been to
       Lesson? next;
@@ -143,19 +138,19 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         var lesson = today[i];
         if (now.isAfter(lesson.start) && now.isBefore(lesson.end)) {
           currentLesson = lesson;
-          currentLessonNo = i+1;
+          currentLessonNo = i + 1;
 
-          if (i+2 < today.length) nextLesson = today[i+1];
+          if (i + 2 < today.length) nextLesson = today[i + 1];
           break;
         }
         if (now.isAfter(lesson.end)) {
           if (lastLesson == null) {
             lastLesson = lesson;
-            if (i < today.length) next = today[i+1];
+            if (i < today.length) next = today[i + 1];
           } else {
             if (lesson.end.isAfter(lastLesson.end)) {
               lastLesson = lesson;
-              if (i < today.length) next = today[i+1];
+              if (i < today.length) next = today[i + 1];
             }
           }
         }
@@ -178,45 +173,44 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
 
         body.add(CustomPaint(
             painter: CircularProgressPainter(
-                progress: currentBreakProgress.inMilliseconds / currentBreak.inMilliseconds,
+                progress: currentBreakProgress.inMilliseconds /
+                    currentBreak.inMilliseconds,
                 // progress: 5 / 10,
                 screenSize: MediaQuery.of(context).size,
                 strokeWidth: 4,
-                color: wearStyle.colors.accent
-            ),
+                color: wearStyle.colors.accent),
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 55.h),
-                  Center(
-                    child: Text(
-                      AppLocalizations.of(context)!.breakTxt,
-                      style: TextStyle(
-                        color: wearStyle.colors.textPrimary,
-                        fontSize: 14,
-                        fontFamily: 'Montserrat',
-                        fontVariations: [
-                          FontVariation('wght', 600),
-                        ],
-                      ),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 55.h),
+                Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.breakTxt,
+                    style: TextStyle(
+                      color: wearStyle.colors.textPrimary,
+                      fontSize: 14,
+                      fontFamily: 'Montserrat',
+                      fontVariations: [
+                        FontVariation('wght', 600),
+                      ],
                     ),
                   ),
-                  Center(
-                    child: Text(
+                ),
+                Center(
+                  child: Text(
                     AppLocalizations.of(context)!.timeLeft(minutes),
-                      style: TextStyle(
-                        color: wearStyle.colors.textPrimary,
-                        fontSize: 12,
-                        fontFamily: 'Montserrat',
-                        fontVariations: [
-                          FontVariation('wght', 400),
-                        ],
-                      ),
+                    style: TextStyle(
+                      color: wearStyle.colors.textPrimary,
+                      fontSize: 12,
+                      fontFamily: 'Montserrat',
+                      fontVariations: [
+                        FontVariation('wght', 400),
+                      ],
                     ),
-                  )
-                ],
-            )
-        ));
+                  ),
+                )
+              ],
+            )));
 
         platform.invokeMethod('activity_update');
         return (body, 200.h);
@@ -248,56 +242,50 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         body.add(CustomPaint(
             painter: CircularProgressPainter(
                 progress: elapsed.inMilliseconds / duration.inMilliseconds,
-                screenSize: MediaQuery
-                    .of(context)
-                    .size,
+                screenSize: MediaQuery.of(context).size,
                 strokeWidth: 4,
-                color: wearStyle.colors.accent
-            ),
-            child: Column(
-                children: [
-                  SizedBox(height: nextLesson == null ? 20.h : 0),
-                  Center(
-                    child: ClassIconWidget(
-                      color: wearStyle.colors.accent,
-                      size: 16,
-                      uid: currentLesson.uid,
-                      className: currentLesson.name,
-                      category: currentLesson.subject?.name ?? '',
-                    ).build(context),
+                color: wearStyle.colors.accent),
+            child: Column(children: [
+              SizedBox(height: nextLesson == null ? 20.h : 0),
+              Center(
+                child: ClassIconWidget(
+                  color: wearStyle.colors.accent,
+                  size: 16,
+                  uid: currentLesson.uid,
+                  className: currentLesson.name,
+                  category: currentLesson.subject?.name ?? '',
+                ).build(context),
+              ),
+              const SizedBox(height: 4),
+              Center(
+                child: Text(
+                  "${currentLesson.name}, ${currentLesson.roomName}",
+                  style: TextStyle(
+                    color: wearStyle.colors.textPrimary,
+                    fontSize: 14,
+                    fontFamily: 'Montserrat',
+                    fontVariations: [
+                      FontVariation('wght', 600),
+                    ],
                   ),
-                  const SizedBox(height: 4),
-                  Center(
-                    child: Text(
-                      "${currentLesson.name}, ${currentLesson.roomName}",
-                      style: TextStyle(
-                        color: wearStyle.colors.textPrimary,
-                        fontSize: 14,
-                        fontFamily: 'Montserrat',
-                        fontVariations: [
-                          FontVariation('wght', 600),
-                        ],
-                      ),
-                    ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context)!.timeLeft(minutes),
+                  style: TextStyle(
+                    color: wearStyle.colors.textPrimary,
+                    fontSize: 12,
+                    fontFamily: 'Montserrat',
+                    fontVariations: [
+                      FontVariation('wght', 400),
+                    ],
                   ),
-                  Center(
-                    child: Text(
-                      AppLocalizations.of(context)!.timeLeft(minutes),
-                      style: TextStyle(
-                        color: wearStyle.colors.textPrimary,
-                        fontSize: 12,
-                        fontFamily: 'Montserrat',
-                        fontVariations: [
-                          FontVariation('wght', 400),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  nextLessonWidget,
-                ]
-            )
-        ));
+                ),
+              ),
+              const SizedBox(height: 8),
+              nextLessonWidget,
+            ])));
 
         platform.invokeMethod('activity_update');
         return (body, 200.h);
@@ -319,12 +307,12 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
         startAngleAlignment: StartAngleAlignment.center,
         text: AppLocalizations.of(context)!.wearTitle(currentLessonNo!),
         textStyle: TextStyle(
-            fontSize: 12,
-            color: wearStyle.colors.secondary,
-            fontFamily: 'Montserrat',
-            fontVariations: [
-              FontVariation('wght', 500),
-            ],
+          fontSize: 12,
+          color: wearStyle.colors.secondary,
+          fontFamily: 'Montserrat',
+          fontVariations: [
+            FontVariation('wght', 500),
+          ],
         ),
         placement: Placement.inside,
       );
@@ -342,14 +330,15 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
           Center(
             child: Column(
               children: [
-                WatchShape(builder: (context, shape, child) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      child!,
-                    ],
-                  );
-                },
+                WatchShape(
+                  builder: (context, shape, child) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        child!,
+                      ],
+                    );
+                  },
                   child: AmbientMode(
                     builder: (context, mode, child) {
                       if (this.mode != mode) {
@@ -369,15 +358,13 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
                               padding: EdgeInsets.only(top: padding),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ...body
-                                ],
-                              )
-                          ),
+                                children: [...body],
+                              )),
                         ],
                       );
                     },
-                  ),)
+                  ),
+                )
               ],
             ),
           )

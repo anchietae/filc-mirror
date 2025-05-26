@@ -31,9 +31,9 @@ class FMBCrypt {
 
     for (int i = 0; i < 4; i++) {
       state[i] = ((key[i * 4] << 24) |
-      (key[i * 4 + 1] << 16) |
-      (key[i * 4 + 2] << 8) |
-      key[i * 4 + 3]) >>>
+              (key[i * 4 + 1] << 16) |
+              (key[i * 4 + 2] << 8) |
+              key[i * 4 + 3]) >>>
           0;
     }
 

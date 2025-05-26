@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../ui/model/style.dart';
 
 class FirkaCard extends StatelessWidget {
-
   List<Widget> left;
   List<Widget>? right;
 
@@ -30,5 +29,4 @@ class FirkaCard extends StatelessWidget {
       ),
     );
   }
-
 }

@@ -18,5 +18,4 @@ class _HomeMainScreen extends State<HomeMainScreen> {
   Widget build(BuildContext context) {
     return Text("Main");
   }
-
 }

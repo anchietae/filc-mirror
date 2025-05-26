@@ -10,7 +10,6 @@ import '../../../../main.dart';
 import '../../../model/style.dart';
 
 class HomeGradesScreen extends StatelessAsyncWidget {
-
   final AppInitialization data;
   const HomeGradesScreen(this.data, {super.key});
 
@@ -56,43 +55,39 @@ class HomeGradesScreen extends StatelessAsyncWidget {
               children: [
                 Text(
                   AppLocalizations.of(context)!.subjects,
-                  style: appStyle.fonts.H_H2.apply(
-                      color: appStyle.colors.textSecondary
-                  ),
+                  style: appStyle.fonts.H_H2
+                      .apply(color: appStyle.colors.textSecondary),
                 )
               ],
             ),
             SizedBox(height: 16), // TODO: Add graphs here
             // ...gradeCards,
             Container(
-              height: MediaQuery.of(context).size.height
-                  - MediaQuery.of(context).padding.top
-                  - 230,
+              height: MediaQuery.of(context).size.height -
+                  MediaQuery.of(context).padding.top -
+                  230,
               child: ListView(
                 children: [
                   Text(
                     AppLocalizations.of(context)!.your_subjects,
-                    style: appStyle.fonts.B_16SB.apply(
-                      color: appStyle.colors.textSecondary
-                    ),
+                    style: appStyle.fonts.B_16SB
+                        .apply(color: appStyle.colors.textSecondary),
                   ),
                   SizedBox(height: 16),
                   ...gradeCards,
                   SizedBox(height: 16),
                   Text(
                     AppLocalizations.of(context)!.data,
-                    style: appStyle.fonts.B_16SB.apply(
-                      color: appStyle.colors.textSecondary
-                    ),
+                    style: appStyle.fonts.B_16SB
+                        .apply(color: appStyle.colors.textSecondary),
                   ),
                   SizedBox(height: 16),
                   FirkaCard(
                     left: [
                       Text(
                         AppLocalizations.of(context)!.subject_avg,
-                        style: appStyle.fonts.B_16SB.apply(
-                          color: appStyle.colors.textPrimary
-                        ),
+                        style: appStyle.fonts.B_16SB
+                            .apply(color: appStyle.colors.textPrimary),
                       ),
                     ],
                     right: [
@@ -100,12 +95,12 @@ class HomeGradesScreen extends StatelessAsyncWidget {
                         shadowColor: Colors.transparent,
                         color: subjectAvgColor.withAlpha(38),
                         child: Padding(
-                          padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
+                          padding: EdgeInsets.only(
+                              left: 8, right: 8, top: 4, bottom: 4),
                           child: Text(
                             subjectAvg.toStringAsFixed(2),
-                            style: appStyle.fonts.B_16SB.apply(
-                                color: subjectAvgColor
-                            ),
+                            style: appStyle.fonts.B_16SB
+                                .apply(color: subjectAvgColor),
                           ),
                         ),
                       ),
@@ -114,26 +109,23 @@ class HomeGradesScreen extends StatelessAsyncWidget {
                   FirkaCard(left: [
                     Text(
                       AppLocalizations.of(context)!.class_avg,
-                      style: appStyle.fonts.B_16SB.apply(
-                        color: appStyle.colors.textPrimary
-                      ),
+                      style: appStyle.fonts.B_16SB
+                          .apply(color: appStyle.colors.textPrimary),
                     ),
                   ]),
                   FirkaCard(
                     left: [
                       Text(
                         AppLocalizations.of(context)!.class_n,
-                        style: appStyle.fonts.B_16SB.apply(
-                          color: appStyle.colors.textPrimary
-                        ),
+                        style: appStyle.fonts.B_16SB
+                            .apply(color: appStyle.colors.textPrimary),
                       ),
                     ],
                     right: [
-                        Text(
+                      Text(
                         week.response!.length.toString(),
-                        style: appStyle.fonts.B_16SB.apply(
-                          color: appStyle.colors.textPrimary
-                        ),
+                        style: appStyle.fonts.B_16SB
+                            .apply(color: appStyle.colors.textPrimary),
                       ),
                     ],
                   ),
@@ -145,5 +137,4 @@ class HomeGradesScreen extends StatelessAsyncWidget {
       ),
     );
   }
-
 }

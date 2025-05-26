@@ -33,13 +33,15 @@ Future<TokenGrantResponse> getAccessToken(String code) async {
   final formData = <String, String>{
     "code": code,
     "code_verifier": "DSpuqj_HhDX4wzQIbtn8lr8NLE5wEi1iVLMtMK0jY6c",
-    "redirect_uri": "https://mobil.e-kreta.hu/ellenorzo-student/prod/oauthredirect",
+    "redirect_uri":
+        "https://mobil.e-kreta.hu/ellenorzo-student/prod/oauthredirect",
     "client_id": Constants.clientId,
     "grant_type": "authorization_code",
   };
-  
+
   try {
-    final response = await dio.post(KretaEndpoints.tokenGrantUrl, options: Options(headers: headers), data: formData);
+    final response = await dio.post(KretaEndpoints.tokenGrantUrl,
+        options: Options(headers: headers), data: formData);
 
     switch (response.statusCode) {
       case 200:
@@ -47,7 +49,8 @@ Future<TokenGrantResponse> getAccessToken(String code) async {
       case 401:
         throw Exception("Invalid grant");
       default:
-        throw Exception("Failed to get access token, response code: ${response.statusCode}");
+        throw Exception(
+            "Failed to get access token, response code: ${response.statusCode}");
     }
   } catch (e) {
     rethrow;
@@ -69,7 +72,8 @@ Future<TokenGrantResponse> extendToken(TokenModel model) async {
   };
 
   try {
-    final response = await dio.post(KretaEndpoints.tokenGrantUrl, options: Options(headers: headers), data: formData);
+    final response = await dio.post(KretaEndpoints.tokenGrantUrl,
+        options: Options(headers: headers), data: formData);
 
     switch (response.statusCode) {
       case 200:
@@ -77,7 +81,8 @@ Future<TokenGrantResponse> extendToken(TokenModel model) async {
       case 401:
         throw Exception("Invalid grant");
       default:
-        throw Exception("Failed to get access token, response code: ${response.statusCode}");
+        throw Exception(
+            "Failed to get access token, response code: ${response.statusCode}");
     }
   } catch (e) {
     rethrow;

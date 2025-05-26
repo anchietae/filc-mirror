@@ -18,5 +18,4 @@ class _HomeTimetableScreen extends State<HomeTimetableScreen> {
   Widget build(BuildContext context) {
     return Text("Timetable");
   }
-
 }

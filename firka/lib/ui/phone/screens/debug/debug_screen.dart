@@ -156,9 +156,7 @@ class _DebugScreen extends State<DebugScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  setState(() {
-
-                  });
+                  setState(() {});
                 },
                 child: const Text('re-render'),
               ),
@@ -176,7 +174,8 @@ class _DebugScreen extends State<DebugScreen> {
                           ),
                         ),
                         Center(
-                          child:Majesticon(getIconData(e), color: Colors.black),
+                          child:
+                              Majesticon(getIconData(e), color: Colors.black),
                         )
                       ],
                     );

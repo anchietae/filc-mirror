@@ -29,8 +29,7 @@ Future<void> main() async {
       isarInit = isar;
 
       await isar.writeTxn(() async {
-        await isar.tokenModels.put(TokenModel(
-        ));
+        await isar.tokenModels.put(TokenModel());
       });
 
       await tester.pumpWidget(WearInitializationScreen());

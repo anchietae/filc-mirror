@@ -124,7 +124,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: appStyle.colors.card,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(16)),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -144,72 +145,78 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(height: 10),
                         Container(
-                          width: double.infinity,
-                          height: 48,
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFFA7DB21), // Accent-Accent
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                            width: double.infinity,
+                            height: 48,
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFFA7DB21), // Accent-Accent
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              shadows: const [
+                                BoxShadow(
+                                  color: Color(0x33647E22),
+                                  blurRadius: 2,
+                                  offset: Offset(0, 1),
+                                  spreadRadius: 0,
+                                )
+                              ],
                             ),
-                            shadows: const [
-                              BoxShadow(
-                                color: Color(0x33647E22),
-                                blurRadius: 2,
-                                offset: Offset(0, 1),
-                                spreadRadius: 0,
-                              )
-                            ],
-                          ),
-                          child: GestureDetector(
-                            child: Center(
-                              child: Text(
-                                'Set hostname',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Color(0xFF394B0A), // Text-Primary
-                                  fontSize: 17,
-                                  fontFamily: 'Montserrat',
-                                  fontVariations: [
-                                    FontVariation('wght', 700),
-                                  ],
-                                  letterSpacing: -0.30,
+                            child: GestureDetector(
+                              child: Center(
+                                child: Text(
+                                  'Set hostname',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: Color(0xFF394B0A), // Text-Primary
+                                    fontSize: 17,
+                                    fontFamily: 'Montserrat',
+                                    fontVariations: [
+                                      FontVariation('wght', 700),
+                                    ],
+                                    letterSpacing: -0.30,
+                                  ),
                                 ),
                               ),
-                            ),
-                            onTap: () {
-                              if (initData.settings.customHost != null
-                              && initData.settings.customHost != "") {
-                                var host = initData.settings.customHost!;
-                                KretaEndpoints.kretaBase = "https://$host";
-                                KretaEndpoints.kretaIdp = KretaEndpoints.kretaBase;
-                                KretaEndpoints.kretaLoginUrl =
-                                "${KretaEndpoints.kretaIdp}/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fprompt%3Dlogin%26nonce%3DwylCrqT4oN6PPgQn2yQB0euKei9nJeZ6_ffJ-VpSKZU%26response_type%3Dcode%26code_challenge_method%3DS256%26scope%3Dopenid%2520email%2520offline_access%2520kreta-ellenorzo-webapi.public%2520kreta-eugyintezes-webapi.public%2520kreta-fileservice-webapi.public%2520kreta-mobile-global-webapi.public%2520kreta-dkt-webapi.public%2520kreta-ier-webapi.public%26code_challenge%3DHByZRRnPGb-Ko_wTI7ibIba1HQ6lor0ws4bcgReuYSQ%26redirect_uri%3Dhttps%253A%252F%252Fmobil.e-kreta.hu%252Fellenorzo-student%252Fprod%252Foauthredirect%26client_id%3Dkreta-ellenorzo-student-mobile-ios%26state%3Dkreta_student_mobile%26suppressed_prompt%3Dlogin";
-                                KretaEndpoints.tokenGrantUrl =
-                                "${KretaEndpoints.kretaIdp}/connect/token";
+                              onTap: () {
+                                if (initData.settings.customHost != null &&
+                                    initData.settings.customHost != "") {
+                                  var host = initData.settings.customHost!;
+                                  KretaEndpoints.kretaBase = "https://$host";
+                                  KretaEndpoints.kretaIdp =
+                                      KretaEndpoints.kretaBase;
+                                  KretaEndpoints.kretaLoginUrl =
+                                      "${KretaEndpoints.kretaIdp}/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fprompt%3Dlogin%26nonce%3DwylCrqT4oN6PPgQn2yQB0euKei9nJeZ6_ffJ-VpSKZU%26response_type%3Dcode%26code_challenge_method%3DS256%26scope%3Dopenid%2520email%2520offline_access%2520kreta-ellenorzo-webapi.public%2520kreta-eugyintezes-webapi.public%2520kreta-fileservice-webapi.public%2520kreta-mobile-global-webapi.public%2520kreta-dkt-webapi.public%2520kreta-ier-webapi.public%26code_challenge%3DHByZRRnPGb-Ko_wTI7ibIba1HQ6lor0ws4bcgReuYSQ%26redirect_uri%3Dhttps%253A%252F%252Fmobil.e-kreta.hu%252Fellenorzo-student%252Fprod%252Foauthredirect%26client_id%3Dkreta-ellenorzo-student-mobile-ios%26state%3Dkreta_student_mobile%26suppressed_prompt%3Dlogin";
+                                  KretaEndpoints.tokenGrantUrl =
+                                      "${KretaEndpoints.kretaIdp}/connect/token";
 
-                                initData.settings.useCustomHost = true;
-                              } else {
-                                KretaEndpoints.kretaBase = "e-kreta.hu";
-                                KretaEndpoints.kretaIdp = "https://idp.e-kreta.hu";
-                                KretaEndpoints.kretaLoginUrl = "${KretaEndpoints.kretaIdp}/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fprompt%3Dlogin%26nonce%3DwylCrqT4oN6PPgQn2yQB0euKei9nJeZ6_ffJ-VpSKZU%26response_type%3Dcode%26code_challenge_method%3DS256%26scope%3Dopenid%2520email%2520offline_access%2520kreta-ellenorzo-webapi.public%2520kreta-eugyintezes-webapi.public%2520kreta-fileservice-webapi.public%2520kreta-mobile-global-webapi.public%2520kreta-dkt-webapi.public%2520kreta-ier-webapi.public%26code_challenge%3DHByZRRnPGb-Ko_wTI7ibIba1HQ6lor0ws4bcgReuYSQ%26redirect_uri%3Dhttps%253A%252F%252Fmobil.e-kreta.hu%252Fellenorzo-student%252Fprod%252Foauthredirect%26client_id%3Dkreta-ellenorzo-student-mobile-ios%26state%3Dkreta_student_mobile%26suppressed_prompt%3Dlogin";
-                                KretaEndpoints.tokenGrantUrl = "${KretaEndpoints.kretaIdp}/connect/token";
+                                  initData.settings.useCustomHost = true;
+                                } else {
+                                  KretaEndpoints.kretaBase = "e-kreta.hu";
+                                  KretaEndpoints.kretaIdp =
+                                      "https://idp.e-kreta.hu";
+                                  KretaEndpoints.kretaLoginUrl =
+                                      "${KretaEndpoints.kretaIdp}/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fprompt%3Dlogin%26nonce%3DwylCrqT4oN6PPgQn2yQB0euKei9nJeZ6_ffJ-VpSKZU%26response_type%3Dcode%26code_challenge_method%3DS256%26scope%3Dopenid%2520email%2520offline_access%2520kreta-ellenorzo-webapi.public%2520kreta-eugyintezes-webapi.public%2520kreta-fileservice-webapi.public%2520kreta-mobile-global-webapi.public%2520kreta-dkt-webapi.public%2520kreta-ier-webapi.public%26code_challenge%3DHByZRRnPGb-Ko_wTI7ibIba1HQ6lor0ws4bcgReuYSQ%26redirect_uri%3Dhttps%253A%252F%252Fmobil.e-kreta.hu%252Fellenorzo-student%252Fprod%252Foauthredirect%26client_id%3Dkreta-ellenorzo-student-mobile-ios%26state%3Dkreta_student_mobile%26suppressed_prompt%3Dlogin";
+                                  KretaEndpoints.tokenGrantUrl =
+                                      "${KretaEndpoints.kretaIdp}/connect/token";
 
-                                initData.settings.useCustomHost = false;
-                              }
+                                  initData.settings.useCustomHost = false;
+                                }
 
-                              // TODO: Fix this
-                              initData.saveSettings();
-                              setState(() {
-                                _webViewController.loadRequest(Uri.parse(KretaEndpoints.kretaLoginUrl));
-                              });
+                                // TODO: Fix this
+                                initData.saveSettings();
+                                setState(() {
+                                  _webViewController.loadRequest(
+                                      Uri.parse(KretaEndpoints.kretaLoginUrl));
+                                });
 
-                              Navigator.pop(context);
-                            },
-                          )
-                        ),
+                                Navigator.pop(context);
+                              },
+                            )),
                         // TODO: fix this insane shitcode
-                        SizedBox(height: MediaQuery.of(context).viewInsets.bottom * 1000),
+                        SizedBox(
+                            height: MediaQuery.of(context).viewInsets.bottom *
+                                1000),
                         SizedBox(height: 75),
                       ],
                     ),

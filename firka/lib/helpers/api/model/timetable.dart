@@ -80,15 +80,17 @@ class Lesson {
       lessonNumber: json['Oraszam'],
       lessonSeqNumber: json['OraEvesSorszama'],
       classGroup: json['OsztalyCsoport'] != null
-          ? NameUid.fromJson(json['OsztalyCsoport']) : null,
+          ? NameUid.fromJson(json['OsztalyCsoport'])
+          : null,
       teacher: json['TanarNeve'],
-      subject: json['Tantargy'] != null
-          ? Subject.fromJson(json['Tantargy']) : null,
+      subject:
+          json['Tantargy'] != null ? Subject.fromJson(json['Tantargy']) : null,
       theme: json['Tema'],
       roomName: json['TeremNeve'],
       type: NameUidDesc.fromJson(json['Tipus']),
       studentPresence: json['TanuloJelenlet'] != null
-          ? NameUidDesc.fromJson(json['TanuloJelenlet']) : null,
+          ? NameUidDesc.fromJson(json['TanuloJelenlet'])
+          : null,
       state: NameUidDesc.fromJson(json['Allapot']),
       substituteTeacher: json['HelyettesTanarNeve'],
       homeworkUid: json['HaziFeladatUid'],
@@ -102,9 +104,9 @@ class Lesson {
       digitalDeviceList: json['DigitalisEszkozTipus'],
       digitalPlatformType: json['DigitalisPlatformTipus'],
       digitalSupportDeviceTypeList:
-        json['DigitalisTamogatoEszkozTipusList'] != null
-          ? List<String>.from(json['DigitalisTamogatoEszkozTipusList'])
-          : List<String>.empty(),
+          json['DigitalisTamogatoEszkozTipusList'] != null
+              ? List<String>.from(json['DigitalisTamogatoEszkozTipusList'])
+              : List<String>.empty(),
       createdAt: DateTime.parse(json['Letrehozas']),
       lastModifiedAt: DateTime.parse(json['UtolsoModositas']),
     );
@@ -113,35 +115,35 @@ class Lesson {
   @override
   String toString() {
     return 'Lesson('
-      'uid: "$uid", '
-      'date: "$date", '
-      'start: $start, '
-      'end: $end, '
-      'name: "$name", '
-      'lessonNumber: $lessonNumber, '
-      'lessonSeqNumber: $lessonSeqNumber, '
-      'classGroup: $classGroup, '
-      'teacher: "$teacher", '
-      'subject: $subject, '
-      'theme: "$theme", '
-      'roomName: "$roomName", '
-      'type: $type, '
-      'studentPresence: $studentPresence, '
-      'state: $state, '
-      'substituteTeacher: "$substituteTeacher", '
-      'homeworkUid: "$homeworkUid", '
-      'taskGroupUid: "$taskGroupUid", '
-      'languageTaskGroupUid: "$languageTaskGroupUid", '
-      'assessmentUid: "$assessmentUid", '
-      'canStudentEditHomework: $canStudentEditHomework, '
-      'isHomeworkComplete: $isHomeworkComplete, '
-      'attachments: $attachments, '
-      'isDigitalLesson: $isDigitalLesson, '
-      'digitalDeviceList: "$digitalDeviceList", '
-      'digitalPlatformType: "$digitalPlatformType", '
-      'digitalSupportDeviceTypeList: $digitalSupportDeviceTypeList, '
-      'create: $createdAt, '
-      'lastModified: $lastModifiedAt'
-    ')';
+        'uid: "$uid", '
+        'date: "$date", '
+        'start: $start, '
+        'end: $end, '
+        'name: "$name", '
+        'lessonNumber: $lessonNumber, '
+        'lessonSeqNumber: $lessonSeqNumber, '
+        'classGroup: $classGroup, '
+        'teacher: "$teacher", '
+        'subject: $subject, '
+        'theme: "$theme", '
+        'roomName: "$roomName", '
+        'type: $type, '
+        'studentPresence: $studentPresence, '
+        'state: $state, '
+        'substituteTeacher: "$substituteTeacher", '
+        'homeworkUid: "$homeworkUid", '
+        'taskGroupUid: "$taskGroupUid", '
+        'languageTaskGroupUid: "$languageTaskGroupUid", '
+        'assessmentUid: "$assessmentUid", '
+        'canStudentEditHomework: $canStudentEditHomework, '
+        'isHomeworkComplete: $isHomeworkComplete, '
+        'attachments: $attachments, '
+        'isDigitalLesson: $isDigitalLesson, '
+        'digitalDeviceList: "$digitalDeviceList", '
+        'digitalPlatformType: "$digitalPlatformType", '
+        'digitalSupportDeviceTypeList: $digitalSupportDeviceTypeList, '
+        'create: $createdAt, '
+        'lastModified: $lastModifiedAt'
+        ')';
   }
 }

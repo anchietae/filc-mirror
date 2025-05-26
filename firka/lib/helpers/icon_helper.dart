@@ -1,14 +1,40 @@
-
 import 'dart:typed_data';
 
 import 'package:majesticons_flutter/majesticons_flutter.dart';
 
 enum ClassIcon {
-  mathematics, grammar, literature, history, geography, art, physics, music,
-  pe, chemistry, biology, env, religion, economics, it, code,
-  networking, theatre, film, electricalEngineering, mechanicalEngineering,
-  technika, dance, philosophy, ofo, diligence, attitude, language, linux,
-  database, applications, project
+  mathematics,
+  grammar,
+  literature,
+  history,
+  geography,
+  art,
+  physics,
+  music,
+  pe,
+  chemistry,
+  biology,
+  env,
+  religion,
+  economics,
+  it,
+  code,
+  networking,
+  theatre,
+  film,
+  electricalEngineering,
+  mechanicalEngineering,
+  technika,
+  dance,
+  philosophy,
+  ofo,
+  diligence,
+  attitude,
+  language,
+  linux,
+  database,
+  applications,
+  project
 }
 
 Map<ClassIcon, RegExp> _descriptors = {
@@ -23,7 +49,8 @@ Map<ClassIcon, RegExp> _descriptors = {
   ClassIcon.pe: RegExp(r'^tes(i|tneveles)|sport|edzeselmelet'),
   ClassIcon.chemistry: RegExp(r'kemia'),
   ClassIcon.biology: RegExp(r'biologia'),
-  ClassIcon.env: RegExp(r'kornyezet|termeszet ?(tudomany|ismeret)|hon( es nep)?ismeret'),
+  ClassIcon.env:
+      RegExp(r'kornyezet|termeszet ?(tudomany|ismeret)|hon( es nep)?ismeret'),
   ClassIcon.religion: RegExp(r'(hit|erkolcs)tan|vallas|etika|bibliaismeret'),
   ClassIcon.economics: RegExp(r'penzugy|gazdasag'),
   ClassIcon.it: RegExp(r'informatika|szoftver|iroda|digitalis'),
@@ -39,7 +66,8 @@ Map<ClassIcon, RegExp> _descriptors = {
   ClassIcon.ofo: RegExp(r'osztaly(fonoki|kozosseg)|kozossegi|neveles'),
   ClassIcon.diligence: RegExp(r'szorgalom'),
   ClassIcon.attitude: RegExp(r'magatartas'),
-  ClassIcon.language: RegExp(r'angol|nemet|francia|olasz|orosz|spanyol|latin|kinai|nyelv'),
+  ClassIcon.language:
+      RegExp(r'angol|nemet|francia|olasz|orosz|spanyol|latin|kinai|nyelv'),
   ClassIcon.linux: RegExp(r'linux'),
   ClassIcon.database: RegExp(r'adatbazis'),
   ClassIcon.applications: RegExp(r'asztali alkalmazasok'),
@@ -96,7 +124,7 @@ ClassIcon? getIconType(String uid, String className, String category) {
       }
     }
   }
-  
+
   return icon;
 }
 

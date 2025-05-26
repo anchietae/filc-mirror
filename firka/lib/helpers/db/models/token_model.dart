@@ -34,7 +34,7 @@ class TokenModel {
   TokenModel();
 
   factory TokenModel.fromValues(Id studentId, String iss, String idToken,
-    String accessToken, String refreshToken, int expiryDate) {
+      String accessToken, String refreshToken, int expiryDate) {
     var m = TokenModel();
 
     m.studentId = studentId;
@@ -53,17 +53,15 @@ class TokenModel {
 
     // TODO: Add a proper model for jwt id
 
-
     m.studentId = int.parse(jwt.payload["kreta:user_name"]);
     m.iss = jwt.payload["kreta:institute_code"];
     m.idToken = resp.idToken;
     m.accessToken = resp.accessToken;
     m.refreshToken = resp.refreshToken;
     m.expiryDate = DateTime.now()
-      .add(Duration(seconds: resp.expiresIn))
-      .subtract(Duration(minutes: 10)); // just to be safe
+        .add(Duration(seconds: resp.expiresIn))
+        .subtract(Duration(minutes: 10)); // just to be safe
 
     return m;
   }
-
 }

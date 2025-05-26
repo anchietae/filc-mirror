@@ -17,7 +17,8 @@ class CircularProgressIndicator extends StatefulWidget {
   });
 
   @override
-  _CircularProgressIndicatorState createState() => _CircularProgressIndicatorState();
+  _CircularProgressIndicatorState createState() =>
+      _CircularProgressIndicatorState();
 }
 
 class _CircularProgressIndicatorState extends State<CircularProgressIndicator>
@@ -32,7 +33,8 @@ class _CircularProgressIndicatorState extends State<CircularProgressIndicator>
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    _animation = Tween<double>(begin: 0.0, end: widget.progress).animate(_controller);
+    _animation =
+        Tween<double>(begin: 0.0, end: widget.progress).animate(_controller);
     _controller.forward();
   }
 
@@ -77,7 +79,8 @@ class CircularProgressPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(screenSize.width / 2, screenSize.height / 4.7);
-    final radius = min(screenSize.width, screenSize.height) / 2 - strokeWidth / 2;
+    final radius =
+        min(screenSize.width, screenSize.height) / 2 - strokeWidth / 2;
     final startAngle = -pi / 2;
     var sweepAngle = 2 * pi * progress;
 
@@ -97,7 +100,7 @@ class CircularProgressPainter extends CustomPainter {
 
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      startAngle+0.3,
+      startAngle + 0.3,
       sweepAngle,
       false,
       paint,

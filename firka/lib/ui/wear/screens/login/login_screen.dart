@@ -44,40 +44,41 @@ class _WearLoginScreen extends State<WearLoginScreen> {
       debugPrint("[Phone -> Watch]: $id");
 
       switch (id) {
-        case "pong": {
-          setState(() {
-            isMessageSent = true;
-          });
-        }
-        case "auth": {
-          () async {
-            var data = msg["data"];
-            var tokenModel = TokenModel.fromValues(
-              data["studentId"],
-              data["iss"],
-              data["idToken"],
-              data["accessToken"],
-              data["refreshToken"],
-              data["expiryDate"]
-            );
-
-            initData.client = KretaClient(tokenModel, initData.isar);
-
-            await initData.isar.writeTxn(() async {
-              await initData.isar.tokenModels.put(tokenModel);
+        case "pong":
+          {
+            setState(() {
+              isMessageSent = true;
             });
+          }
+        case "auth":
+          {
+            () async {
+              var data = msg["data"];
+              var tokenModel = TokenModel.fromValues(
+                  data["studentId"],
+                  data["iss"],
+                  data["idToken"],
+                  data["accessToken"],
+                  data["refreshToken"],
+                  data["expiryDate"]);
 
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => WearHomeScreen(initData)),
-                  (route) => false, // Remove all previous routes
-            );
-          }();
-        }
+              initData.client = KretaClient(tokenModel, initData.isar);
+
+              await initData.isar.writeTxn(() async {
+                await initData.isar.tokenModels.put(tokenModel);
+              });
+
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => WearHomeScreen(initData)),
+                (route) => false, // Remove all previous routes
+              );
+            }();
+          }
       }
     });
 
     connectionTimer = Timer.periodic(Duration(seconds: 1), (timer) async {
-
       var p = await watch.isPaired;
       var r = await watch.isReachable;
 
@@ -85,9 +86,7 @@ class _WearLoginScreen extends State<WearLoginScreen> {
         isMessageSending = true;
 
         debugPrint("[Watch -> Phone]: ping");
-        watch.sendMessage({
-          'id': 'ping'
-        });
+        watch.sendMessage({'id': 'ping'});
       }
 
       setState(() {
@@ -100,134 +99,130 @@ class _WearLoginScreen extends State<WearLoginScreen> {
 
   (List<Widget>, double) buildBody(BuildContext context) {
     if (!init) {
-      return (<Widget>[
-        Text(
-          "Loading...",
-          textAlign: TextAlign.center,
-          style: wearStyle.fonts.H_18px.apply(
-            color: wearStyle.colors.textPrimary
+      return (
+        <Widget>[
+          Text(
+            "Loading...",
+            textAlign: TextAlign.center,
+            style: wearStyle.fonts.H_18px
+                .apply(color: wearStyle.colors.textPrimary),
           ),
-        ),
-      ], 65);
+        ],
+        65
+      );
     }
 
     if (!isPaired) {
-      return (<Widget>[
-        Text(
-          "Watch not paired with your phone",
-          textAlign: TextAlign.center,
-          style: wearStyle.fonts.H_18px.apply(
-            color: wearStyle.colors.textPrimary
+      return (
+        <Widget>[
+          Text(
+            "Watch not paired with your phone",
+            textAlign: TextAlign.center,
+            style: wearStyle.fonts.H_18px
+                .apply(color: wearStyle.colors.textPrimary),
           ),
-        ),
-      ], 65);
+        ],
+        65
+      );
     }
     if (!isReachable) {
-      return (<Widget>[
-        Text(
+      return (
+        <Widget>[
+          Text(
             "Watch not connected\n to your phone",
             textAlign: TextAlign.center,
-            style: wearStyle.fonts.H_18px.apply(
-                color: wearStyle.colors.textPrimary
-            ),
-        ),
-      ], 65);
+            style: wearStyle.fonts.H_18px
+                .apply(color: wearStyle.colors.textPrimary),
+          ),
+        ],
+        65
+      );
     }
 
     if (!isMessageSent && isMessageSending) {
-      return (<Widget>[
-        Text(
-          "Sending request...",
-          textAlign: TextAlign.center,
-          style: wearStyle.fonts.H_18px.apply(
-              color: wearStyle.colors.textPrimary
+      return (
+        <Widget>[
+          Text(
+            "Sending request...",
+            textAlign: TextAlign.center,
+            style: wearStyle.fonts.H_18px
+                .apply(color: wearStyle.colors.textPrimary),
           ),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            debugPrint("[Watch -> Phone]: ping");
-            watch.sendMessage({
-              'id': 'ping'
-            });
-          },
-          // TODO: This is a placeholder, style this properly
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.resolveWith((states) {
-              if (states.contains(WidgetState.pressed)) {
+          ElevatedButton(
+            onPressed: () async {
+              debugPrint("[Watch -> Phone]: ping");
+              watch.sendMessage({'id': 'ping'});
+            },
+            // TODO: This is a placeholder, style this properly
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return wearStyle.colors.accent;
+                }
                 return wearStyle.colors.accent;
-              }
-              return wearStyle.colors.accent;
-            }),
-            foregroundColor: WidgetStateProperty.resolveWith((states) {
-              if (states.contains(WidgetState.pressed)) {
+              }),
+              foregroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return wearStyle.colors.accent;
+                }
                 return wearStyle.colors.accent;
-              }
-              return wearStyle.colors.accent;
-            }),
+              }),
+            ),
+            child: Text('Try again',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: wearStyle.colors.textPrimary)),
           ),
-          child: Text(
-              'Try again',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: wearStyle.colors.textPrimary
-              )
-          ),
-        ),
-      ], 45);
+        ],
+        45
+      );
     }
 
     if (isMessageSent) {
-      return (<Widget>[
-        Text(
+      return (
+        <Widget>[
+          Text(
             "Check your phone!",
             textAlign: TextAlign.center,
-            style: wearStyle.fonts.H_18px.apply(
-                color: wearStyle.colors.textPrimary
+            style: wearStyle.fonts.H_18px
+                .apply(color: wearStyle.colors.textPrimary),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              debugPrint("[Watch -> Phone]: ping");
+              watch.sendMessage({'id': 'ping'});
+            },
+            // TODO: This is a placeholder, style this properly
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return wearStyle.colors.accent;
+                }
+                return wearStyle.colors.accent;
+              }),
+              foregroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return wearStyle.colors.accent;
+                }
+                return wearStyle.colors.accent;
+              }),
             ),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            debugPrint("[Watch -> Phone]: ping");
-            watch.sendMessage({
-              'id': 'ping'
-            });
-          },
-          // TODO: This is a placeholder, style this properly
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.resolveWith((states) {
-              if (states.contains(WidgetState.pressed)) {
-                return wearStyle.colors.accent;
-              }
-              return wearStyle.colors.accent;
-            }),
-            foregroundColor: WidgetStateProperty.resolveWith((states) {
-              if (states.contains(WidgetState.pressed)) {
-                return wearStyle.colors.accent;
-              }
-              return wearStyle.colors.accent;
-            }),
+            child: Text('Try again',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: wearStyle.colors.textPrimary)),
           ),
-          child: Text(
-              'Try again',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: wearStyle.colors.textPrimary
-              )
-          ),
-        ),
-      ], 45);
+        ],
+        45
+      );
     }
 
-    return (<Widget>[
-      Text(
-        "Unexpected state",
-        style: TextStyle(
-            color: wearStyle.colors.textPrimary,
-            fontSize: 18
-        ),
-        textAlign: TextAlign.center
-      ),
-    ], 65);
+    return (
+      <Widget>[
+        Text("Unexpected state",
+            style: TextStyle(color: wearStyle.colors.textPrimary, fontSize: 18),
+            textAlign: TextAlign.center),
+      ],
+      65
+    );
   }
 
   @override
@@ -239,37 +234,36 @@ class _WearLoginScreen extends State<WearLoginScreen> {
       body: Center(
         child: Column(
           children: [
-            WatchShape(builder: (context, shape, child) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "Login",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: wearStyle.colors.textPrimary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Column(
+            WatchShape(
+                builder: (context, shape, child) {
+                  return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                          padding: EdgeInsets.only(top: offset),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: body,
-                          )
+                      Text(
+                        "Login",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: wearStyle.colors.textPrimary,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                              padding: EdgeInsets.only(top: offset),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: body,
+                              )),
+                        ],
+                      ),
+                      child!,
                     ],
-                  ),
-                  child!,
-                ],
-              );
-            },
-            child: SizedBox()
-            )
+                  );
+                },
+                child: SizedBox())
           ],
         ),
       ),
