@@ -19,9 +19,9 @@
 import 'package:dio/dio.dart';
 import 'package:firka/helpers/api/resp/token_grant.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
-import 'consts.dart';
 
-final dio = Dio();
+import '../../main.dart';
+import 'consts.dart';
 
 Future<TokenGrantResponse> getAccessToken(String code) async {
   final headers = const <String, String>{

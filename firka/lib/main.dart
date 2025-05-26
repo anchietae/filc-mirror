@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/helpers/db/models/app_settings_model.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
@@ -29,6 +30,8 @@ import 'helpers/db/models/homework_cache_model.dart';
 Isar? isarInit;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 late AppInitialization initData;
+
+final dio = Dio();
 
 class AppInitialization {
   final Isar isar;
@@ -127,6 +130,9 @@ Future<AppInitialization> initializeApp() async {
 }
 
 void main() async {
+  dio.options.connectTimeout = Duration(seconds: 5);
+  dio.options.receiveTimeout = Duration(seconds: 3);
+
   WidgetsFlutterBinding.ensureInitialized();
   const platform = MethodChannel('firka.app/main');
   if (Platform.isAndroid) {
