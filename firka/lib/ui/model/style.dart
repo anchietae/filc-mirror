@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class FirkaFonts {
@@ -13,7 +11,7 @@ class FirkaFonts {
   TextStyle H_16px_trimmed; // TODO: somehow implement this
   // the design has this trimmed to 130% line height
 
-  TextStyle B_16R;
+  TextStyle B_16R; // TODO: Replace these with Figtree
   TextStyle B_16SB;
 
   TextStyle B_14R;
@@ -152,27 +150,27 @@ final _defaultFonts = FirkaFonts(
     fontVariations: [FontVariation("wght", 600)],
   ),
   B_16R: TextStyle(
-    fontSize: 16,
-    fontFamily: 'Montserrat',
-  ),
+      fontSize: 16,
+      fontFamily: 'Montserrat',
+      fontVariations: [FontVariation("wght", 500)]),
   B_16SB: TextStyle(
     fontSize: 16,
     fontFamily: 'Montserrat',
     fontVariations: [FontVariation("wght", 600)],
   ),
   B_14R: TextStyle(
-    fontSize: 14,
-    fontFamily: 'Montserrat',
-  ),
+      fontSize: 14,
+      fontFamily: 'Montserrat',
+      fontVariations: [FontVariation("wght", 500)]),
   B_14SB: TextStyle(
     fontSize: 14,
     fontFamily: 'Montserrat',
     fontVariations: [FontVariation("wght", 600)],
   ),
   B_12R: TextStyle(
-    fontSize: 12,
-    fontFamily: 'Montserrat',
-  ),
+      fontSize: 12,
+      fontFamily: 'Montserrat',
+      fontVariations: [FontVariation("wght", 500)]),
   B_12SB: TextStyle(
     fontSize: 12,
     fontFamily: 'Montserrat',
