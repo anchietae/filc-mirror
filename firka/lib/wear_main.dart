@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:firka/helpers/db/models/homework_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
@@ -9,6 +8,7 @@ import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:firka/ui/wear/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isar/isar.dart';
@@ -138,7 +138,8 @@ class WearInitializationScreen extends StatelessWidget {
           return MaterialApp(
             key: ValueKey('firkaWearApp'),
             title: 'Firka',
-            navigatorKey: navigatorKey, // Use the global navigator key
+            navigatorKey: navigatorKey,
+            // Use the global navigator key
             theme: ThemeData(
               primarySwatch: Colors.lightGreen,
               visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -147,7 +148,6 @@ class WearInitializationScreen extends StatelessWidget {
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: AppLocalizations.supportedLocales,
             home: screen,

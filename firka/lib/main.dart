@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:firka/helpers/db/models/app_settings_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firka/helpers/api/client/kreta_client.dart';
+import 'package:firka/helpers/db/models/app_settings_model.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
@@ -17,6 +16,7 @@ import 'package:firka/wear_main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:isar/isar.dart';
 import 'package:path/path.dart' as p;
@@ -229,7 +229,8 @@ class InitializationScreen extends StatelessWidget {
           return MaterialApp(
             title: 'Firka',
             key: ValueKey('firkaApp'),
-            navigatorKey: navigatorKey, // Use the global navigator key
+            navigatorKey: navigatorKey,
+            // Use the global navigator key
             theme: ThemeData(
               primarySwatch: Colors.lightGreen,
               visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -238,7 +239,6 @@ class InitializationScreen extends StatelessWidget {
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: AppLocalizations.supportedLocales,
             home: screen,
