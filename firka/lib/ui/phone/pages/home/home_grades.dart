@@ -1,6 +1,7 @@
 import 'package:firka/helpers/ui/firka_card.dart';
 import 'package:firka/helpers/ui/grade_helpers.dart';
 import 'package:firka/helpers/ui/stateless_async_widget.dart';
+import 'package:firka/ui/phone/screens/home/home_screen.dart';
 import 'package:firka/ui/widget/grade_small_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,7 +12,9 @@ import '../../../model/style.dart';
 
 class HomeGradesScreen extends StatelessAsyncWidget {
   final AppInitialization data;
-  const HomeGradesScreen(this.data, {super.key});
+  final void Function(ActiveHomePage) cb;
+
+  const HomeGradesScreen(this.data, this.cb, {super.key});
 
   @override
   Future<Widget> buildAsync(BuildContext context) async {
@@ -34,7 +37,12 @@ class HomeGradesScreen extends StatelessAsyncWidget {
     subjects.sort((s1, s2) => s1.name.compareTo(s2.name));
 
     for (var subject in subjects) {
-      gradeCards.add(GradeSmallCard(grades.response!, subject));
+      gradeCards.add(GestureDetector(
+        child: GradeSmallCard(grades.response!, subject),
+        onTap: () {
+          cb(ActiveHomePage(HomePages.grades, subPageUid: subject.uid));
+        },
+      ));
       subjectAvg += grades.response!.getAverageBySubject(subject);
     }
 

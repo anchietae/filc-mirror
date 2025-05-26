@@ -11,6 +11,7 @@ import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:shake_gesture/shake_gesture.dart';
 
 import '../../pages/extras/extras.dart';
+import '../../pages/home/home_grades_subject.dart';
 import '../../pages/home/home_timetable.dart';
 import '../debug/debug_screen.dart';
 
@@ -23,15 +24,37 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState(data);
 }
 
-enum ActiveHomePage { home, grades, timetable }
+enum HomePages { home, grades, timetable }
+
+class ActiveHomePage {
+  final HomePages page;
+  final String? subPageUid;
+
+  ActiveHomePage(this.page, {this.subPageUid});
+
+  @override
+  int get hashCode => (page.hashCode ^ subPageUid.hashCode);
+
+  @override
+  bool operator ==(Object other) {
+    return (other is ActiveHomePage) && hashCode == other.hashCode;
+  }
+}
 
 class _HomeScreenState extends State<HomeScreen> {
   final AppInitialization data;
 
   _HomeScreenState(this.data);
 
-  ActiveHomePage page = ActiveHomePage.home;
+  ActiveHomePage page = ActiveHomePage(HomePages.home);
   late ActiveHomePage previousPage;
+
+  void setPageCB(ActiveHomePage newPage) {
+    setState(() {
+      previousPage = page;
+      page = newPage;
+    });
+  }
 
   @override
   void initState() {
@@ -79,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [HomeSubPage(page, data)],
+                      children: [HomeSubPage(page, setPageCB, data)],
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -102,58 +125,58 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             // Home Button
                             BottomNavIcon(() {
-                              if (page != ActiveHomePage.home) {
+                              if (page.page != HomePages.home) {
                                 HapticFeedback.lightImpact();
                               }
 
                               setState(() {
                                 previousPage = page;
-                                page = ActiveHomePage.home;
+                                page = ActiveHomePage(HomePages.home);
                               });
                             },
-                                page == ActiveHomePage.home
+                                page.page == HomePages.home
                                     ? Majesticon.homeSolid
                                     : Majesticon.homeLine,
                                 AppLocalizations.of(context)!.home,
-                                page == ActiveHomePage.home
+                                page.page == HomePages.home
                                     ? appStyle.colors.accent
                                     : appStyle.colors.secondary,
                                 appStyle.colors.textPrimary),
                             // Grades Button
                             BottomNavIcon(() {
-                              if (page != ActiveHomePage.grades) {
+                              if (page.page != HomePages.grades) {
                                 HapticFeedback.lightImpact();
                               }
 
                               setState(() {
                                 previousPage = page;
-                                page = ActiveHomePage.grades;
+                                page = ActiveHomePage(HomePages.grades);
                               });
                             },
-                                page == ActiveHomePage.grades
+                                page.page == HomePages.grades
                                     ? Majesticon.bookmarkSolid
                                     : Majesticon.bookmarkLine,
                                 AppLocalizations.of(context)!.grades,
-                                page == ActiveHomePage.grades
+                                page.page == HomePages.grades
                                     ? appStyle.colors.accent
                                     : appStyle.colors.secondary,
                                 appStyle.colors.textPrimary),
                             // Timetable Button
                             BottomNavIcon(() {
-                              if (page != ActiveHomePage.timetable) {
+                              if (page.page != HomePages.timetable) {
                                 HapticFeedback.lightImpact();
                               }
 
                               setState(() {
                                 previousPage = page;
-                                page = ActiveHomePage.timetable;
+                                page = ActiveHomePage(HomePages.timetable);
                               });
                             },
-                                page == ActiveHomePage.timetable
+                                page.page == HomePages.timetable
                                     ? Majesticon.calendarSolid
                                     : Majesticon.calendarLine,
                                 AppLocalizations.of(context)!.timetable,
-                                page == ActiveHomePage.timetable
+                                page.page == HomePages.timetable
                                     ? appStyle.colors.accent
                                     : appStyle.colors.secondary,
                                 appStyle.colors.textPrimary),
@@ -191,18 +214,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class HomeSubPage extends StatelessWidget {
   final ActiveHomePage page;
+  final void Function(ActiveHomePage) cb;
   final AppInitialization data;
 
-  const HomeSubPage(this.page, this.data, {super.key});
+  const HomeSubPage(this.page, this.cb, this.data, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    switch (page) {
-      case ActiveHomePage.home:
+    switch (page.page) {
+      case HomePages.home:
         return HomeMainScreen(data);
-      case ActiveHomePage.grades:
-        return HomeGradesScreen(data);
-      case ActiveHomePage.timetable:
+      case HomePages.grades:
+        if (page.subPageUid != null) {
+          return HomeGradesSubjectScreen(data, page.subPageUid!);
+        } else {
+          return HomeGradesScreen(data, cb);
+        }
+      case HomePages.timetable:
         return HomeTimetableScreen(data);
     }
   }
