@@ -184,12 +184,12 @@ final _defaultFonts = FirkaFonts(
   P_14: TextStyle(
     fontSize: 14,
     fontFamily: 'RobotoMono',
-    fontVariations: [FontVariation("wght", 600)],
+    fontVariations: [FontVariation("wght", 700)],
   ),
   P_12: TextStyle(
     fontSize: 12,
     fontFamily: 'RobotoMono',
-    fontVariations: [FontVariation("wght", 600)],
+    fontVariations: [FontVariation("wght", 700)],
   ),
 );
 
