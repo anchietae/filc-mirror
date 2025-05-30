@@ -20,6 +20,9 @@ class FirkaFonts {
   TextStyle B_12R;
   TextStyle B_12SB;
 
+  TextStyle P_14;
+  TextStyle P_12;
+
   FirkaFonts({
     required this.H_H1,
     required this.H_18px,
@@ -34,6 +37,8 @@ class FirkaFonts {
     required this.B_14SB,
     required this.B_12R,
     required this.B_12SB,
+    required this.P_14,
+    required this.P_12,
   });
 }
 
@@ -174,6 +179,16 @@ final _defaultFonts = FirkaFonts(
   B_12SB: TextStyle(
     fontSize: 12,
     fontFamily: 'Figtree',
+    fontVariations: [FontVariation("wght", 600)],
+  ),
+  P_14: TextStyle(
+    fontSize: 14,
+    fontFamily: 'RobotoMono',
+    fontVariations: [FontVariation("wght", 600)],
+  ),
+  P_12: TextStyle(
+    fontSize: 12,
+    fontFamily: 'RobotoMono',
     fontVariations: [FontVariation("wght", 600)],
   ),
 );
