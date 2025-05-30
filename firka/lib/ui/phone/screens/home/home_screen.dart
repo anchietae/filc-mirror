@@ -110,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } finally {
       setState(() {
         _fetching = false;
+        toast = null;
       });
     }
   }
