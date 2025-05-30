@@ -1,6 +1,6 @@
 import 'package:firka/helpers/extensions.dart';
 import 'package:firka/helpers/ui/firka_card.dart';
-import 'package:firka/helpers/ui/grade_helpers.dart';
+import 'package:firka/helpers/ui/grade.dart';
 import 'package:firka/helpers/ui/stateless_async_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -37,38 +37,11 @@ class HomeGradesSubjectScreen extends StatelessAsyncWidget {
         height: 8,
       ));
       for (var grade in group.value) {
-        Color gradeColor = appStyle.colors.grade1;
-        var gradeStr = grade.numericValue?.toString() ?? "0";
-
-        if (grade.valueType.name == "Szazalekos") {
-          gradeStr = grade.strValue;
-          if (grade.numericValue != null) {
-            gradeColor = getGradeColor(percentageToGrade(grade.numericValue!).toDouble());
-          }
-        } else {
-          if (grade.numericValue != null) {
-            gradeColor = getGradeColor(grade.numericValue!.toDouble());
-          }
-        }
-
-
         gradeWidgets.add(FirkaCard(
           left: [
             Row(
               children: [
-                Card(
-                  shape: CircleBorder(
-                    eccentricity: 1.0
-                  ),
-                  shadowColor: Colors.transparent,
-                  color: gradeColor.withAlpha(38),
-                  child: Padding(
-                      padding: EdgeInsets.only(left: 8, right: 8),
-                      child: Text(gradeStr,
-                          style: appStyle.fonts.H_H1.copyWith(
-                              fontSize: 24,
-                              color: gradeColor))),
-                ),
+                GradeWidget(grade),
                 SizedBox(width: 8),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
