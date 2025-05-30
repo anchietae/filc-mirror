@@ -21,6 +21,23 @@ int roundGrade(double grade) {
   return 5;
 }
 
+int percentageToGrade(int grade) {
+  if (grade < 50) {
+    return 1;
+  }
+  if (grade < 60) {
+    return 2;
+  }
+  if (grade < 70) {
+    return 3;
+  }
+  if (grade < 80) {
+    return 4;
+  }
+
+  return 5;
+}
+
 Color getGradeColor(double grade) {
   switch (roundGrade(grade)) {
     case 2:

@@ -1,3 +1,4 @@
+import 'package:firka/helpers/api/model/generic.dart';
 import 'package:firka/helpers/ui/firka_card.dart';
 import 'package:firka/helpers/ui/grade_helpers.dart';
 import 'package:firka/helpers/ui/stateless_async_widget.dart';
@@ -37,6 +38,16 @@ class HomeGradesScreen extends StatelessAsyncWidget {
     subjects.sort((s1, s2) => s1.name.compareTo(s2.name));
 
     for (var subject in subjects) {
+      for (var grade in grades.response!) {
+        if (grade.subject.uid != subject.uid) continue;
+
+        if (grade.valueType.name == "Szazalekos") {
+          grade.valueType = NameUidDesc(uid: "1,Osztalyzat", name: "Osztalyzat", description: "");
+          if (grade.numericValue != null) {
+            grade.numericValue = percentageToGrade(grade.numericValue!);
+          }
+        }
+      }
       var avg = grades.response!.getAverageBySubject(subject);
 
       if (avg.isNaN) {

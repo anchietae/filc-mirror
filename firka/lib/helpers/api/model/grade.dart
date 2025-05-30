@@ -10,10 +10,10 @@ class Grade {
   final String? topic;
   final NameUidDesc type;
   final NameUidDesc? mode;
-  final NameUidDesc valueType;
+  NameUidDesc valueType;
   final String teacher;
   final String? kind;
-  final int? numericValue;
+  int? numericValue;
   final String strValue;
   final int? weightPercentage;
   final String? shortStrValue;
