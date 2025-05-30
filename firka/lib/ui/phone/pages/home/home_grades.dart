@@ -37,13 +37,20 @@ class HomeGradesScreen extends StatelessAsyncWidget {
     subjects.sort((s1, s2) => s1.name.compareTo(s2.name));
 
     for (var subject in subjects) {
-      gradeCards.add(GestureDetector(
-        child: GradeSmallCard(grades.response!, subject),
-        onTap: () {
-          cb(ActiveHomePage(HomePages.grades, subPageUid: subject.uid));
-        },
-      ));
-      subjectAvg += grades.response!.getAverageBySubject(subject);
+      var avg = grades.response!.getAverageBySubject(subject);
+
+      if (avg.isNaN) {
+        gradeCards.add(GradeSmallCard(grades.response!, subject));
+      } else {
+        gradeCards.add(GestureDetector(
+          child: GradeSmallCard(grades.response!, subject),
+          onTap: () {
+            cb(ActiveHomePage(HomePages.grades, subPageUid: subject.uid));
+          },
+        ));
+      }
+
+      subjectAvg += roundGrade(avg);
     }
 
     subjectAvg /= subjects.length;

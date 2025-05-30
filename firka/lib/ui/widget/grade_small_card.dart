@@ -31,6 +31,7 @@ class GradeSmallCard extends FirkaCard {
             ),
           ),
         ], right: [
+          grades.getAverageBySubject(subject).isNaN ? SizedBox() :
           Card(
             shadowColor: Colors.transparent,
             color: getGradeColor(grades.getAverageBySubject(subject))
