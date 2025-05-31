@@ -25,7 +25,7 @@ ha minden jól megy, egy `upload-keystore.jks` fájl létrejön.
 hozz létre egy új fájlt `keystore.properties` néven, és írd bele a következőt:
 
 ```properties
-storeFile=keystore.properties
+storeFile=upload-keystore.jks
 storePassword=password
 keyPassword=password
 keyAlias=upload
