@@ -11,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:shake_gesture/shake_gesture.dart';
 
+import '../../pages/error/main_error.dart';
 import '../../pages/extras/extras.dart';
 import '../../pages/home/home_grades_subject.dart';
 import '../../pages/home/home_timetable.dart';
@@ -109,8 +110,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           .copyWith(color: appStyle.colors.errorText),
                     ),
                     SizedBox(width: 8),
-                    Majesticon(Majesticon.questionCircleSolid,
-                        color: appStyle.colors.errorAccent, size: 24)
+                    GestureDetector(
+                      child: Majesticon(Majesticon.questionCircleSolid,
+                          color: appStyle.colors.errorAccent, size: 24),
+                      onTap: () {
+                        showErrorBottomSheet(context, e.toString());
+                      },
+                    ),
                   ],
                 ),
               ),
