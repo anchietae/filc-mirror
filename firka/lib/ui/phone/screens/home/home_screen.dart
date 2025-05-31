@@ -1,3 +1,4 @@
+import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/main.dart';
 import 'package:firka/ui/model/style.dart';
 import 'package:firka/ui/phone/pages/home/home_grades.dart';
@@ -25,6 +26,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 enum HomePages { home, grades, timetable }
+
+enum ActiveToastType { fetching, error, none }
 
 class ActiveHomePage {
   final HomePages page;
@@ -54,6 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget? toast;
 
+  ActiveToastType activeToast = ActiveToastType.none;
+
   void setPageCB(ActiveHomePage newPage) {
     setState(() {
       previousPage = page;
@@ -67,14 +72,20 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       _prefetched = true;
 
-      await data.client.getGrades(forceCache: false);
+      ApiResponse<Object> res = await data.client.getGrades(forceCache: false);
+
+      if (res.err != null) throw res.err!;
 
       var now = DateTime.now();
       var start = now.subtract(Duration(days: now.weekday - 1));
       var end = start.add(Duration(days: 6));
 
-      await data.client.getTimeTable(start, end, forceCache: false);
+      res = await data.client.getTimeTable(start, end, forceCache: false);
+
+      if (res.err != null) throw res.err!;
     } catch (e) {
+      activeToast = ActiveToastType.error;
+
       setState(() {
         // TODO: Make this and the error toast more rounded
         toast = Positioned(
@@ -110,7 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
     } finally {
       setState(() {
         _fetching = false;
-        toast = null;
+
+        if (activeToast == ActiveToastType.fetching) toast = null;
       });
     }
   }
@@ -150,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (_fetching) {
       setState(() {
+        activeToast = ActiveToastType.fetching;
         toast = Positioned(
           top: MediaQuery.of(context).size.height / 1.6,
           left: 0.0,
