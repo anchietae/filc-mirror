@@ -157,29 +157,29 @@ final _defaultFonts = FirkaFonts(
   B_16R: TextStyle(
       fontSize: 16,
       fontFamily: 'Figtree',
-      fontVariations: [FontVariation("wght", 500)]),
+      fontVariations: [FontVariation("wght", 600)]),
   B_16SB: TextStyle(
     fontSize: 16,
     fontFamily: 'Figtree',
-    fontVariations: [FontVariation("wght", 600)],
+    fontVariations: [FontVariation("wght", 700)],
   ),
   B_14R: TextStyle(
       fontSize: 14,
       fontFamily: 'Figtree',
-      fontVariations: [FontVariation("wght", 500)]),
+      fontVariations: [FontVariation("wght", 600)]),
   B_14SB: TextStyle(
     fontSize: 14,
     fontFamily: 'Figtree',
-    fontVariations: [FontVariation("wght", 600)],
+    fontVariations: [FontVariation("wght", 700)],
   ),
   B_12R: TextStyle(
       fontSize: 12,
       fontFamily: 'Figtree',
-      fontVariations: [FontVariation("wght", 500)]),
+      fontVariations: [FontVariation("wght", 600)]),
   B_12SB: TextStyle(
     fontSize: 12,
     fontFamily: 'Figtree',
-    fontVariations: [FontVariation("wght", 600)],
+    fontVariations: [FontVariation("wght", 700)],
   ),
   P_14: TextStyle(
     fontSize: 14,

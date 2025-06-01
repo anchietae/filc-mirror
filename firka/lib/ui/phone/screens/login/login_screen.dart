@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/helpers/api/consts.dart';
@@ -9,6 +8,7 @@ import 'package:firka/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../helpers/api/token_grant.dart';
@@ -167,15 +167,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Text(
                                   'Set hostname',
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: Color(0xFF394B0A), // Text-Primary
-                                    fontSize: 17,
-                                    fontFamily: 'Montserrat',
-                                    fontVariations: [
-                                      FontVariation('wght', 700),
-                                    ],
-                                    letterSpacing: -0.30,
-                                  ),
+                                  style: appStyle.fonts.H_18px.copyWith(
+                                      color: appStyle.colors.textPrimary),
                                 ),
                               ),
                               onTap: () {
@@ -288,16 +281,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      const Text(
-                        'Firka',
-                        style: TextStyle(
-                          color: Color(0xFF394B0A),
-                          fontSize: 17,
-                          fontFamily: 'Montserrat',
-                          fontVariations: [
-                            FontVariation('wght', 700),
-                          ],
-                        ),
+                      Text(
+                        'Firka Napló',
+                        style: appStyle.fonts.H_18px
+                            .copyWith(color: appStyle.colors.textPrimary),
                       ),
                     ],
                   ),
@@ -315,29 +302,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Text(
                             slides[index]['title']!,
-                            style: const TextStyle(
-                              color: Color(0xFF394B0A),
-                              fontSize: 19,
-                              fontFamily: 'Montserrat',
-                              fontVariations: [
-                                FontVariation('wght', 700),
-                              ],
-                            ),
+                            style: appStyle.fonts.H_18px
+                                .copyWith(color: appStyle.colors.textPrimary),
                             softWrap: true,
                             overflow: TextOverflow.visible,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             slides[index]['subtitle']!,
-                            style: const TextStyle(
-                              color: Color(0xFF394B0A),
-                              fontSize: 17,
-                              fontFamily: 'Montserrat',
-                              fontVariations: [
-                                FontVariation('wght', 400),
-                              ],
-                              height: 1.30,
-                            ),
+                            style: appStyle.fonts.B_14R
+                                .copyWith(color: appStyle.colors.textPrimary),
                             softWrap: true,
                             overflow: TextOverflow.visible,
                           ),
@@ -441,7 +415,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.8, // Adjust height for content
+                                              0.8,
+                                          // Adjust height for content
                                           margin: const EdgeInsets.symmetric(
                                               horizontal: 16),
                                           // Add ClipRRect for circular edges
@@ -484,15 +459,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               AppLocalizations.of(context)!.loginBtn,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Color(0xFF394B0A), // Text-Primary
-                                fontSize: 17,
-                                fontFamily: 'Montserrat',
-                                fontVariations: [
-                                  FontVariation('wght', 700),
-                                ],
-                                letterSpacing: -0.30,
-                              ),
+                              style: appStyle.fonts.H_16px.copyWith(
+                                  color: appStyle.colors.textPrimary,
+                                  fontVariations: [FontVariation("wght", 800)]),
                             ),
                           ),
                         ),
@@ -504,15 +473,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       AppLocalizations.of(context)!.privacyLabel,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Color(0x7F394C0A) /* Text-Teritary */,
-                        fontSize: 14,
-                        fontFamily: 'Montserrat',
-                        fontVariations: [
-                          FontVariation('wght', 500),
-                        ],
-                        height: 1.30,
-                      ),
+                      style: appStyle.fonts.H_12px
+                          .copyWith(color: appStyle.colors.textTertiary),
                     ),
                     onTapDown: (_) {
                       startTimer();

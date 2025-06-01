@@ -3,15 +3,18 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
 
+import '../../model/style.dart';
+
 class BottomNavIcon extends StatelessWidget {
   void Function() onTap;
+  bool active;
   Uint8List icon;
   String text;
   Color iconColor;
   Color textColor;
 
-  BottomNavIcon(
-      this.onTap, this.icon, this.text, this.iconColor, this.textColor,
+  BottomNavIcon(this.onTap, this.active, this.icon, this.text, this.iconColor,
+      this.textColor,
       {super.key});
 
   @override
@@ -31,14 +34,7 @@ class BottomNavIcon extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 text,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 13,
-                  fontFamily: 'Figtree',
-                  fontVariations: const [
-                    FontVariation('wght', 640),
-                  ],
-                ),
+                style: active ? appStyle.fonts.B_12SB : appStyle.fonts.B_12R,
               ),
             ],
           ),

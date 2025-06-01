@@ -253,6 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 page = ActiveHomePage(HomePages.home);
                               });
                             },
+                                page.page == HomePages.home,
                                 page.page == HomePages.home
                                     ? Majesticon.homeSolid
                                     : Majesticon.homeLine,
@@ -272,6 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 page = ActiveHomePage(HomePages.grades);
                               });
                             },
+                                page.page == HomePages.grades,
                                 page.page == HomePages.grades
                                     ? Majesticon.bookmarkSolid
                                     : Majesticon.bookmarkLine,
@@ -291,6 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 page = ActiveHomePage(HomePages.timetable);
                               });
                             },
+                                page.page == HomePages.timetable,
                                 page.page == HomePages.timetable
                                     ? Majesticon.calendarSolid
                                     : Majesticon.calendarLine,
@@ -304,6 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               HapticFeedback.lightImpact();
                               showExtrasBottomSheet(context);
                             },
+                                false,
                                 Majesticon.globeEarthLine,
                                 AppLocalizations.of(context)!.other,
                                 appStyle.colors.secondary,

@@ -42,7 +42,8 @@ class HomeGradesScreen extends StatelessAsyncWidget {
         if (grade.subject.uid != subject.uid) continue;
 
         if (grade.valueType.name == "Szazalekos") {
-          grade.valueType = NameUidDesc(uid: "1,Osztalyzat", name: "Osztalyzat", description: "");
+          grade.valueType = NameUidDesc(
+              uid: "1,Osztalyzat", name: "Osztalyzat", description: "");
           if (grade.numericValue != null) {
             grade.numericValue = percentageToGrade(grade.numericValue!);
           }
@@ -96,7 +97,7 @@ class HomeGradesScreen extends StatelessAsyncWidget {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.your_subjects,
-                    style: appStyle.fonts.B_16SB
+                    style: appStyle.fonts.H_14px
                         .apply(color: appStyle.colors.textSecondary),
                   ),
                   SizedBox(height: 16),
@@ -150,7 +151,7 @@ class HomeGradesScreen extends StatelessAsyncWidget {
                     right: [
                       Text(
                         week.response!.length.toString(),
-                        style: appStyle.fonts.B_16SB
+                        style: appStyle.fonts.B_14SB
                             .apply(color: appStyle.colors.textPrimary),
                       ),
                     ],
