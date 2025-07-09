@@ -86,21 +86,6 @@ android {
             }
         }
     }
-
-    flavorDimensions += "default"
-    productFlavors {
-        create("production") {
-            dimension = "default"
-        }
-        create("staging") {
-            dimension = "default"
-            resValue(
-                type = "string",
-                name = "app_name",
-                value = "Firka staging")
-            applicationIdSuffix = ".staging"
-        }
-    }
 }
 dependencies {
     implementation("androidx.wear:wear-ongoing:1.0.0")

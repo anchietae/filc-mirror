@@ -8,8 +8,6 @@ pipeline {
                     sh '''#!/bin/sh
                     set -x
                     nix-shell -p gocryptfs --command "fusermount -u secrets" || true
-                    rm secrets/keystore.properties || true
-                    rm secrets/*.jks || true
                     '''
                 }
             }
@@ -41,18 +39,6 @@ pipeline {
                 '''
             }
         }
-        
-        stage('Copy keys') {
-            when {
-                branch 'dev'
-            }
-            steps {
-                sh '''#!/bin/sh
-                cp -v $HOME/android_staging_secrets/*.jks secrets/
-                cp -v $HOME/android_staging_secrets/keystore.properties secrets
-                '''
-            }
-        }
 
         stage('Clone submodules') {
             steps {
@@ -73,7 +59,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                archiveArtifacts artifacts: 'firka/build/app/outputs/flutter-apk/app-*-production-release.apk', fingerprint: true
+                archiveArtifacts artifacts: 'firka/build/app/outputs/flutter-apk/app-*-release.apk', fingerprint: true
             }
         }
 
@@ -84,8 +70,7 @@ pipeline {
                 }
             }
             steps {
-                archiveArtifacts artifacts: 'firka/build/app/outputs/flutter-apk/app-*-staging-release.apk', fingerprint: true
-                archiveArtifacts artifacts: 'firka/build/apk-code-size-analysis_*.json', fingerprint: true
+                archiveArtifacts artifacts: 'firka/build/app/outputs/flutter-apk/app-debug.apk', fingerprint: true
             }
         }
     }
