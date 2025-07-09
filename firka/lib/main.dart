@@ -17,7 +17,6 @@ import 'package:firka/wear_main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:isar/isar.dart';
 import 'package:path/path.dart' as p;
@@ -26,6 +25,7 @@ import 'package:watch_connectivity/watch_connectivity.dart';
 
 import 'helpers/api/consts.dart';
 import 'helpers/db/models/homework_cache_model.dart';
+import 'l10n/app_localizations.dart';
 
 Isar? isarInit;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

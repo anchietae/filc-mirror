@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:firka/ui/widget/class_icon_widget.dart';
 import 'package:flutter_arc_text/flutter_arc_text.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/helpers/extensions.dart';
 import 'package:firka/wear_main.dart';
@@ -13,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:zear_plus/wear_plus.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../model/style.dart';
 import '../../widgets/circular_progress_indicator.dart';
 

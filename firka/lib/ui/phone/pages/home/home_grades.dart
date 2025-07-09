@@ -5,9 +5,9 @@ import 'package:firka/helpers/ui/stateless_async_widget.dart';
 import 'package:firka/ui/phone/screens/home/home_screen.dart';
 import 'package:firka/ui/widget/grade_small_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../helpers/api/model/subject.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../main.dart';
 import '../../../model/style.dart';
 

@@ -8,10 +8,10 @@ import 'package:firka/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../helpers/api/token_grant.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../model/style.dart';
 import '../home/home_screen.dart';
 

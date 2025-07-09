@@ -7,10 +7,10 @@ import 'package:firka/ui/phone/widgets/bottom_nav_icon.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:shake_gesture/shake_gesture.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../pages/error/main_error.dart';
 import '../../pages/extras/extras.dart';
 import '../../pages/home/home_grades_subject.dart';

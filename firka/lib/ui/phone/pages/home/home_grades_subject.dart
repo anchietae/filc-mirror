@@ -3,8 +3,8 @@ import 'package:firka/helpers/ui/firka_card.dart';
 import 'package:firka/helpers/ui/grade.dart';
 import 'package:firka/helpers/ui/stateless_async_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../main.dart';
 import '../../../model/style.dart';
 

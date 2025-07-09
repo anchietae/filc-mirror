@@ -8,7 +8,6 @@ import 'package:firka/helpers/db/models/token_model.dart';
 import 'package:firka/ui/wear/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isar/isar.dart';
@@ -17,6 +16,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:zear_plus/wear_plus.dart';
 
 import 'helpers/api/client/kreta_client.dart';
+import 'l10n/app_localizations.dart';
 import 'ui/wear/screens/home/home_screen.dart';
 
 Isar? isarInit;
