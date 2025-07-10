@@ -1,5 +1,8 @@
 pipeline {
-    agent any
+    agent  { label 'ubuntu' }
+    environment {
+        PATH = "/home/jenkins/development/flutter/bin:${env.PATH}"
+    }
 
     stages {
         stage('Cleanup') {
@@ -7,7 +10,7 @@ pipeline {
                 script {
                     sh '''#!/bin/sh
                     set -x
-                    nix-shell -p gocryptfs --command "fusermount -u secrets" || true
+                    fusermount -u secrets || true
                     '''
                 }
             }
@@ -35,7 +38,7 @@ pipeline {
                 }
 
                 sh '''#!/bin/sh
-                echo \$PASSWORD | nix-shell -p gocryptfs --command "gocryptfs $HOME/android_secrets secrets/ -nonempty"
+                echo \$PASSWORD | gocryptfs $HOME/android_secrets secrets/ -nonempty
                 '''
             }
         }
@@ -50,7 +53,7 @@ pipeline {
 
         stage('Build firka') {
             steps {
-                sh 'nix develop -c "./tools/linux/build_apk.sh" "' + env.BRANCH_NAME + '"'
+                sh 'bash -c "./tools/linux/build_apk.sh ' + env.BRANCH_NAME + '"'
             }
         }
 
