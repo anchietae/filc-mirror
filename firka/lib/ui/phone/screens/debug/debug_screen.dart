@@ -5,10 +5,10 @@ import 'dart:typed_data';
 import 'package:firka/helpers/icon_helper.dart';
 import 'package:firka/helpers/profile_picture.dart';
 import 'package:firka/main.dart';
-import 'package:firka/ui/widget/class_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:majesticons_flutter/majesticons_flutter.dart';
+
+import '../../../widget/firka_icon.dart';
 
 class DebugScreen extends StatefulWidget {
   final AppInitialization data;
@@ -21,6 +21,7 @@ class DebugScreen extends StatefulWidget {
 
 class _DebugScreen extends State<DebugScreen> {
   final AppInitialization data;
+
   _DebugScreen(this.data);
 
   late ImagePicker _picker;
@@ -174,8 +175,9 @@ class _DebugScreen extends State<DebugScreen> {
                           ),
                         ),
                         Center(
-                          child:
-                              Majesticon(getIconData(e), color: Colors.black),
+                          child: FirkaIconWidget(
+                              FirkaIconType.Majesticons, getIconData(e),
+                              color: Colors.black),
                         )
                       ],
                     );

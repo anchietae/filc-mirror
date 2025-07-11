@@ -11,6 +11,7 @@ import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:shake_gesture/shake_gesture.dart';
 
 import '../../../../l10n/app_localizations.dart';
+import '../../../widget/firka_icon.dart';
 import '../../pages/error/main_error.dart';
 import '../../pages/extras/extras.dart';
 import '../../pages/home/home_grades_subject.dart';
@@ -111,7 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(width: 8),
                     GestureDetector(
-                      child: Majesticon(Majesticon.questionCircleSolid,
+                      child: FirkaIconWidget(FirkaIconType.Majesticons,
+                          Majesticon.questionCircleSolid,
                           color: appStyle.colors.errorAccent, size: 24),
                       onTap: () {
                         showErrorBottomSheet(context, e.toString());

@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:majesticons_flutter/majesticons_flutter.dart';
 
 import '../../model/style.dart';
+import '../../widget/firka_icon.dart';
 
 class BottomNavIcon extends StatelessWidget {
   void Function() onTap;
@@ -30,7 +30,9 @@ class BottomNavIcon extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Majesticon(icon, color: iconColor, size: 24).build(context),
+              FirkaIconWidget(FirkaIconType.Majesticons, icon,
+                      color: iconColor, size: 24)
+                  .build(context),
               const SizedBox(height: 4),
               Text(
                 text,

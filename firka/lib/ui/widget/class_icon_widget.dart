@@ -1,6 +1,7 @@
 import 'package:firka/helpers/icon_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:majesticons_flutter/majesticons_flutter.dart';
+
+import 'firka_icon.dart';
 
 class ClassIconWidget extends StatelessWidget {
   final String _uid;
@@ -24,6 +25,7 @@ class ClassIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var iconCategory = getIconType(_uid, _className, _category);
 
-    return Majesticon(getIconData(iconCategory), color: color, size: size);
+    return FirkaIconWidget(FirkaIconType.Majesticons, getIconData(iconCategory),
+        color: color, size: size);
   }
 }
