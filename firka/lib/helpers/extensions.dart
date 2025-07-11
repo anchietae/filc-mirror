@@ -23,7 +23,9 @@ extension DurationExtension on Duration {
   }
 }
 
-enum FormatMode { yearly, grades }
+enum FormatMode { yearly, grades, welcome }
+
+enum Cycle { morning, day, afternoon, night }
 
 extension DateExtension on DateTime {
   String format(BuildContext context, FormatMode mode) {
@@ -57,9 +59,35 @@ extension DateExtension on DateTime {
         return format(context, FormatMode.yearly);
       case FormatMode.yearly:
         return DateFormat('MMMM dd').format(this);
-      default:
-        throw Exception("unimplemented format mode: $mode");
+      case FormatMode.welcome:
+        return DateFormat('EEE, MMM d').format(this);
     }
+  }
+
+  DateTime getMidnight() {
+    return subtract(Duration(
+        hours: hour,
+        minutes: minute,
+        seconds: second,
+        milliseconds: millisecond));
+  }
+
+  Cycle getDayCycle() {
+    var midnight = getMidnight();
+    if (isAfter(midnight.add(Duration(hours: 7))) &&
+        isBefore(midnight.add(Duration(hours: 9)))) {
+      return Cycle.morning;
+    }
+    if (isAfter(midnight.add(Duration(hours: 7))) &&
+        isBefore(midnight.add(Duration(hours: 12)))) {
+      return Cycle.day;
+    }
+    if (isAfter(midnight.add(Duration(hours: 7))) &&
+        isBefore(midnight.add(Duration(hours: 20)))) {
+      return Cycle.afternoon;
+    }
+
+    return Cycle.night;
   }
 }
 

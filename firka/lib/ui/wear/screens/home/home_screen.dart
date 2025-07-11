@@ -1,15 +1,14 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:firka/ui/widget/class_icon_widget.dart';
-import 'package:flutter_arc_text/flutter_arc_text.dart';
 import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/helpers/extensions.dart';
+import 'package:firka/ui/widget/class_icon_widget.dart';
 import 'package:firka/wear_main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_arc_text/flutter_arc_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:zear_plus/wear_plus.dart';
 
 import '../../../../l10n/app_localizations.dart';
@@ -18,6 +17,7 @@ import '../../widgets/circular_progress_indicator.dart';
 
 class WearHomeScreen extends StatefulWidget {
   final WearAppInitialization data;
+
   const WearHomeScreen(this.data, {super.key});
 
   @override
@@ -26,6 +26,7 @@ class WearHomeScreen extends StatefulWidget {
 
 class _WearHomeScreenState extends State<WearHomeScreen> {
   final WearAppInitialization data;
+
   _WearHomeScreenState(this.data);
 
   int? currentLessonNo;
@@ -56,8 +57,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     var kreta = data.client;
 
     now = DateTime.now();
-    var todayStart = now.subtract(
-        Duration(hours: now.hour, minutes: now.minute, seconds: now.second));
+    var todayStart = now.getMidnight();
     var todayEnd = todayStart.add(Duration(hours: 23, minutes: 59));
     var classes = await kreta.getTimeTable(todayStart, todayEnd);
 
