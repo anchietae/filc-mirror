@@ -104,7 +104,7 @@ Map<ClassIcon, Uint8List> _iconMap = {
   // ClassIcon.attitude: ,
   ClassIcon.language: Majesticon.tooltipsSolid,
   // ClassIcon.linux: ,
-  // ClassIcon.database: ,
+  ClassIcon.database: Majesticon.dataSolid,
   // ClassIcon.applications: ,
   // ClassIcon.project: ,
 };
