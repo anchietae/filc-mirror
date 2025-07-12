@@ -1,3 +1,4 @@
+import 'package:firka/ui/model/style.dart';
 import 'package:flutter/material.dart';
 
 void showExtrasBottomSheet(BuildContext context) {
@@ -7,7 +8,7 @@ void showExtrasBottomSheet(BuildContext context) {
     isScrollControlled: true,
     enableDrag: true,
     backgroundColor: Colors.transparent,
-    barrierColor: Colors.transparent,
+    barrierColor: appStyle.colors.a15p,
     constraints: BoxConstraints(
       maxHeight: MediaQuery.of(context).size.height * 0.3,
     ),
@@ -25,7 +26,7 @@ void showExtrasBottomSheet(BuildContext context) {
             alignment: Alignment.bottomCenter,
             child: Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
+                color: appStyle.colors.background,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               ),
               child: Padding(
