@@ -49,6 +49,7 @@ class ActiveHomePage {
 
 bool _fetching = true;
 bool _prefetched = false;
+bool canPop = true;
 
 class _HomeScreenState extends State<HomeScreen> {
   final AppInitialization data;
@@ -56,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
   _HomeScreenState(this.data);
 
   ActiveHomePage page = ActiveHomePage(HomePages.home);
-  late ActiveHomePage previousPage;
+  List<ActiveHomePage> previousPages = List.empty(growable: true);
 
   Widget? toast;
 
@@ -64,7 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void setPageCB(ActiveHomePage newPage) {
     setState(() {
-      previousPage = page;
+      previousPages.add(page);
+      canPop = false;
       page = newPage;
     });
   }
@@ -211,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return PopScope(
-      canPop: false,
+      canPop: canPop,
       child: Scaffold(
         backgroundColor: appStyle.colors.background,
         body: SafeArea(
@@ -252,7 +254,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
 
                               setState(() {
-                                previousPage = page;
+                                previousPages.add(page);
+                                canPop = false;
                                 page = ActiveHomePage(HomePages.home);
                               });
                             },
@@ -272,7 +275,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
 
                               setState(() {
-                                previousPage = page;
+                                previousPages.add(page);
+                                canPop = false;
                                 page = ActiveHomePage(HomePages.grades);
                               });
                             },
@@ -292,7 +296,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
 
                               setState(() {
-                                previousPage = page;
+                                previousPages.add(page);
+                                canPop = false;
                                 page = ActiveHomePage(HomePages.timetable);
                               });
                             },
@@ -328,10 +333,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       onPopInvokedWithResult: (_, __) => {
-        if (page != previousPage)
+        if (previousPages.isNotEmpty && page != previousPages.last)
           {
             setState(() {
-              page = previousPage;
+              page = previousPages.removeLast();
+              canPop = previousPages.isEmpty;
             })
           }
       },
