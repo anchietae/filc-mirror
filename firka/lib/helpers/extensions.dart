@@ -75,15 +75,15 @@ extension DateExtension on DateTime {
 
   Cycle getDayCycle() {
     var midnight = getMidnight();
-    if (isAfter(midnight.add(Duration(hours: 7))) &&
+    if (isAfter(midnight.add(Duration(hours: 5, minutes: 30))) &&
         isBefore(midnight.add(Duration(hours: 9)))) {
       return Cycle.morning;
     }
-    if (isAfter(midnight.add(Duration(hours: 7))) &&
+    if (isAfter(midnight.add(Duration(hours: 5, minutes: 30))) &&
         isBefore(midnight.add(Duration(hours: 14)))) {
       return Cycle.day;
     }
-    if (isAfter(midnight.add(Duration(hours: 7))) &&
+    if (isAfter(midnight.add(Duration(hours: 5, minutes: 30))) &&
         isBefore(midnight.add(Duration(hours: 20)))) {
       return Cycle.afternoon;
     }
