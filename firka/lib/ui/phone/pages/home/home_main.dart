@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firka/helpers/extensions.dart';
 import 'package:firka/ui/phone/widgets/home_main_welcome.dart';
+import 'package:firka/ui/widget/delayed_spinner.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../helpers/api/model/student.dart';
@@ -68,7 +69,7 @@ class _HomeMainScreen extends State<HomeMainScreen> {
     if (student != null && lessons != null) {
       return HomeMainWelcome(now, student!, lessons!);
     } else {
-      return SizedBox();
+      return DelayedSpinner();
     }
   }
 }

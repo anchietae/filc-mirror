@@ -1,3 +1,4 @@
+import 'package:firka/ui/widget/delayed_spinner.dart';
 import 'package:flutter/material.dart';
 
 abstract class StatelessAsyncWidget extends StatelessWidget {
@@ -11,7 +12,7 @@ abstract class StatelessAsyncWidget extends StatelessWidget {
         future: buildAsync(context),
         builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: DelayedSpinner());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
