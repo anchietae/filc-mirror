@@ -251,13 +251,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             BottomNavIcon(() {
                               if (page.page != HomePages.home) {
                                 HapticFeedback.lightImpact();
-                              }
 
-                              setState(() {
-                                previousPages.add(page);
-                                canPop = false;
-                                page = ActiveHomePage(HomePages.home);
-                              });
+                                setState(() {
+                                  previousPages.add(page);
+                                  canPop = false;
+                                  page = ActiveHomePage(HomePages.home);
+                                });
+                              }
                             },
                                 page.page == HomePages.home,
                                 page.page == HomePages.home
@@ -272,13 +272,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             BottomNavIcon(() {
                               if (page.page != HomePages.grades) {
                                 HapticFeedback.lightImpact();
-                              }
 
-                              setState(() {
-                                previousPages.add(page);
-                                canPop = false;
-                                page = ActiveHomePage(HomePages.grades);
-                              });
+                                setState(() {
+                                  previousPages.add(page);
+                                  canPop = false;
+                                  page = ActiveHomePage(HomePages.grades);
+                                });
+                              }
                             },
                                 page.page == HomePages.grades,
                                 page.page == HomePages.grades
@@ -293,13 +293,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             BottomNavIcon(() {
                               if (page.page != HomePages.timetable) {
                                 HapticFeedback.lightImpact();
-                              }
 
-                              setState(() {
-                                previousPages.add(page);
-                                canPop = false;
-                                page = ActiveHomePage(HomePages.timetable);
-                              });
+                                setState(() {
+                                  previousPages.add(page);
+                                  canPop = false;
+                                  page = ActiveHomePage(HomePages.timetable);
+                                });
+                              }
                             },
                                 page.page == HomePages.timetable,
                                 page.page == HomePages.timetable
