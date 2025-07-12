@@ -33,6 +33,19 @@ class HomeMainWelcome extends StatelessWidget {
     }
   }
 
+  String getRawTitle(BuildContext context, String name, Cycle dayCycle) {
+    switch (dayCycle) {
+      case Cycle.morning:
+        return AppLocalizations.of(context)!.good_morning(name);
+      case Cycle.day:
+        return AppLocalizations.of(context)!.good_day(name);
+      case Cycle.afternoon:
+        return AppLocalizations.of(context)!.good_afternoon(name);
+      case Cycle.night:
+        return AppLocalizations.of(context)!.good_night(name);
+    }
+  }
+
   String getTitle(BuildContext context, Cycle dayCycle) {
     var name = "";
 
@@ -43,19 +56,12 @@ class HomeMainWelcome extends StatelessWidget {
     }
 
     if (lessons.isEmpty) {
-      switch (dayCycle) {
-        case Cycle.morning:
-          return AppLocalizations.of(context)!.good_morning(name);
-        case Cycle.day:
-          return AppLocalizations.of(context)!.good_day(name);
-        case Cycle.afternoon:
-          return AppLocalizations.of(context)!.good_afternoon(name);
-        case Cycle.night:
-          return AppLocalizations.of(context)!.good_night(name);
-      }
+      return getRawTitle(context, name, dayCycle);
     } else {
-      // TODO: impl this w/ lessons
-      throw UnimplementedError();
+      if (now.isBefore(lessons.first.start)) {
+        return getRawTitle(context, name, dayCycle);
+      }
+      return getRawTitle(context, name, dayCycle);
     }
   }
 
@@ -63,8 +69,22 @@ class HomeMainWelcome extends StatelessWidget {
     if (lessons.isEmpty) {
       return now.format(context, FormatMode.welcome);
     } else {
-      // TODO: impl this w/ lessons
-      throw UnimplementedError();
+      if (now.isBefore(lessons.first.start)) {
+        return now.format(context, FormatMode.welcome);
+      }
+      var lessonsLeft =
+          lessons.where((lesson) => lesson.start.isAfter(now)).length;
+      if (lessonsLeft < 1) {
+        return AppLocalizations.of(context)!.tomorrow_subtitle;
+      }
+      if (lessonsLeft == 1) {
+        return AppLocalizations.of(context)!.suffering_almost_over_subtitle;
+      }
+      if (lessonsLeft <= 3) {
+        return AppLocalizations.of(context)!.n_left_subtitle(lessonsLeft);
+      }
+
+      return now.format(context, FormatMode.welcome);
     }
   }
 
