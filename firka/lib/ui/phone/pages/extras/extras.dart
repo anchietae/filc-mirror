@@ -1,7 +1,11 @@
+import 'package:firka/helpers/ui/firka_card.dart';
+import 'package:firka/main.dart';
 import 'package:firka/ui/model/style.dart';
 import 'package:flutter/material.dart';
 
-void showExtrasBottomSheet(BuildContext context) {
+import '../../screens/debug/debug_screen.dart';
+
+void showExtrasBottomSheet(BuildContext context, AppInitialization data) {
   showModalBottomSheet(
     context: context,
     elevation: 100,
@@ -31,11 +35,21 @@ void showExtrasBottomSheet(BuildContext context) {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Center(
-                  child: Text(
-                    ':3',
-                    style: TextStyle(fontSize: 24),
-                  ),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DebugScreen(data)))
+                      },
+                      child: FirkaCard(
+                        left: [Text('Debug screen')],
+                        right: [],
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),

@@ -308,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             // More Button
                             BottomNavIcon(() {
                               HapticFeedback.lightImpact();
-                              showExtrasBottomSheet(context);
+                              showExtrasBottomSheet(context, data);
                             },
                                 false,
                                 Majesticon.globeEarthLine,
