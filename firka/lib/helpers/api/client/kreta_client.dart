@@ -142,7 +142,10 @@ class KretaClient {
     return (resp, statusCode, null, false);
   }
 
+  ApiResponse<Student>? studentCache;
+
   Future<ApiResponse<Student>> getStudent({bool forceCache = true}) async {
+    if (forceCache && studentCache != null) return studentCache!;
     var (resp, status, ex, cached) = await _cachingGet(CacheId.getStudent,
         KretaEndpoints.getStudentUrl(model.iss!), forceCache);
 
@@ -158,11 +161,16 @@ class KretaClient {
       err = ex.toString();
     }
 
+    if (ex == null) studentCache = ApiResponse(student, 200, null, true);
+
     return ApiResponse(student, status, err, cached);
   }
 
+  ApiResponse<List<NoticeBoardItem>>? noticeBoardCache;
+
   Future<ApiResponse<List<NoticeBoardItem>>> getNoticeBoard(
       {bool forceCache = true}) async {
+    if (forceCache && noticeBoardCache != null) return noticeBoardCache!;
     var (resp, status, ex, cached) = await _cachingGet(CacheId.getNoticeBoard,
         KretaEndpoints.getNoticeBoard(model.iss!), forceCache);
 
@@ -181,10 +189,17 @@ class KretaClient {
       err = ex.toString();
     }
 
+    if (err == null) noticeBoardCache = ApiResponse(items, 200, null, true);
+
     return ApiResponse(items, status, err, cached);
   }
 
+  ApiResponse<List<Grade>>? gradeCache;
+
   Future<ApiResponse<List<Grade>>> getGrades({bool forceCache = true}) async {
+    if (forceCache && gradeCache != null) {
+      return gradeCache!;
+    }
     var (resp, status, ex, cached) = await _cachingGet(
         CacheId.getGrades, KretaEndpoints.getGrades(model.iss!), forceCache);
 
@@ -204,6 +219,8 @@ class KretaClient {
     }
 
     items.sort((a, b) => b.recordDate.compareTo(a.recordDate));
+
+    if (ex == null) gradeCache = ApiResponse(items, 200, null, true);
 
     return ApiResponse(items, status, err, cached);
   }
@@ -463,8 +480,11 @@ class KretaClient {
     return ApiResponse(items, status, err, cached);
   }
 
+  ApiResponse<List<Omission>>? omissionsCache;
+
   Future<ApiResponse<List<Omission>>> getOmissions(
       {bool forceCache = true}) async {
+    if (omissionsCache != null) return omissionsCache!;
     var (resp, status, ex, cached) = await _cachingGet(CacheId.getOmissions,
         KretaEndpoints.getOmissions(model.iss!), forceCache);
 
@@ -485,6 +505,15 @@ class KretaClient {
 
     items.sort((a, b) => a.date.compareTo(b.date));
 
+    if (ex == null) omissionsCache = ApiResponse(items, 200, null, true);
+
     return ApiResponse(items, status, err, cached);
+  }
+
+  void evictMemCache() {
+    studentCache = null;
+    noticeBoardCache = null;
+    gradeCache = null;
+    omissionsCache = null;
   }
 }
