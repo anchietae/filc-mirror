@@ -13,6 +13,7 @@ import 'package:isar/isar.dart';
 import '../../../main.dart';
 import '../../db/models/token_model.dart';
 import '../../db/util.dart';
+import '../../debug_helper.dart';
 import '../consts.dart';
 import '../model/grade.dart';
 import '../model/notice_board.dart';
@@ -66,7 +67,7 @@ class KretaClient {
 
   Future<Response> _authReq(String method, String url, [Object? data]) async {
     var localToken = await _mutexCallback<String>(() async {
-      var now = DateTime.now();
+      var now = timeNow();
 
       if (now.millisecondsSinceEpoch >=
           model.expiryDate!.millisecondsSinceEpoch) {
@@ -238,7 +239,7 @@ class KretaClient {
     var formatter = DateFormat('yyyy-MM-dd');
     var fromStr = formatter.format(from);
     var toStr = to != null ? formatter.format(to) : null;
-    var now = DateTime.now();
+    var now = timeNow();
 
     if (cache != null && (cache as dynamic).values == null) {
       (cache as dynamic).values = List<String>.empty(growable: true);
@@ -413,8 +414,7 @@ class KretaClient {
     }
 
     homework.sort((a, b) => a.startDate.compareTo(b.startDate));
-    homework =
-        homework.where((h) => h.dueDate.isAfter(DateTime.now())).toList();
+    homework = homework.where((h) => h.dueDate.isAfter(timeNow())).toList();
 
     return ApiResponse(homework, 200, err, cached);
   }

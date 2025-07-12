@@ -11,6 +11,7 @@ import 'package:flutter_arc_text/flutter_arc_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zear_plus/wear_plus.dart';
 
+import '../../../../helpers/debug_helper.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../model/style.dart';
 import '../../widgets/circular_progress_indicator.dart';
@@ -32,7 +33,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   int? currentLessonNo;
   List<Lesson> today = List.empty(growable: true);
   String apiError = "";
-  DateTime now = DateTime.now();
+  DateTime now = timeNow();
   Timer? timer;
   bool init = false;
   WearMode mode = WearMode.active;
@@ -43,11 +44,11 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   @override
   void initState() {
     super.initState();
-    now = DateTime.now();
+    now = timeNow();
 
     timer = Timer.periodic(Duration(seconds: 1), (timer) async {
       setState(() {
-        now = DateTime.now();
+        now = timeNow();
       });
     });
     initStateAsync();
@@ -56,7 +57,7 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
   Future<void> initStateAsync() async {
     var kreta = data.client;
 
-    now = DateTime.now();
+    now = timeNow();
     var todayStart = now.getMidnight();
     var todayEnd = todayStart.add(Duration(hours: 23, minutes: 59));
     var classes = await kreta.getTimeTable(todayStart, todayEnd);

@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 
+import '../debug_helper.dart';
+
 class DatedCacheEntry {
   Id? cacheKey;
   List<String>? values;
@@ -15,7 +17,7 @@ int genCacheKey(DateTime date, int studentId) {
 }
 
 DateTime getDate(int key) {
-  var currentDate = DateTime.now();
+  var currentDate = timeNow();
   var md = key ~/ pow(10, 11);
   var month = md ~/ pow(10, 2);
   var day = md - month * pow(10, 2);

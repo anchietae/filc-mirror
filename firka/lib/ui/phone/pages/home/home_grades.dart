@@ -7,6 +7,7 @@ import 'package:firka/ui/widget/grade_small_card.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../helpers/api/model/subject.dart';
+import '../../../../helpers/debug_helper.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../main.dart';
 import '../../../model/style.dart';
@@ -19,7 +20,7 @@ class HomeGradesScreen extends StatelessAsyncWidget {
 
   @override
   Future<Widget> buildAsync(BuildContext context) async {
-    var now = DateTime.now();
+    var now = timeNow();
     var start = now.subtract(Duration(days: now.weekday - 1));
     var end = start.add(Duration(days: 6));
 

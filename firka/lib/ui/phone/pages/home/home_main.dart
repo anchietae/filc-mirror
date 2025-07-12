@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../helpers/api/model/student.dart';
 import '../../../../helpers/api/model/timetable.dart';
+import '../../../../helpers/debug_helper.dart';
 import '../../../../main.dart';
 
 class HomeMainScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _HomeMainScreen extends State<HomeMainScreen> {
 
   _HomeMainScreen(this.data);
 
-  DateTime now = DateTime.now();
+  DateTime now = timeNow();
   List<Lesson>? lessons;
   Student? student;
   Timer? timer;
@@ -32,7 +33,7 @@ class _HomeMainScreen extends State<HomeMainScreen> {
   void initState() {
     super.initState();
 
-    now = DateTime.now();
+    now = timeNow();
     var midnight = now.getMidnight();
     (() async {
       var resp = await data.client.getTimeTable(
@@ -52,7 +53,7 @@ class _HomeMainScreen extends State<HomeMainScreen> {
 
     timer = Timer.periodic(Duration(seconds: 1), (timer) async {
       setState(() {
-        now = DateTime.now();
+        now = timeNow();
       });
     });
   }

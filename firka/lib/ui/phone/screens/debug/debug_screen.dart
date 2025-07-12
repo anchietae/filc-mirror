@@ -2,12 +2,14 @@
 
 import 'dart:typed_data';
 
+import 'package:firka/helpers/extensions.dart';
 import 'package:firka/helpers/icon_helper.dart';
 import 'package:firka/helpers/profile_picture.dart';
 import 'package:firka/main.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../helpers/debug_helper.dart';
 import '../../../widget/firka_icon.dart';
 
 class DebugScreen extends StatefulWidget {
@@ -91,6 +93,25 @@ class _DebugScreen extends State<DebugScreen> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
+                onPressed: () async {
+                  var d = await showDatePicker(
+                      context: context,
+                      firstDate: DateTime.now().subtract(Duration(days: 365)),
+                      lastDate: DateTime.now().add(Duration(days: 365)));
+
+                  var t = await showTimePicker(
+                      context: context, initialTime: TimeOfDay.now());
+
+                  if (d != null && t != null) {
+                    fakeTime = d
+                        .getMidnight()
+                        .add(Duration(hours: t.hour, minutes: t.minute));
+                  }
+                },
+                child: const Text('Set fake time'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
                 onPressed: () {
                   throw 0 / 0;
                 },
@@ -119,7 +140,7 @@ class _DebugScreen extends State<DebugScreen> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  var now = DateTime.now();
+                  var now = timeNow();
 
                   var start = now.subtract(Duration(days: 14));
                   var end = now.add(Duration(days: 7));
@@ -131,7 +152,7 @@ class _DebugScreen extends State<DebugScreen> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  var now = DateTime.now();
+                  var now = timeNow();
 
                   var start = now.subtract(Duration(days: 7));
                   var end = now.add(Duration(days: 14));

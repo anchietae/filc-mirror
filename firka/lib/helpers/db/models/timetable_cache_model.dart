@@ -1,6 +1,6 @@
-import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:isar/isar.dart';
 
+import '../../debug_helper.dart';
 import '../util.dart';
 
 part 'timetable_cache_model.g.dart';
@@ -11,7 +11,7 @@ class TimetableCacheModel extends DatedCacheEntry {
 }
 
 Future<void> resetOldTimeTableCache(Isar isar) async {
-  var now = DateTime.now();
+  var now = timeNow();
   var weeks = await isar.timetableCacheModels.where().findAll();
   var weeksToRemove = List<Id>.empty(growable: true);
 

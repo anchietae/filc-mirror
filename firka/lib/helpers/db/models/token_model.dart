@@ -20,6 +20,8 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firka/helpers/api/resp/token_grant.dart';
 import 'package:isar/isar.dart';
 
+import '../../debug_helper.dart';
+
 part 'token_model.g.dart';
 
 @collection
@@ -58,7 +60,7 @@ class TokenModel {
     m.idToken = resp.idToken;
     m.accessToken = resp.accessToken;
     m.refreshToken = resp.refreshToken;
-    m.expiryDate = DateTime.now()
+    m.expiryDate = timeNow()
         .add(Duration(seconds: resp.expiresIn))
         .subtract(Duration(minutes: 10)); // just to be safe
 

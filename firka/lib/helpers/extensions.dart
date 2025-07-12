@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../l10n/app_localizations.dart';
+import 'debug_helper.dart';
 
 extension IterableExtension on Iterable<MapEntry<String, dynamic>> {
   Map<String, dynamic> toMap() {
@@ -29,7 +30,7 @@ enum Cycle { morning, day, afternoon, night }
 
 extension DateExtension on DateTime {
   String format(BuildContext context, FormatMode mode) {
-    var today = DateTime.now();
+    var today = timeNow();
     today = today.subtract(Duration(
         hours: today.hour,
         minutes: today.minute,
@@ -95,7 +96,7 @@ extension DateGrouper<T> on Iterable<T> {
   Map<DateTime, List<T>> groupList(DateTime Function(T elem) getDate) {
     Map<DateTime, List<T>> newList = {};
 
-    var today = DateTime.now();
+    var today = timeNow();
     today = today.subtract(Duration(
         hours: today.hour,
         minutes: today.minute,

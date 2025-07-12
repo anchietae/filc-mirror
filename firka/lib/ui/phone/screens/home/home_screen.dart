@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
 import 'package:shake_gesture/shake_gesture.dart';
 
+import '../../../../helpers/debug_helper.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../widget/firka_icon.dart';
 import '../../pages/error/main_error.dart';
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (res.err != null) throw res.err!;
 
-      var now = DateTime.now();
+      var now = timeNow();
       var start = now.subtract(Duration(days: now.weekday - 1));
       var end = start.add(Duration(days: 6));
 
