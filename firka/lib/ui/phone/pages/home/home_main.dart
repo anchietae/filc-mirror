@@ -37,12 +37,16 @@ class _HomeMainScreen extends State<HomeMainScreen> {
       var resp = await data.client.getTimeTable(
           midnight, midnight.add(Duration(hours: 23, minutes: 59)));
 
-      lessons = resp.response!;
+      setState(() {
+        lessons = resp.response!;
+      });
     })();
     (() async {
       var resp = await data.client.getStudent();
 
-      student = resp.response!;
+      setState(() {
+        student = resp.response!;
+      });
     })();
 
     timer = Timer.periodic(Duration(seconds: 1), (timer) async {
