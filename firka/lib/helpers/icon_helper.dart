@@ -69,7 +69,7 @@ Map<ClassIcon, RegExp> _descriptors = {
   ClassIcon.language:
       RegExp(r'angol|nemet|francia|olasz|orosz|spanyol|latin|kinai|nyelv'),
   ClassIcon.linux: RegExp(r'linux'),
-  ClassIcon.database: RegExp(r'adatbazis'),
+  ClassIcon.database: RegExp(r'adatbazis.*'),
   ClassIcon.applications: RegExp(r'asztali alkalmazasok'),
   ClassIcon.project: RegExp(r'projekt')
 };
@@ -117,7 +117,17 @@ ClassIcon? getIconType(String uid, String className, String category) {
 
   if (icon == null) {
     for (var desc in _descriptors.entries) {
-      if (desc.value.hasMatch(className.toLowerCase())) {
+      if (desc.value.hasMatch(className
+          .replaceAll("ö", "o")
+          .replaceAll("ü", "u")
+          .replaceAll("ó", "o")
+          .replaceAll("ő", "o")
+          .replaceAll("ú", "u")
+          .replaceAll("é", "e")
+          .replaceAll("á", "a")
+          .replaceAll("ű", "u")
+          .replaceAll("í", "i")
+          .toLowerCase())) {
         icon = desc.key;
 
         break;
