@@ -80,7 +80,7 @@ extension DateExtension on DateTime {
       return Cycle.morning;
     }
     if (isAfter(midnight.add(Duration(hours: 7))) &&
-        isBefore(midnight.add(Duration(hours: 12)))) {
+        isBefore(midnight.add(Duration(hours: 14)))) {
       return Cycle.day;
     }
     if (isAfter(midnight.add(Duration(hours: 7))) &&
