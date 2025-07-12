@@ -56,7 +56,7 @@ class FirkaColors {
   Color card;
   Color cardTranslucent;
 
-  Color buttonSecondaryFilly;
+  Color buttonSecondaryFill;
 
   Color accent;
   Color secondary;
@@ -90,7 +90,7 @@ class FirkaColors {
     required this.textTertiary,
     required this.card,
     required this.cardTranslucent,
-    required this.buttonSecondaryFilly,
+    required this.buttonSecondaryFill,
     required this.accent,
     required this.secondary,
     required this.shadowColor,
@@ -205,7 +205,7 @@ final FirkaStyle lightStyle = FirkaStyle(
       textTertiary: Color(0x80394C0A),
       card: Color(0xFFF3FBDE),
       cardTranslucent: Color(0x80F3FBDE),
-      buttonSecondaryFilly: Color(0xFFFEFFFD),
+      buttonSecondaryFill: Color(0xFFFEFFFD),
       accent: Color(0xFFA7DC22),
       secondary: Color(0xFF6E8F1B),
       shadowColor: Color(0x33647e22),
@@ -238,7 +238,7 @@ final FirkaStyle darkStyle = FirkaStyle(
       textTertiary: Color(0x80EAF7CC),
       card: Color(0xFF141905),
       cardTranslucent: Color(0x80141905),
-      buttonSecondaryFilly: Color(0xFF20290B),
+      buttonSecondaryFill: Color(0xFF20290B),
       accent: Color(0xFFA7DC22),
       secondary: Color(0xFFCBEE71),
       shadowColor: Color(0x26CBEE71),
