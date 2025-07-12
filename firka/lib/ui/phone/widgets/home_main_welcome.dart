@@ -8,12 +8,12 @@ import '../../../helpers/api/model/student.dart';
 import '../../../helpers/api/model/timetable.dart';
 import '../../model/style.dart';
 
-class HomeMainWelcome extends StatelessWidget {
+class WelcomeWidget extends StatelessWidget {
   final Student student;
   final List<Lesson> lessons;
   final DateTime now;
 
-  const HomeMainWelcome(this.now, this.student, this.lessons, {super.key});
+  const WelcomeWidget(this.now, this.student, this.lessons, {super.key});
 
   getIconForCycle(Cycle dayCycle) {
     switch (dayCycle) {
@@ -92,28 +92,19 @@ class HomeMainWelcome extends StatelessWidget {
   Widget build(BuildContext context) {
     var dayCycle = now.getDayCycle();
 
-    return Flexible(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 16.0,
-          right: 16.0,
-          top: 24.0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            getIconForCycle(dayCycle),
-            const SizedBox(height: 16.0),
-            Text(getTitle(context, dayCycle),
-                style: appStyle.fonts.H_H2
-                    .copyWith(color: appStyle.colors.textPrimary)),
-            const SizedBox(height: 2.0),
-            Text(getSubtitle(context, dayCycle),
-                style: appStyle.fonts.B_14R
-                    .copyWith(color: appStyle.colors.textSecondary)),
-          ],
-        ),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        getIconForCycle(dayCycle),
+        const SizedBox(height: 16.0),
+        Text(getTitle(context, dayCycle),
+            style: appStyle.fonts.H_H2
+                .copyWith(color: appStyle.colors.textPrimary)),
+        const SizedBox(height: 2.0),
+        Text(getSubtitle(context, dayCycle),
+            style: appStyle.fonts.B_14R
+                .copyWith(color: appStyle.colors.textSecondary)),
+      ],
     );
   }
 }

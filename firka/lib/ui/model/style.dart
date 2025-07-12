@@ -11,7 +11,7 @@ class FirkaFonts {
   TextStyle H_16px_trimmed; // TODO: somehow implement this
   // the design has this trimmed to 130% line height
 
-  TextStyle B_16R; // TODO: Replace these with Figtree
+  TextStyle B_16R;
   TextStyle B_16SB;
 
   TextStyle B_14R;
