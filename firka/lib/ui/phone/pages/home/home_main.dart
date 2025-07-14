@@ -11,6 +11,7 @@ import '../../../../helpers/api/model/timetable.dart';
 import '../../../../helpers/debug_helper.dart';
 import '../../../../main.dart';
 import '../../widgets/home_main_welcome.dart';
+import '../../widgets/lesson_big.dart';
 
 class HomeMainScreen extends StatefulWidget {
   final AppInitialization data;
@@ -69,17 +70,34 @@ class _HomeMainScreen extends State<HomeMainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget startingSoon = SizedBox();
+    Widget welcomeWidget = SizedBox();
     Widget nextClass = SizedBox();
 
-    if (lessons != null &&
-        lessons!.isNotEmpty &&
-        now.isBefore(lessons!.first.start)) {
-      startingSoon = StartingSoonWidget(now, lessons!);
+    if (lessons != null && lessons!.isNotEmpty) {
+      if (now.isBefore(lessons!.first.start)) {
+        welcomeWidget = StartingSoonWidget(now, lessons!);
+      } else {
+        var currentLesson = lessons!.firstWhereOrNull(
+            (lesson) => now.isAfter(lesson.start) && now.isBefore(lesson.end));
+        // "fun" fact if your clock was exactly when the class ends then isBefore
+        // and isAfter would fail, so to work around that we just add 1ms to the
+        // current time
+        var prevLesson = lessons!.firstWhereOrNull((lesson) =>
+            lesson.end.isBefore(now.add(Duration(milliseconds: 1))));
+        var nextLesson = lessons!.firstWhereOrNull((lesson) =>
+            lesson.start.isAfter(now.add(Duration(milliseconds: 1))));
+        int? lessonIndex;
+
+        if (currentLesson != null) lessonIndex = currentLesson.getNo(lessons!);
+
+        welcomeWidget = LessonBigWidget(
+            now, lessonIndex, currentLesson, prevLesson, nextLesson);
+      }
     }
     if (lessons != null && lessons!.isNotEmpty) {
-      var nextLessons = lessons!.where((lesson) => lesson.start.isAfter(now));
-      if (nextLessons.isNotEmpty) nextClass = LessonSmallWidget(nextLessons.first);
+      var nextLesson =
+          lessons!.firstWhereOrNull((lesson) => lesson.start.isAfter(now));
+      if (nextLesson != null) nextClass = LessonSmallWidget(nextLesson);
     }
 
     if (student != null && lessons != null) {
@@ -95,7 +113,7 @@ class _HomeMainScreen extends State<HomeMainScreen> {
             children: [
               WelcomeWidget(now, student!, lessons!),
               SizedBox(height: 48),
-              startingSoon,
+              welcomeWidget,
               nextClass
             ],
           ),
