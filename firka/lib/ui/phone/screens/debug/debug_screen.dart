@@ -77,6 +77,20 @@ class _DebugScreen extends State<DebugScreen> {
                   )
                 ],
               ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  Text('tick debug timer'),
+                  Switch(
+                    value: tick,
+                    onChanged: (bool value) {
+                      setState(() {
+                        tick = value;
+                      });
+                    },
+                  )
+                ],
+              ),
               const SizedBox(height: 20),
               profilePicture,
               ElevatedButton(
@@ -106,6 +120,8 @@ class _DebugScreen extends State<DebugScreen> {
                     fakeTime = d
                         .getMidnight()
                         .add(Duration(hours: t.hour, minutes: t.minute));
+
+                    offset = Duration(milliseconds: 0);
                   }
                 },
                 child: const Text('Set fake time'),

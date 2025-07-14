@@ -7,6 +7,7 @@ import 'package:firka/helpers/db/models/app_settings_model.dart';
 import 'package:firka/helpers/db/models/generic_cache_model.dart';
 import 'package:firka/helpers/db/models/timetable_cache_model.dart';
 import 'package:firka/helpers/db/models/token_model.dart';
+import 'package:firka/helpers/debug_helper.dart';
 import 'package:firka/helpers/extensions.dart';
 import 'package:firka/ui/phone/pages/error/error_page.dart';
 import 'package:firka/ui/phone/screens/debug/debug_screen.dart';
@@ -88,6 +89,13 @@ Future<AppInitialization> initializeApp() async {
 
   if (kDebugMode) {
     print('Token count: $tokenCount');
+
+    // debug timer tick
+    Timer.periodic(Duration(milliseconds: 100), (timer) {
+      offset ??= Duration(milliseconds: 0);
+
+      offset = Duration(milliseconds: offset!.inMilliseconds + 100);
+    });
   }
 
   if (await isar.appSettingsModels.count() != 0) {

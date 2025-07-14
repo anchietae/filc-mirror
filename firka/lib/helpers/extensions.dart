@@ -5,7 +5,7 @@ import '../l10n/app_localizations.dart';
 import 'api/model/timetable.dart';
 import 'debug_helper.dart';
 
-extension IterableExtension on Iterable<MapEntry<String, dynamic>> {
+extension IterableExtensionMap on Iterable<MapEntry<String, dynamic>> {
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
     for (var item in this) {
@@ -13,6 +13,15 @@ extension IterableExtension on Iterable<MapEntry<String, dynamic>> {
     }
 
     return map;
+  }
+}
+
+extension IterableExtension<T> on Iterable<T> {
+  T? firstWhereOrNull(bool Function(T element) test) {
+    for (var element in this) {
+      if (test(element)) return element;
+    }
+    return null;
   }
 }
 
