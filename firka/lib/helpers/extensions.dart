@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../l10n/app_localizations.dart';
+import 'api/model/timetable.dart';
 import 'debug_helper.dart';
 
 extension IterableExtension on Iterable<MapEntry<String, dynamic>> {
@@ -150,5 +151,19 @@ extension DateGrouper<T> on Iterable<T> {
     }
 
     return newList;
+  }
+}
+
+extension LessonExtension on Lesson {
+  int getNo(List<Lesson> lessons) {
+    var first = lessons.first;
+    var midnight = first.start.getMidnight();
+    int i = lessons.indexOf(this);
+
+    if (!first.start.isBefore(midnight.add(Duration(hours: 8)))) {
+      i++;
+    }
+
+    return i;
   }
 }
