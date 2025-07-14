@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firka/helpers/extensions.dart';
 import 'package:firka/ui/phone/widgets/home_main_starting_soon.dart';
+import 'package:firka/ui/phone/widgets/lesson_small.dart';
 import 'package:firka/ui/widget/delayed_spinner.dart';
 import 'package:flutter/material.dart';
 
@@ -69,11 +70,18 @@ class _HomeMainScreen extends State<HomeMainScreen> {
   @override
   Widget build(BuildContext context) {
     Widget startingSoon = SizedBox();
+    Widget nextClass = SizedBox();
+
     if (lessons != null &&
         lessons!.isNotEmpty &&
         now.isBefore(lessons!.first.start)) {
       startingSoon = StartingSoonWidget(now, lessons!);
     }
+    if (lessons != null && lessons!.isNotEmpty) {
+      var nextLessons = lessons!.where((lesson) => lesson.start.isAfter(now));
+      if (nextLessons.isNotEmpty) nextClass = LessonSmallWidget(nextLessons.first);
+    }
+
     if (student != null && lessons != null) {
       return Flexible(
         child: Padding(
@@ -88,6 +96,7 @@ class _HomeMainScreen extends State<HomeMainScreen> {
               WelcomeWidget(now, student!, lessons!),
               SizedBox(height: 48),
               startingSoon,
+              nextClass
             ],
           ),
         ),

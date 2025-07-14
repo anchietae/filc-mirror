@@ -24,7 +24,7 @@ extension DurationExtension on Duration {
   }
 }
 
-enum FormatMode { yearly, grades, welcome }
+enum FormatMode { yearly, grades, welcome, hmm }
 
 enum Cycle { morning, day, afternoon, night }
 
@@ -60,6 +60,8 @@ extension DateExtension on DateTime {
         return format(context, FormatMode.yearly);
       case FormatMode.yearly:
         return DateFormat('MMMM dd').format(this);
+      case FormatMode.hmm:
+        return DateFormat('h:mm').format(this);
       case FormatMode.welcome:
         return DateFormat('EEE, MMM d').format(this);
     }
