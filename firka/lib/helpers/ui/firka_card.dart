@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../../ui/model/style.dart';
 
 class FirkaCard extends StatelessWidget {
-  List<Widget> left;
-  List<Widget>? right;
-  Widget? extra;
+  final List<Widget> left;
+  final List<Widget>? right;
+  final Widget? extra;
 
-  FirkaCard({required this.left, this.right, this.extra, super.key});
+  const FirkaCard({required this.left, this.right, this.extra, super.key});
 
   @override
   Widget build(BuildContext context) {
