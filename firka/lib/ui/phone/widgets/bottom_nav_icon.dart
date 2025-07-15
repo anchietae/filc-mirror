@@ -6,15 +6,15 @@ import '../../model/style.dart';
 import '../../widget/firka_icon.dart';
 
 class BottomNavIcon extends StatelessWidget {
-  void Function() onTap;
-  bool active;
-  Uint8List icon;
-  String text;
-  Color iconColor;
-  Color textColor;
+  final void Function() onTap;
+  final bool active;
+  final Uint8List icon;
+  final String text;
+  final Color iconColor;
+  final Color textColor;
 
-  BottomNavIcon(this.onTap, this.active, this.icon, this.text, this.iconColor,
-      this.textColor,
+  const BottomNavIcon(this.onTap, this.active, this.icon, this.text,
+      this.iconColor, this.textColor,
       {super.key});
 
   @override
