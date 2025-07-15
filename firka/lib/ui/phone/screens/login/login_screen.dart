@@ -227,8 +227,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final paddingWidthHorizontal = MediaQuery.of(context).size.width -
         MediaQuery.of(context).size.width * 0.95;
-    final contentWidth = MediaQuery.of(context).size.width * 0.95;
-    final modalHeight = MediaQuery.of(context).size.height * 0.90;
     List<Map<String, String>> slides = [
       {
         'title': AppLocalizations.of(context)!.title1,

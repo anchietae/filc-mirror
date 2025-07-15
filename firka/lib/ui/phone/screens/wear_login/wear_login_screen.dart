@@ -23,6 +23,7 @@ class WearLoginScreen extends StatefulWidget {
 class _WearLoginScreenState extends State<WearLoginScreen> {
   late WebViewController _webViewController;
   final AppInitialization data;
+
   _WearLoginScreenState(this.data);
 
   final watch = WatchConnectivity();
@@ -108,8 +109,6 @@ class _WearLoginScreenState extends State<WearLoginScreen> {
   Widget build(BuildContext context) {
     final paddingWidthHorizontal = MediaQuery.of(context).size.width -
         MediaQuery.of(context).size.width * 0.95;
-    final contentWidth = MediaQuery.of(context).size.width * 0.95;
-    final modalHeight = MediaQuery.of(context).size.height * 0.90;
 
     return MaterialApp(
       home: Scaffold(
@@ -252,7 +251,8 @@ class _WearLoginScreenState extends State<WearLoginScreen> {
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.8, // Adjust height for content
+                                              0.8,
+                                          // Adjust height for content
                                           margin: const EdgeInsets.symmetric(
                                               horizontal: 16),
                                           // Add ClipRRect for circular edges
@@ -296,7 +296,8 @@ class _WearLoginScreenState extends State<WearLoginScreen> {
                               'Bejelentkezés E-Kréta fiókkal',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Color(0xFF394B0A), // Text-Primary
+                                color: Color(0xFF394B0A),
+                                // Text-Primary
                                 fontSize: 17,
                                 fontFamily: 'Montserrat',
                                 fontVariations: [
