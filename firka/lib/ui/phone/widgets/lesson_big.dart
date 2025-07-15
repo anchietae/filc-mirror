@@ -6,7 +6,7 @@ import 'package:firka/ui/widget/firka_icon.dart';
 import 'package:flutter/material.dart';
 
 import '../../../helpers/api/model/timetable.dart';
-import '../../widget/class_icon_widget.dart';
+import '../../widget/class_icon.dart';
 
 class LessonBigWidget extends StatelessWidget {
   final DateTime now;

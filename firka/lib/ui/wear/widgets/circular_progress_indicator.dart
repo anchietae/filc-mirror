@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class CircularProgressIndicator extends StatefulWidget {
+class CircularProgressIndicatorWidget extends StatefulWidget {
   final double progress;
   final double strokeWidth;
   final Color color;
   final Size screenSize;
 
-  const CircularProgressIndicator({
+  const CircularProgressIndicatorWidget({
     super.key,
     required this.progress,
     required this.screenSize,
@@ -17,11 +17,12 @@ class CircularProgressIndicator extends StatefulWidget {
   });
 
   @override
-  _CircularProgressIndicatorState createState() =>
-      _CircularProgressIndicatorState();
+  _CircularProgressIndicatorWidgetState createState() =>
+      _CircularProgressIndicatorWidgetState();
 }
 
-class _CircularProgressIndicatorState extends State<CircularProgressIndicator>
+class _CircularProgressIndicatorWidgetState
+    extends State<CircularProgressIndicatorWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;

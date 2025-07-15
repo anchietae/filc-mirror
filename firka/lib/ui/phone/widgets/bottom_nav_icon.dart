@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../model/style.dart';
 import '../../widget/firka_icon.dart';
 
-class BottomNavIcon extends StatelessWidget {
+class BottomNavIconWidget extends StatelessWidget {
   final void Function() onTap;
   final bool active;
   final Uint8List icon;
@@ -13,7 +13,7 @@ class BottomNavIcon extends StatelessWidget {
   final Color iconColor;
   final Color textColor;
 
-  const BottomNavIcon(this.onTap, this.active, this.icon, this.text,
+  const BottomNavIconWidget(this.onTap, this.active, this.icon, this.text,
       this.iconColor, this.textColor,
       {super.key});
 

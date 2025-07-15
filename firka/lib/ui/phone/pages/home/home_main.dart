@@ -123,7 +123,7 @@ class _HomeMainScreen extends State<HomeMainScreen> {
         children: [HomeMainWelcome(now, student!, lessons!), SizedBox()],
       );*/
     } else {
-      return DelayedSpinner();
+      return DelayedSpinnerWidget();
     }
   }
 }

@@ -12,7 +12,7 @@ abstract class StatelessAsyncWidget extends StatelessWidget {
         future: buildAsync(context),
         builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: DelayedSpinner());
+            return Center(child: DelayedSpinnerWidget());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {

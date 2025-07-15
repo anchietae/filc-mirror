@@ -4,7 +4,7 @@ import 'package:firka/ui/model/style.dart';
 import 'package:flutter/material.dart';
 
 import '../../../helpers/api/model/timetable.dart';
-import '../../widget/class_icon_widget.dart';
+import '../../widget/class_icon.dart';
 
 class LessonSmallWidget extends StatelessWidget {
   final Lesson lesson;

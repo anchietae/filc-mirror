@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class DelayedSpinner extends StatefulWidget {
-  const DelayedSpinner({super.key});
+class DelayedSpinnerWidget extends StatefulWidget {
+  const DelayedSpinnerWidget({super.key});
 
   @override
-  State<DelayedSpinner> createState() => _DelayedSpinner();
+  State<DelayedSpinnerWidget> createState() => _DelayedSpinner();
 }
 
-class _DelayedSpinner extends State<DelayedSpinner> {
+class _DelayedSpinner extends State<DelayedSpinnerWidget> {
   Timer? timer;
   bool showSpinner = false;
 

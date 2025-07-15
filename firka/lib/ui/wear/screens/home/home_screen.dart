@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:firka/helpers/api/model/timetable.dart';
 import 'package:firka/helpers/extensions.dart';
-import 'package:firka/ui/widget/class_icon_widget.dart';
+import 'package:firka/ui/widget/class_icon.dart';
 import 'package:firka/wear_main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

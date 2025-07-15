@@ -13,8 +13,8 @@ import 'package:shake_gesture/shake_gesture.dart';
 import '../../../../helpers/debug_helper.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../widget/firka_icon.dart';
-import '../../pages/error/main_error.dart';
 import '../../pages/extras/extras.dart';
+import '../../pages/extras/main_error.dart';
 import '../../pages/home/home_grades_subject.dart';
 import '../../pages/home/home_timetable.dart';
 import '../debug/debug_screen.dart';
@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             // Home Button
-                            BottomNavIcon(() {
+                            BottomNavIconWidget(() {
                               if (page.page != HomePages.home) {
                                 HapticFeedback.lightImpact();
 
@@ -269,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     : appStyle.colors.secondary,
                                 appStyle.colors.textPrimary),
                             // Grades Button
-                            BottomNavIcon(() {
+                            BottomNavIconWidget(() {
                               if (page.page != HomePages.grades) {
                                 HapticFeedback.lightImpact();
 
@@ -290,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     : appStyle.colors.secondary,
                                 appStyle.colors.textPrimary),
                             // Timetable Button
-                            BottomNavIcon(() {
+                            BottomNavIconWidget(() {
                               if (page.page != HomePages.timetable) {
                                 HapticFeedback.lightImpact();
 
@@ -311,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     : appStyle.colors.secondary,
                                 appStyle.colors.textPrimary),
                             // More Button
-                            BottomNavIcon(() {
+                            BottomNavIconWidget(() {
                               HapticFeedback.lightImpact();
                               showExtrasBottomSheet(context, data);
                             },

@@ -2,7 +2,7 @@ import 'package:firka/helpers/api/model/grade.dart';
 import 'package:firka/helpers/api/model/subject.dart';
 import 'package:firka/helpers/ui/firka_card.dart';
 import 'package:firka/helpers/ui/grade_helpers.dart';
-import 'package:firka/ui/widget/class_icon_widget.dart';
+import 'package:firka/ui/widget/class_icon.dart';
 import 'package:flutter/material.dart';
 
 import '../model/style.dart';
