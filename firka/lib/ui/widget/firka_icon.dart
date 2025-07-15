@@ -10,12 +10,12 @@ enum FirkaIconType {
 }
 
 class FirkaIconWidget extends StatelessWidget {
-  FirkaIconType iconType;
-  Object iconData;
+  final FirkaIconType iconType;
+  final Object iconData;
   final Color color;
   final double? size;
 
-  FirkaIconWidget(this.iconType, this.iconData,
+  const FirkaIconWidget(this.iconType, this.iconData,
       {super.key, this.color = Colors.white, this.size});
 
   @override
