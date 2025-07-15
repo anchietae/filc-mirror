@@ -1,5 +1,4 @@
 import 'package:firka/helpers/api/model/generic.dart';
-import 'package:firka/helpers/api/model/grade.dart';
 import 'package:firka/helpers/api/model/subject.dart';
 
 class Omission {
