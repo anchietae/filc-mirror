@@ -16,7 +16,7 @@ class _DelayedSpinner extends State<DelayedSpinner> {
   @override
   void initState() {
     super.initState();
-    
+
     timer = Timer(Duration(milliseconds: 50), () {
       setState(() {
         showSpinner = true;

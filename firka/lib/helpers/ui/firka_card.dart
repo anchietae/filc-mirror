@@ -15,10 +15,7 @@ class FirkaCard extends StatelessWidget {
 
     if (extra != null) {
       return SizedBox(
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
+        width: MediaQuery.of(context).size.width,
         child: Card(
           color: appStyle.colors.card,
           child: Padding(
@@ -40,10 +37,7 @@ class FirkaCard extends StatelessWidget {
       );
     } else {
       return SizedBox(
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
+        width: MediaQuery.of(context).size.width,
         child: Card(
           color: appStyle.colors.card,
           child: Padding(

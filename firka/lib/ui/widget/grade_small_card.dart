@@ -31,19 +31,22 @@ class GradeSmallCard extends FirkaCard {
             ),
           ),
         ], right: [
-          grades.getAverageBySubject(subject).isNaN ? SizedBox() :
-          Card(
-            shadowColor: Colors.transparent,
-            color: getGradeColor(grades.getAverageBySubject(subject))
-                .withAlpha(38),
-            child: Padding(
-              padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-              child: Text(
-                grades.getAverageBySubject(subject).toStringAsFixed(2),
-                style: appStyle.fonts.B_16SB.apply(
-                    color: getGradeColor(grades.getAverageBySubject(subject))),
-              ),
-            ),
-          ),
+          grades.getAverageBySubject(subject).isNaN
+              ? SizedBox()
+              : Card(
+                  shadowColor: Colors.transparent,
+                  color: getGradeColor(grades.getAverageBySubject(subject))
+                      .withAlpha(38),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
+                    child: Text(
+                      grades.getAverageBySubject(subject).toStringAsFixed(2),
+                      style: appStyle.fonts.B_16SB.apply(
+                          color: getGradeColor(
+                              grades.getAverageBySubject(subject))),
+                    ),
+                  ),
+                ),
         ]);
 }

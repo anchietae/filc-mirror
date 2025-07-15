@@ -26,7 +26,9 @@ class LessonSmallWidget extends StatelessWidget {
               category: lesson.subject?.name ?? '',
             ),
             SizedBox(width: 8),
-            Text(lesson.subject?.name ?? "N/A", style: appStyle.fonts.B_16SB.apply(color: appStyle.colors.textPrimary)),
+            Text(lesson.subject?.name ?? "N/A",
+                style: appStyle.fonts.B_16SB
+                    .apply(color: appStyle.colors.textPrimary)),
           ],
           right: [
             Card(
@@ -34,10 +36,15 @@ class LessonSmallWidget extends StatelessWidget {
               color: appStyle.colors.a15p,
               child: Padding(
                 padding: EdgeInsets.all(4),
-                child: Text(lesson.roomName ?? '?', style: appStyle.fonts.B_12R.apply(color: appStyle.colors.secondary)),
+                child: Text(lesson.roomName ?? '?',
+                    style: appStyle.fonts.B_12R
+                        .apply(color: appStyle.colors.secondary)),
               ),
             ),
-            Text("${lesson.start.toLocal().format(context, FormatMode.hmm)} - ${lesson.end.toLocal().format(context, FormatMode.hmm)}", style: appStyle.fonts.B_14R.apply(color: appStyle.colors.textPrimary)),
+            Text(
+                "${lesson.start.toLocal().format(context, FormatMode.hmm)} - ${lesson.end.toLocal().format(context, FormatMode.hmm)}",
+                style: appStyle.fonts.B_14R
+                    .apply(color: appStyle.colors.textPrimary)),
           ],
         )
       ],
