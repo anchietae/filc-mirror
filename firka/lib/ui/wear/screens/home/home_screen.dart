@@ -129,37 +129,20 @@ class _WearHomeScreenState extends State<WearHomeScreen> {
     }
     currentLessonNo = null;
     if (now.isAfter(today.first.start) && now.isBefore(today.last.end)) {
-      Lesson? currentLesson;
-      Lesson? lastLesson; // last as in the last lesson that you've been to
-      Lesson? next;
-      Lesson? nextLesson;
-      Duration? currentBreak;
-      Duration? currentBreakProgress;
-      for (int i = 0; i < today.length; i++) {
-        var lesson = today[i];
-        if (now.isAfter(lesson.start) && now.isBefore(lesson.end)) {
-          currentLesson = lesson;
-          currentLessonNo = i + 1;
+      Lesson? currentLesson = today.getCurrentLesson(now);
+      Lesson? lastLesson = today.getPrevLesson(now);
+      Lesson? nextLesson = today.getNextLesson(now);
 
-          if (i + 2 < today.length) nextLesson = today[i + 1];
-          break;
-        }
-        if (now.isAfter(lesson.end)) {
-          if (lastLesson == null) {
-            lastLesson = lesson;
-            if (i < today.length) next = today[i + 1];
-          } else {
-            if (lesson.end.isAfter(lastLesson.end)) {
-              lastLesson = lesson;
-              if (i < today.length) next = today[i + 1];
-            }
-          }
-        }
+      if (currentLesson != null) {
+        currentLessonNo = today.getLessonNo(currentLesson);
       }
 
-      if (lastLesson != null && next != null) {
-        currentBreak = next.start.difference(lastLesson.end);
-        currentBreakProgress = next.start.difference(now);
+      Duration? currentBreak;
+      Duration? currentBreakProgress;
+
+      if (lastLesson != null && nextLesson != null) {
+        currentBreak = nextLesson.start.difference(lastLesson.end);
+        currentBreakProgress = nextLesson.start.difference(now);
       }
 
       if (currentLesson == null) {

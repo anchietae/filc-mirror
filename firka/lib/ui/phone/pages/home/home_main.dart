@@ -82,21 +82,19 @@ class _HomeMainScreen extends State<HomeMainScreen> {
         // "fun" fact if your clock was exactly when the class ends then isBefore
         // and isAfter would fail, so to work around that we just add 1ms to the
         // current time
-        var prevLesson = lessons!.firstWhereOrNull((lesson) =>
-            lesson.end.isBefore(now.add(Duration(milliseconds: 1))));
-        var nextLesson = lessons!.firstWhereOrNull((lesson) =>
-            lesson.start.isAfter(now.add(Duration(milliseconds: 1))));
+        var prevLesson = lessons!.getPrevLesson(now);
+        var nextLesson = lessons!.getNextLesson(now);
         int? lessonIndex;
 
-        if (currentLesson != null) lessonIndex = currentLesson.getNo(lessons!);
+        if (currentLesson != null)
+          lessonIndex = lessons!.getLessonNo(currentLesson);
 
         welcomeWidget = LessonBigWidget(
             now, lessonIndex, currentLesson, prevLesson, nextLesson);
       }
     }
     if (lessons != null && lessons!.isNotEmpty) {
-      var nextLesson =
-          lessons!.firstWhereOrNull((lesson) => lesson.start.isAfter(now));
+      var nextLesson = lessons!.getNextLesson(now);
       if (nextLesson != null) nextClass = LessonSmallWidget(nextLesson);
     }
 
@@ -119,9 +117,6 @@ class _HomeMainScreen extends State<HomeMainScreen> {
           ),
         ),
       );
-      /*return Column(
-        children: [HomeMainWelcome(now, student!, lessons!), SizedBox()],
-      );*/
     } else {
       return DelayedSpinnerWidget();
     }

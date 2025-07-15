@@ -163,16 +163,30 @@ extension DateGrouper<T> on Iterable<T> {
   }
 }
 
-extension LessonExtension on Lesson {
-  int getNo(List<Lesson> lessons) {
-    var first = lessons.first;
+extension LessonExtension on List<Lesson> {
+  int getLessonNo(Lesson lesson) {
     var midnight = first.start.getMidnight();
-    int i = lessons.indexOf(this);
+    int i = indexOf(lesson);
 
     if (!first.start.isBefore(midnight.add(Duration(hours: 8)))) {
       i++;
     }
 
     return i;
+  }
+
+  Lesson? getCurrentLesson(DateTime now) {
+    return firstWhereOrNull(
+        (lesson) => now.isAfter(lesson.start) && now.isBefore(lesson.end));
+  }
+
+  Lesson? getPrevLesson(DateTime now) {
+    return firstWhereOrNull(
+        (lesson) => lesson.end.isBefore(now.add(Duration(milliseconds: 1))));
+  }
+
+  Lesson? getNextLesson(DateTime now) {
+    return firstWhereOrNull(
+        (lesson) => lesson.start.isAfter(now.add(Duration(milliseconds: 1))));
   }
 }
