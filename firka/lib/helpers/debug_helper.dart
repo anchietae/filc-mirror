@@ -1,13 +1,15 @@
-DateTime? fakeTime;
-Duration? offset;
-var tick = false;
+DateTime? debugFakeTime;
+DateTime? debugSetAt;
+var debugTimeAdvance = false;
 
 DateTime timeNow() {
-  if (fakeTime != null) {
-    if (tick && offset != null) {
-      return fakeTime!.add(offset!);
+  if (debugFakeTime != null) {
+    if (debugTimeAdvance && debugSetAt != null) {
+      var diff = DateTime.now().difference(debugSetAt!);
+
+      return debugFakeTime!.add(diff);
     } else {
-      return fakeTime!;
+      return debugFakeTime!;
     }
   } else {
     return DateTime.now();

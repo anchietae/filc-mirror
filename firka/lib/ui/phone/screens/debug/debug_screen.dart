@@ -82,10 +82,10 @@ class _DebugScreen extends State<DebugScreen> {
                 children: [
                   Text('tick debug timer'),
                   Switch(
-                    value: tick,
+                    value: debugTimeAdvance,
                     onChanged: (bool value) {
                       setState(() {
-                        tick = value;
+                        debugTimeAdvance = value;
                       });
                     },
                   )
@@ -117,11 +117,11 @@ class _DebugScreen extends State<DebugScreen> {
                       context: context, initialTime: TimeOfDay.now());
 
                   if (d != null && t != null) {
-                    fakeTime = d
+                    debugFakeTime = d
                         .getMidnight()
                         .add(Duration(hours: t.hour, minutes: t.minute));
 
-                    offset = Duration(milliseconds: 0);
+                    debugSetAt = DateTime.now();
                   }
                 },
                 child: const Text('Set fake time'),

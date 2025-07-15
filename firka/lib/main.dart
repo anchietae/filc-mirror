@@ -89,13 +89,6 @@ Future<AppInitialization> initializeApp() async {
 
   if (kDebugMode) {
     print('Token count: $tokenCount');
-
-    // debug timer tick
-    Timer.periodic(Duration(milliseconds: 100), (timer) {
-      offset ??= Duration(milliseconds: 0);
-
-      offset = Duration(milliseconds: offset!.inMilliseconds + 100);
-    });
   }
 
   if (await isar.appSettingsModels.count() != 0) {
@@ -108,7 +101,8 @@ Future<AppInitialization> initializeApp() async {
     KretaEndpoints.kretaBase = "https://$host";
     KretaEndpoints.kretaIdp = KretaEndpoints.kretaBase;
     KretaEndpoints.kretaLoginUrl =
-        "${KretaEndpoints.kretaBase}/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fprompt%3Dlogin%26nonce%3DwylCrqT4oN6PPgQn2yQB0euKei9nJeZ6_ffJ-VpSKZU%26response_type%3Dcode%26code_challenge_method%3DS256%26scope%3Dopenid%2520email%2520offline_access%2520kreta-ellenorzo-webapi.public%2520kreta-eugyintezes-webapi.public%2520kreta-fileservice-webapi.public%2520kreta-mobile-global-webapi.public%2520kreta-dkt-webapi.public%2520kreta-ier-webapi.public%26code_challenge%3DHByZRRnPGb-Ko_wTI7ibIba1HQ6lor0ws4bcgReuYSQ%26redirect_uri%3Dhttps%253A%252F%252Fmobil.e-kreta.hu%252Fellenorzo-student%252Fprod%252Foauthredirect%26client_id%3Dkreta-ellenorzo-student-mobile-ios%26state%3Dkreta_student_mobile%26suppressed_prompt%3Dlogin";
+    "${KretaEndpoints
+        .kretaBase}/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fprompt%3Dlogin%26nonce%3DwylCrqT4oN6PPgQn2yQB0euKei9nJeZ6_ffJ-VpSKZU%26response_type%3Dcode%26code_challenge_method%3DS256%26scope%3Dopenid%2520email%2520offline_access%2520kreta-ellenorzo-webapi.public%2520kreta-eugyintezes-webapi.public%2520kreta-fileservice-webapi.public%2520kreta-mobile-global-webapi.public%2520kreta-dkt-webapi.public%2520kreta-ier-webapi.public%26code_challenge%3DHByZRRnPGb-Ko_wTI7ibIba1HQ6lor0ws4bcgReuYSQ%26redirect_uri%3Dhttps%253A%252F%252Fmobil.e-kreta.hu%252Fellenorzo-student%252Fprod%252Foauthredirect%26client_id%3Dkreta-ellenorzo-student-mobile-ios%26state%3Dkreta_student_mobile%26suppressed_prompt%3Dlogin";
     KretaEndpoints.tokenGrantUrl = "${KretaEndpoints.kretaBase}/connect/token";
   }
 
@@ -257,11 +251,13 @@ class InitializationScreen extends StatelessWidget {
             supportedLocales: AppLocalizations.supportedLocales,
             home: screen,
             routes: {
-              '/login': (context) => LoginScreen(
+              '/login': (context) =>
+                  LoginScreen(
                     initData,
                     key: ValueKey('loginScreen'),
                   ),
-              '/debug': (context) => DebugScreen(
+              '/debug': (context) =>
+                  DebugScreen(
                     initData,
                     key: ValueKey('debugScreen'),
                   ),
