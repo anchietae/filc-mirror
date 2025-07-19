@@ -4,24 +4,32 @@ import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:pointycastle/export.dart';
 
-/// FuckMyBytes v2-RNG
+/// FuckMyBytes v4
 /// anchietae.cc - 2025
 
-/// since fmb works quite interesting, it may not throw an error on an un-decomposable string,
-/// so it is recommended to check the string to see if it is intact
+// comments stolen from the website, bc was lazy to write acutally understandable stuff
 
 class FMBCrypt {
   static final Random _random = Random.secure();
 
-  static Uint8List _generateKey(String password, Uint8List salt) {
+  static ({Uint8List key, Uint8List salt}) _generateKey(String password, [Uint8List? providedSalt]) {
+    final salt = providedSalt ?? _generateRandomBytes(16);
     final passwordBytes = utf8.encode(password);
 
-    // PBKDF2 the password (SHA-256, 100000x, 256 bits, salt)
-    final pbkdf2 = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64));
-    pbkdf2.init(Pbkdf2Parameters(salt, 100000, 32));
+    // First round: PBKDF2 the password (SHA-256, 600,000x, 256 bits, salt)
+    final pbkdf2First = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64));
+    pbkdf2First.init(Pbkdf2Parameters(salt, 600000, 32));
+    final firstKey = pbkdf2First.process(passwordBytes);
+
+    // Second round: PBKDF2 the result (SHA-512, 100,000x, 256 bits, salt)
+    final pbkdf2Second = PBKDF2KeyDerivator(HMac(SHA512Digest(), 128));
+    pbkdf2Second.init(Pbkdf2Parameters(salt, 100000, 32));
+    final finalKey = pbkdf2Second.process(firstKey);
+
+    // Clear key from mem
+    firstKey.fillRange(0, firstKey.length, 0);
     
-    final key = pbkdf2.process(Uint8List.fromList(passwordBytes));
-    return key;
+    return (key: finalKey, salt: salt);
   }
 
   static Uint8List _generateRandomBytes(int length) {
@@ -32,27 +40,61 @@ class FMBCrypt {
     return bytes;
   }
 
+  // data wiper
+  static void _secureWipe(Uint8List buffer) {
+    for (int i = 0; i < buffer.length; i++) {
+      buffer[i] = _random.nextInt(256);
+    }
+    buffer.fillRange(0, buffer.length, 0);
+  }
+
   static Uint8List _encrypt(String data, String password) {
     try {
-      final salt = _generateRandomBytes(16);
-      final key = _generateKey(password, salt);
-      final iv = _generateRandomBytes(16);
+      final keyResult = _generateKey(password);
+      final key = keyResult.key;
+      final salt = keyResult.salt;
 
-      final inputData = Uint8List.fromList(utf8.encode(data));
+      // Generate a 12-byte nonce for GCM
+      final nonce = _generateRandomBytes(12);
 
-      // AES in counter mode
-      final cipher = CTRStreamCipher(AESEngine());
-      final params = ParametersWithIV(KeyParameter(key), iv);
+      // Create associated data (version + salt + timestamp) for authentication
+      final version = utf8.encode('FMB4');
+      final timestamp = Uint8List(8);
+      final now = DateTime.now().millisecondsSinceEpoch;
+      
+      for (int i = 7; i >= 0; i--) {
+        timestamp[7 - i] = (now >> (i * 8)) & 0xff;
+      }
+
+      final associatedData = Uint8List(version.length + salt.length + timestamp.length);
+      associatedData.setRange(0, version.length, version);
+      associatedData.setRange(version.length, version.length + salt.length, salt);
+      associatedData.setRange(version.length + salt.length, associatedData.length, timestamp);
+
+      final inputData = utf8.encode(data);
+
+      // Set up AES-256 in GCM mode (authenticated encryption)
+      final cipher = GCMBlockCipher(AESEngine());
+      final params = AEADParameters(
+        KeyParameter(key), 
+        128,
+        nonce, 
+        associatedData
+      );
       cipher.init(true, params);
 
-      final encrypted = Uint8List(inputData.length);
-      cipher.processBytes(inputData, 0, inputData.length, encrypted, 0);
+      final encrypted = Uint8List(inputData.length + 16);
+      final len = cipher.processBytes(inputData, 0, inputData.length, encrypted, 0);
+      final finalLen = len + cipher.doFinal(encrypted, len);
 
-      // First 16 bytes: Salt, Next 16 bytes: Initialization vector, Remaining: data
-      final result = Uint8List(salt.length + iv.length + encrypted.length);
-      result.setRange(0, salt.length, salt);
-      result.setRange(salt.length, salt.length + iv.length, iv);
-      result.setRange(salt.length + iv.length, result.length, encrypted);
+      final result = Uint8List(version.length + salt.length + timestamp.length + nonce.length + finalLen);
+      result.setRange(0, version.length, version);
+      result.setRange(version.length, version.length + salt.length, salt);
+      result.setRange(version.length + salt.length, version.length + salt.length + timestamp.length, timestamp);
+      result.setRange(version.length + salt.length + timestamp.length, version.length + salt.length + timestamp.length + nonce.length, nonce);
+      result.setRange(version.length + salt.length + timestamp.length + nonce.length, result.length, encrypted.sublist(0, finalLen));
+
+      _secureWipe(key);
 
       return result;
     } catch (error) {
@@ -62,20 +104,45 @@ class FMBCrypt {
 
   static String _decrypt(Uint8List encryptedData, String password) {
     try {
-      final salt = encryptedData.sublist(0, 16);
-      final iv = encryptedData.sublist(16, 32);
-      final data = encryptedData.sublist(32);
+      if (encryptedData.length < 56) {
+        throw Exception('Invalid encrypted data: too short');
+      }
 
-      final key = _generateKey(password, salt);
+      final version = utf8.decode(encryptedData.sublist(0, 4));
+      if (version != 'FMB4') {
+        throw Exception('Invalid or unsupported file format');
+      }
 
-      final cipher = CTRStreamCipher(AESEngine());
-      final params = ParametersWithIV(KeyParameter(key), iv);
+      final salt = encryptedData.sublist(4, 20);
+      final timestamp = encryptedData.sublist(20, 28);
+      final nonce = encryptedData.sublist(28, 40);
+      final data = encryptedData.sublist(40);
+
+      final versionBytes = utf8.encode('FMB4');
+      final associatedData = Uint8List(versionBytes.length + salt.length + timestamp.length);
+      associatedData.setRange(0, versionBytes.length, versionBytes);
+      associatedData.setRange(versionBytes.length, versionBytes.length + salt.length, salt);
+      associatedData.setRange(versionBytes.length + salt.length, associatedData.length, timestamp);
+
+      final keyResult = _generateKey(password, salt);
+      final key = keyResult.key;
+
+      final cipher = GCMBlockCipher(AESEngine());
+      final params = AEADParameters(
+        KeyParameter(key),
+        128,
+        nonce,
+        associatedData
+      );
       cipher.init(false, params);
 
-      final decrypted = Uint8List(data.length);
-      cipher.processBytes(data, 0, data.length, decrypted, 0);
+      final decrypted = Uint8List(data.length - 16);
+      final len = cipher.processBytes(data, 0, data.length, decrypted, 0);
+      final finalLen = len + cipher.doFinal(decrypted, len);
 
-      return utf8.decode(decrypted);
+      _secureWipe(key);
+
+      return utf8.decode(decrypted.sublist(0, finalLen));
     } catch (error) {
       throw Exception('Decryption failed: ${error.toString()}');
     }
@@ -88,6 +155,11 @@ class FMBCrypt {
   static String? handleText(String action, String input, String password) {
     if (password.isEmpty || input.isEmpty) {
       throw ArgumentError('Password and input cannot be empty');
+    }
+
+    const maxTextSize = 50 * 1024 * 1024; // 50MB
+    if (input.length > maxTextSize) {
+      throw ArgumentError('Text too large. Maximum size is 50MB.');
     }
 
     try {
