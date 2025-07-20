@@ -86,8 +86,9 @@ class _HomeMainScreen extends State<HomeMainScreen> {
         var nextLesson = lessons!.getNextLesson(now);
         int? lessonIndex;
 
-        if (currentLesson != null)
+        if (currentLesson != null) {
           lessonIndex = lessons!.getLessonNo(currentLesson);
+        }
 
         welcomeWidget = LessonBigWidget(
             now, lessonIndex, currentLesson, prevLesson, nextLesson);

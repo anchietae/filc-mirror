@@ -19,13 +19,13 @@ class StartingSoonWidget extends StatelessWidget {
     var min = diff.inMinutes % 60;
     var sec = diff.inSeconds % 60;
 
-    var hour_txt = hour == 1
+    var hourTxt = hour == 1
         ? AppLocalizations.of(context)!.starting_hour
         : AppLocalizations.of(context)!.starting_hour_plural;
-    var min_txt = hour == 1
+    var minTxt = hour == 1
         ? AppLocalizations.of(context)!.starting_min
         : AppLocalizations.of(context)!.starting_min_plural;
-    var sec_txt = hour == 1
+    var secTxt = hour == 1
         ? AppLocalizations.of(context)!.starting_sec
         : AppLocalizations.of(context)!.starting_sec_plural;
 
@@ -55,7 +55,7 @@ class StartingSoonWidget extends StatelessWidget {
                             .apply(color: appStyle.colors.textPrimary)),
                     SizedBox(width: 2),
                     Text(
-                      hour_txt,
+                      hourTxt,
                       style: appStyle.fonts.B_16R
                           .apply(color: appStyle.colors.textPrimary),
                     ),
@@ -70,7 +70,7 @@ class StartingSoonWidget extends StatelessWidget {
                             .apply(color: appStyle.colors.textPrimary)),
                     SizedBox(width: 2),
                     Text(
-                      min_txt,
+                      minTxt,
                       style: appStyle.fonts.B_16R
                           .apply(color: appStyle.colors.textPrimary),
                     ),
@@ -85,7 +85,7 @@ class StartingSoonWidget extends StatelessWidget {
                             .apply(color: appStyle.colors.textPrimary)),
                     SizedBox(width: 2),
                     Text(
-                      sec_txt,
+                      secTxt,
                       style: appStyle.fonts.B_16R
                           .apply(color: appStyle.colors.textPrimary),
                     ),

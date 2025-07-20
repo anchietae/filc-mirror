@@ -83,7 +83,7 @@ class HomeGradesSubjectScreen extends StatelessAsyncWidget {
               ],
             ),
             SizedBox(height: 16),
-            Container(
+            SizedBox(
               height: MediaQuery.of(context).size.height -
                   MediaQuery.of(context).padding.top -
                   230,

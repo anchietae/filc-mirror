@@ -90,7 +90,7 @@ class HomeGradesScreen extends StatelessAsyncWidget {
             ),
             SizedBox(height: 16), // TODO: Add graphs here
             // ...gradeCards,
-            Container(
+            SizedBox(
               height: MediaQuery.of(context).size.height -
                   MediaQuery.of(context).padding.top -
                   230,
