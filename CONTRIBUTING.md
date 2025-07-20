@@ -1,32 +1,35 @@
-# Flutter
+# Flutter telepítése
 
-A Firka a NixOS legfirssebb stabil flutter packagét használja (ami jelenleg Flutter `3.29.3` és
-Dart `3.7.2`). A projekt tartalmaz egy flake.nix file-t ami tartalmaz egy dev shell-t ezt a 
-`nix develop` parancsal lehet aktiválni (a nix flake nem tartalmazza az android studio-t).
+A flutter telepítéséhez a dokumentáció [itt](https://docs.flutter.dev/get-started/install) található.
 
 # Keystore
 
 [Secrets dokumentáció](secrets/README.md)
 
-# Build
+# Android debug build
 
-## dev
 A dev buildhez nem közelező keystore használata
 ```shell
 $ cd firka
-$ flutter build apk --flavor staging --debug --target-platform android-arm,android-arm64,android-x64
+$ flutter build apk --debug --target-platform android-arm,android-arm64,android-x64
 ```
 
-## staging
-**Keystore használata kötelező**
+# Android release build
+
+A release buildhez közelező egy keystore használata, illetve a saját flutter forkunk használata.
+
+## Custom flutter engine setupolása
+
 ```shell
-$ cd firka
-$ flutter build apk --flavor staging --release --tree-shake-icons --split-per-abi --target-platform android-arm64
+$ git clone https://git.firka.app/firka/flutter
+$ cd flutter
+$ . dev/tools/envsetup.sh
+$ gclient sync -D
+$ ./dev/tools/build_release.sh
 ```
 
-## release
-**Keystore használata kötelező**
+## Release apk buildelése
+
 ```shell
-$ cd firka
-$ flutter build apk --flavor production --release --tree-shake-icons --split-per-abi --target-platform android-arm,android-arm64
+$ ./tools/linux/build_apk.sh
 ```
