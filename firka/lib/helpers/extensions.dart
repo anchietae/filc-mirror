@@ -34,7 +34,7 @@ extension DurationExtension on Duration {
   }
 }
 
-enum FormatMode { yearly, grades, welcome, hmm }
+enum FormatMode { yearly, grades, welcome, hmm, da, dd }
 
 enum Cycle { morning, day, afternoon, night }
 
@@ -74,7 +74,15 @@ extension DateExtension on DateTime {
         return DateFormat('h:mm').format(this);
       case FormatMode.welcome:
         return DateFormat('EEE, MMM d').format(this);
+      case FormatMode.da:
+        return DateFormat('MMMMEEEEd').format(this).substring(0, 2);
+      case FormatMode.dd:
+        return DateFormat('dd').format(this);
     }
+  }
+
+  DateTime getMonday() {
+    return subtract(Duration(days: weekday - 1));
   }
 
   DateTime getMidnight() {
