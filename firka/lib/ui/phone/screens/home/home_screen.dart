@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firka/helpers/api/client/kreta_client.dart';
 import 'package:firka/main.dart';
 import 'package:firka/ui/model/style.dart';
@@ -90,6 +92,17 @@ class _HomeScreenState extends State<HomeScreen> {
       if (res.err != null) throw res.err!;
     } catch (e) {
       activeToast = ActiveToastType.error;
+
+      var dismissDelay = 120;
+      if (kDebugMode) {
+        dismissDelay = 2;
+      }
+      Timer(Duration(seconds: dismissDelay), () {
+        setState(() {
+          activeToast = ActiveToastType.none;
+          toast = null;
+        });
+      });
 
       setState(() {
         // TODO: Make this and the error toast more rounded
