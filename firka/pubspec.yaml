@@ -61,6 +61,9 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_arc_text: ^0.6.0
   flutter_svg: ^1.1.6
+  fmb_dart:
+    hosted: https://git.anchietae.cc/api/packages/FMBCrypt/pub/
+    version: 5.0.0
 
 dev_dependencies:
   flutter_test:
