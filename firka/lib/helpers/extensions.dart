@@ -71,7 +71,7 @@ extension DateExtension on DateTime {
       case FormatMode.yearly:
         return DateFormat('MMMM dd').format(this);
       case FormatMode.hmm:
-        return DateFormat('h:mm').format(this);
+        return DateFormat('H:mm').format(this);
       case FormatMode.welcome:
         return DateFormat('EEE, MMM d').format(this);
       case FormatMode.da:
