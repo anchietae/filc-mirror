@@ -36,50 +36,63 @@ class LessonWidget extends StatelessWidget {
 
     List<Widget> elements = [];
 
-    elements.add(FirkaCard(
-      left: [
-        Card(
-          // TODO: improve this to match design
-          shadowColor: Colors.transparent,
-          color: bgColor,
-          child: Padding(
-            padding: EdgeInsets.all(4),
-            child: Text(lessonNo.toString(),
-                style: appStyle.fonts.B_12R.apply(color: secondary)),
+    elements.add(GestureDetector(
+      onTap: () {
+        showLessonBottomSheet(
+            context, lesson, lessonNo, accent, secondary, bgColor);
+      },
+      child: FirkaCard(
+        left: [
+          Card(
+            // TODO: improve this to match design
+            shadowColor: Colors.transparent,
+            color: bgColor,
+            child: Padding(
+              padding: EdgeInsets.all(4),
+              child: Text(lessonNo.toString(),
+                  style: appStyle.fonts.B_12R.apply(color: secondary)),
+            ),
           ),
-        ),
-        ClassIconWidget(
-          color: accent,
-          size: 20,
-          uid: lesson.uid,
-          className: lesson.name,
-          category: lesson.subject?.name ?? '',
-        ),
-        SizedBox(width: 8),
-        Text(lesson.subject?.name ?? "N/A",
-            style: appStyle.fonts.B_16SB
-                .apply(color: appStyle.colors.textPrimary)),
-      ],
-      right: [
-        Text(
-            isDismissed
-                ? AppLocalizations.of(context)!.class_dismissed
-                : lesson.start.toLocal().format(context, FormatMode.hmm),
-            style:
-                appStyle.fonts.B_14R.apply(color: appStyle.colors.textPrimary)),
-        isDismissed
-            ? SizedBox()
-            : Card(
-                shadowColor: Colors.transparent,
-                color: appStyle.colors.a15p,
-                child: Padding(
-                  padding: EdgeInsets.all(4),
-                  child: Text(lesson.roomName ?? '?',
-                      style: appStyle.fonts.B_12R
-                          .apply(color: appStyle.colors.secondary)),
-                ),
+          Card(
+            shadowColor: Colors.transparent,
+            color: bgColor,
+            child: Padding(
+              padding: EdgeInsetsGeometry.all(4),
+              child: ClassIconWidget(
+                color: accent,
+                size: 20,
+                uid: lesson.uid,
+                className: lesson.name,
+                category: lesson.subject?.name ?? '',
               ),
-      ],
+            ),
+          ),
+          SizedBox(width: 8),
+          Text(lesson.subject?.name ?? "N/A",
+              style: appStyle.fonts.B_16SB
+                  .apply(color: appStyle.colors.textPrimary)),
+        ],
+        right: [
+          Text(
+              isDismissed
+                  ? AppLocalizations.of(context)!.class_dismissed
+                  : lesson.start.toLocal().format(context, FormatMode.hmm),
+              style: appStyle.fonts.B_14R
+                  .apply(color: appStyle.colors.textPrimary)),
+          isDismissed
+              ? SizedBox()
+              : Card(
+                  shadowColor: Colors.transparent,
+                  color: appStyle.colors.a15p,
+                  child: Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Text(lesson.roomName ?? '?',
+                        style: appStyle.fonts.B_12R
+                            .apply(color: appStyle.colors.secondary)),
+                  ),
+                ),
+        ],
+      ),
     ));
 
     if (isSubstituted) {
@@ -122,4 +135,118 @@ class LessonWidget extends StatelessWidget {
       children: elements,
     );
   }
+}
+
+void showLessonBottomSheet(BuildContext context, Lesson lesson, int? lessonNo,
+    Color accent, Color secondary, Color bgColor) {
+  showModalBottomSheet(
+    context: context,
+    elevation: 100,
+    isScrollControlled: true,
+    enableDrag: true,
+    backgroundColor: Colors.transparent,
+    barrierColor: appStyle.colors.a15p,
+    constraints: BoxConstraints(
+      maxHeight: MediaQuery.of(context).size.height * 0.3,
+    ),
+    builder: (BuildContext context) {
+      return Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              behavior: HitTestBehavior.opaque,
+              child: Container(color: Colors.transparent),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              decoration: BoxDecoration(
+                color: appStyle.colors.background,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Card(
+                          // TODO: improve this to match design
+                          shadowColor: Colors.transparent,
+                          color: bgColor,
+                          child: Padding(
+                            padding: EdgeInsets.all(4),
+                            child: Text(lessonNo.toString(),
+                                style: appStyle.fonts.B_12R
+                                    .apply(color: secondary)),
+                          ),
+                        ),
+                        Card(
+                          shadowColor: Colors.transparent,
+                          color: bgColor,
+                          child: Padding(
+                            padding: EdgeInsetsGeometry.all(6),
+                            child: ClassIconWidget(
+                              color: accent,
+                              size: 20,
+                              uid: lesson.uid,
+                              className: lesson.name,
+                              category: lesson.subject?.name ?? '',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 6),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            lesson.name,
+                            style: appStyle.fonts.H_18px
+                                .apply(color: appStyle.colors.textPrimary),
+                          ),
+                          Text(
+                            lesson.teacher ?? 'N/A',
+                            style: appStyle.fonts.B_14R
+                                .apply(color: appStyle.colors.textPrimary),
+                          ),
+                          Text(
+                            '${lesson.start.format(context, FormatMode.hmm)} - ${lesson.end.format(context, FormatMode.hmm)}',
+                            style: appStyle.fonts.B_14R
+                                .apply(color: appStyle.colors.textPrimary),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    FirkaCard(left: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.lesson_subject,
+                            style: appStyle.fonts.H_14px,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            lesson.theme ?? 'N/A',
+                            style: appStyle.fonts.B_16R,
+                          )
+                        ],
+                      )
+                    ])
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }
