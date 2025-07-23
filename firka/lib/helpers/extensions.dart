@@ -173,14 +173,7 @@ extension DateGrouper<T> on Iterable<T> {
 
 extension LessonExtension on List<Lesson> {
   int getLessonNo(Lesson lesson) {
-    var midnight = first.start.getMidnight();
-    int i = indexOf(lesson);
-
-    if (!first.start.isBefore(midnight.add(Duration(hours: 8)))) {
-      i++;
-    }
-
-    return i;
+    return lesson.lessonNumber ?? indexOf(lesson);
   }
 
   Lesson? getCurrentLesson(DateTime now) {
