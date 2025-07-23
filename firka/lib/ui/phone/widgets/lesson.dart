@@ -10,8 +10,9 @@ import '../../widget/class_icon.dart';
 class LessonWidget extends StatelessWidget {
   final int? lessonNo;
   final Lesson lesson;
+  final Lesson? nextLesson;
 
-  const LessonWidget(this.lessonNo, this.lesson, {super.key});
+  const LessonWidget(this.lessonNo, this.lesson, this.nextLesson, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +97,25 @@ class LessonWidget extends StatelessWidget {
       ));
     }
 
-    elements.add(SizedBox(height: 4));
+    if (nextLesson != null) {
+      elements.add(SizedBox(height: 4));
+      var breakMins = nextLesson!.start.difference(lesson.end).inMinutes;
+
+      elements.add(FirkaCard(
+        left: [
+          Text(AppLocalizations.of(context)!.breakTxt,
+              style: appStyle.fonts.B_14SB
+                  .apply(color: appStyle.colors.textSecondary))
+        ],
+        right: [
+          Text(
+              "$breakMins ${breakMins == 1 ? AppLocalizations.of(context)!.starting_min : AppLocalizations.of(context)!.starting_min_plural}",
+              style: appStyle.fonts.B_14R
+                  .apply(color: appStyle.colors.textTertiary))
+        ],
+      ));
+      elements.add(SizedBox(height: 4));
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,

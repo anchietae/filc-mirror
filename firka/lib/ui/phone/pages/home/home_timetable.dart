@@ -105,8 +105,12 @@ class _HomeTimetableScreen extends State<HomeTimetableScreen> {
               ]),
         );
       } else {
-        for (final lesson in lessonsToday) {
-          ttBody.add(LessonWidget(lessonsToday.getLessonNo(lesson), lesson));
+        for (var i = 0; i < lessonsToday.length; i++) {
+          var lesson = lessonsToday[i];
+          Lesson? nextLesson =
+              lessonsToday.length > i + 1 ? lessonsToday[i + 1] : null;
+          ttBody.add(LessonWidget(
+              lessonsToday.getLessonNo(lesson), lesson, nextLesson));
         }
       }
 
