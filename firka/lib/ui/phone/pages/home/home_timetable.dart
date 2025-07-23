@@ -4,6 +4,7 @@ import 'package:firka/helpers/extensions.dart';
 import 'package:firka/l10n/app_localizations.dart';
 import 'package:firka/ui/model/style.dart';
 import 'package:firka/ui/phone/widgets/bottom_tt_icon.dart';
+import 'package:firka/ui/phone/widgets/lesson.dart';
 import 'package:firka/ui/widget/delayed_spinner.dart';
 import 'package:firka/ui/widget/firka_icon.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _HomeTimetableScreen extends State<HomeTimetableScreen> {
   DateTime? active;
   _HomeTimetableScreen(this.data);
 
+  @override
   void initState() {
     super.initState();
 
@@ -71,6 +73,11 @@ class _HomeTimetableScreen extends State<HomeTimetableScreen> {
   Widget build(BuildContext context) {
     if (lessons != null && dates != null && active != null) {
       List<Widget> ttWidgets = List.empty(growable: true);
+      var lessonsToday = lessons!
+          .where((lesson) =>
+              lesson.start.isAfter(active!) &&
+              lesson.end.isBefore(active!.add(Duration(hours: 24))))
+          .toList();
 
       for (final date in dates!) {
         ttWidgets.add(BottomTimeTableNavIconWidget(() {
@@ -79,6 +86,28 @@ class _HomeTimetableScreen extends State<HomeTimetableScreen> {
           });
         }, date.millisecondsSinceEpoch == active!.millisecondsSinceEpoch,
             date));
+      }
+
+      Widget noLessonsWidget = SizedBox();
+      List<Widget> ttBody = List.empty(growable: true);
+
+      if (lessonsToday.isEmpty) {
+        noLessonsWidget = Positioned.fill(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset("assets/images/logos/dave.svg",
+                    width: 48, height: 48),
+                SizedBox(height: 12),
+                Text(AppLocalizations.of(context)!.tt_no_classes_l1),
+                Text(AppLocalizations.of(context)!.tt_no_classes_l2)
+              ]),
+        );
+      } else {
+        for (final lesson in lessonsToday) {
+          ttBody.add(LessonWidget(lessonsToday.getLessonNo(lesson), lesson));
+        }
       }
 
       return Expanded(
@@ -144,17 +173,18 @@ class _HomeTimetableScreen extends State<HomeTimetableScreen> {
               ),
             ]),
           ),
-          Positioned.fill(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SvgPicture.asset("assets/images/logos/dave.svg",
-                      width: 48, height: 48),
-                  SizedBox(height: 12),
-                  Text(AppLocalizations.of(context)!.tt_no_classes_l1),
-                  Text(AppLocalizations.of(context)!.tt_no_classes_l2)
-                ]),
+          noLessonsWidget,
+          SizedBox(
+            height: MediaQuery.of(context).size.height -
+                MediaQuery.of(context).padding.top -
+                230,
+            child: Padding(
+              padding:
+                  EdgeInsets.only(top: 70, left: 35, right: 35, bottom: 15),
+              child: ListView(
+                children: ttBody,
+              ),
+            ),
           ),
           Padding(
             padding:
