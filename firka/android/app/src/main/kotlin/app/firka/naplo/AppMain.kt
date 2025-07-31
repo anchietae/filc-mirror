@@ -5,11 +5,11 @@ import android.app.Application
 import android.os.Build
 import android.util.Log
 import org.brotli.dec.BrotliInputStream
-import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.security.MessageDigest
+import java.util.zip.ZipFile
 
 class AppMain : Application() {
 
@@ -25,29 +25,54 @@ class AppMain : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val am = assets
         val abi = Build.SUPPORTED_ABIS[0]
-        val assets = am.list("")
 
-        if (!assets?.contains("flutter-br-$abi")!!) {
-            throw Exception("Unsupported abi: $abi, try downloading an apk with a different abi")
+        val apks = File(applicationInfo.nativeLibraryDir, "../..").absoluteFile
+            .listFiles()!!
+            .filter { file -> file.name.endsWith(".apk") }
+            .toList()
+
+        var nativesApkN: ZipFile? = null
+        for (apk in apks) {
+            if (nativesApkN != null) break
+
+            val zip = ZipFile(apk)
+            val entries = zip.entries()
+
+            while (entries.hasMoreElements()) {
+                val entry = entries.nextElement()
+
+                entry.name.endsWith("$abi/index.so")
+                zip.close()
+                nativesApkN = ZipFile(apk)
+                break
+            }
+
+            zip.close()
         }
 
-        val compressedLibsIndex = am.open("flutter-br.json")
+        if (nativesApkN == null) {
+            throw Exception("Can't find native libraries")
+        }
+        val nativesApk: ZipFile = nativesApkN
+
+        val compressedLibsIndex = nativesApk.getInputStream(
+            nativesApk.getEntry("lib/$abi/index.so")
+        )
         val compressedLibs = JSONObject(compressedLibsIndex.readBytes().toString(Charsets.UTF_8))
 
-        val natives = am.list("flutter-br-$abi")!!
-        for (lib in natives) {
-            val so = lib.substring(0, lib.length-".br".length)
+        for (so in compressedLibs.keys()) {
             val soFile = File(cacheDir, so)
 
-            if (soFile.sha256() == compressedLibs.getString("${abi}/$so")) {
+            if (soFile.sha256() == compressedLibs.getString(so)) {
                 System.load(soFile.absolutePath)
                 return
             }
 
             Log.d("AppMain", "Decompressing: $so")
-            val brInput = am.open("flutter-br-$abi/$lib")
+            val brInput = nativesApk.getInputStream(
+                nativesApk.getEntry("lib/$abi/${so.replace(".so", "-br.so")}")
+            )
             val soOutput = FileOutputStream(soFile)
 
             val brIn = BrotliInputStream(brInput)

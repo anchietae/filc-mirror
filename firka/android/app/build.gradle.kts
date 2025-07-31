@@ -4,8 +4,8 @@ import java.security.MessageDigest
 import java.util.Properties
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
-import java.util.zip.ZipOutputStream.STORED
 import java.util.zip.ZipOutputStream.DEFLATED
+import java.util.zip.ZipOutputStream.STORED
 
 plugins {
     id("com.android.application")
@@ -105,7 +105,7 @@ flutter {
 
 tasks.register("transformAndResignDebugApk") {
     group = "build"
-    description = "Transform and resign debug APK with debug key"
+    description = "Transform and resign APK with debug key"
 
     dependsOn("assembleDebug")
 
@@ -116,7 +116,7 @@ tasks.register("transformAndResignDebugApk") {
 
 tasks.register("transformAndResignReleaseApk") {
     group = "build"
-    description = "Transform and resign debug APK with debug key"
+    description = "Transform and resign APK with release key"
 
     dependsOn("assembleRelease")
 
@@ -125,26 +125,34 @@ tasks.register("transformAndResignReleaseApk") {
     }
 }
 
+tasks.register("transformAndResignReleaseBundle") {
+    group = "build"
+    description = "Transform and resign bundle with release key"
+
+    dependsOn("bundleRelease")
+
+    doLast {
+        transformAppBundle()
+    }
+}
+
 afterEvaluate {
     tasks.findByName("assembleDebug")?.finalizedBy("transformAndResignDebugApk")
     tasks.findByName("assembleRelease")?.finalizedBy("transformAndResignReleaseApk")
+    tasks.findByName("bundleRelease")?.finalizedBy("transformAndResignReleaseBundle")
 }
 
 fun transformApks(debug: Boolean) {
-    val buildDir = project.buildDir
-    val apkDir = File(buildDir, "outputs/flutter-apk")
-    val apks = apkDir.listFiles()!!
-    val flavor = if (debug) { "debug" } else { "release" }
-
     println("Starting APK transformation process...")
 
+    val buildDir = project.buildDir
+    val apkDir = File(buildDir, "outputs/flutter-apk")
+    val apks = getApks(debug)
     var c = 0;
     apks
-        .filter { apk -> apk.name.startsWith("app-") && apk.name.endsWith("-$flavor.apk") }
         .forEach { c++; transformAndSignApk(apkDir, it.nameWithoutExtension, debug) }
 
     println("Transformed: $c apks")
-
 }
 
 fun transformAndSignApk(apkDir: File, name: String, debug: Boolean) {
@@ -201,8 +209,6 @@ fun transformApk(input: File, output: File, compressionLevel: String = "Z") {
         into(tempDir)
     }
 
-    val assetsDir = File(tempDir, "assets")
-
     val metaInf = File(tempDir, "META-INF")
     val metaInfFiles = metaInf.listFiles();
     for (file in metaInfFiles!!) {
@@ -216,16 +222,12 @@ fun transformApk(input: File, output: File, compressionLevel: String = "Z") {
     val compressedLibs = mutableMapOf<String, String>()
     for (arch in arches!!) {
         val libFlutter = File(arch, "libflutter.so")
-        val libApp = File(arch, "libapp.so")
 
         if (!libFlutter.exists()) continue
 
-        val compressedDir = File(assetsDir, "flutter-br-${arch.name}")
-        val compressedFlutter = File(compressedDir, "libflutter.so.br")
+        val compressedFlutter = File(arch, "libflutter-br.so")
 
-        if (!compressedDir.exists()) compressedDir.mkdirs()
-
-        compressedLibs["${arch.name}/libflutter.so"] = libFlutter.sha256()
+        compressedLibs["libflutter.so"] = libFlutter.sha256()
 
         println("Compressing ${arch.name}/libflutter.so with brotli")
         exec {
@@ -237,10 +239,10 @@ fun transformApk(input: File, output: File, compressionLevel: String = "Z") {
             )
         }
         libFlutter.delete()
-    }
 
-    val json = groovy.json.JsonBuilder(compressedLibs)
-    File(assetsDir, "flutter-br.json").writeText(json.toString())
+        val json = groovy.json.JsonBuilder(compressedLibs)
+        File(arch, "index.so").writeText(json.toString())
+    }
 
     val topDirL = tempDir.absolutePath.length + 1
     val zos = ZipOutputStream(output.outputStream());
@@ -275,10 +277,47 @@ fun transformApk(input: File, output: File, compressionLevel: String = "Z") {
     println("APK transformed successfully")
 }
 
+fun transformAppBundle() {
+    val buildDir = project.buildDir
+    val bundle = File(buildDir, "outputs/bundle/release/app-release.aab")
+
+    val apks = getApks(false)
+    val apkCount = apks.count { it.name.startsWith("app-") && it.name.endsWith("-release.apk") }
+
+    if (!bundle.exists()) {
+        throw Exception("Bundle not found at: $bundle")
+    }
+
+    if (apkCount < 3) {
+        throw Exception("Excepected 3 apks per abi but only found $apkCount")
+    }
+
+    val aabTempDir = File(project.buildDir, "tmp/aab-transform")
+    aabTempDir.deleteRecursively()
+    aabTempDir.mkdirs()
+
+    copy {
+        from(zipTree(bundle))
+        into(aabTempDir)
+    }
+
+}
+
 fun File.sha256(): String {
     val md = MessageDigest.getInstance("SHA-256")
     val digest = md.digest(this.readBytes())
     return digest.fold("") { str, it -> str + "%02x".format(it) }
+}
+
+fun getApks(debug: Boolean): List<File> {
+    val buildDir = project.buildDir
+    val apkDir = File(buildDir, "outputs/flutter-apk")
+    val apks = apkDir.listFiles()!!
+    val flavor = if (debug) { "debug" } else { "release" }
+
+    return apks
+        .filter { apk -> apk.name.startsWith("app-") && apk.name.endsWith("-$flavor.apk") }
+        .toList()
 }
 
 fun getDebugKeystorePath(): String {
