@@ -9,8 +9,8 @@ buildeléséhez hogy a brotli a PATH-ben legyen
 
 ## Windows
 - Töltsd le a `brotli-x64-windows-static.zip`-et a [google/brotli github repoból](https://github.com/google/brotli/releases/latest)
-- Csomagold ki valahol (pl. C:\Users\<username>\dev\brotli)
-- Add hozzá a mappát ahova kicsomagoltad (C:\Users\<username>\dev\brotli) a PATH-hez
+- Csomagold ki valahol (pl. C:\Users\\<username>\dev\brotli)
+- Add hozzá a mappát ahova kicsomagoltad (C:\Users\\<username>\dev\brotli) a PATH-hez
 - Ne felejtsd el újraindítani az IDE-det illetve parancssorodat utánna hogy frissúljön a PATH
 
 ## Linux/MacOS
@@ -53,5 +53,5 @@ $ ./dev/tools/build_release.sh
 ## Release apk buildelése
 
 ```shell
-$ ./tools/linux/build_apk.sh
+$ ./tools/linux/build_apk.sh main
 ```
