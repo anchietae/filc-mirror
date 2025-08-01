@@ -20,6 +20,14 @@ Telepítsd fel a brotli packaget a distro-d package managerével
 
 [Secrets dokumentáció](secrets/README.md)
 
+# Flutter l10n
+
+Flutter l10n fileok generálása
+
+```shell
+flutter gen-l10n --template-arb-file app_hu.arb
+```
+
 # Android debug build
 
 A dev buildhez nem közelező keystore használata
