@@ -63,6 +63,7 @@ pipeline {
             }
             steps {
                 archiveArtifacts artifacts: 'firka/build/app/outputs/flutter-apk/app-*-release.apk', fingerprint: true
+                sh 'rm firka/build/app/outputs/flutter-apk/app-*-release.apk'
             }
         }
 
@@ -74,6 +75,7 @@ pipeline {
             }
             steps {
                 archiveArtifacts artifacts: 'firka/build/app/outputs/flutter-apk/app-debug.apk', fingerprint: true
+                sh 'rm firka/build/app/outputs/flutter-apk/app-debug.apk'
             }
         }
     }

@@ -148,7 +148,7 @@ fun transformApks(debug: Boolean) {
     val buildDir = project.buildDir
     val apkDir = File(buildDir, "outputs/flutter-apk")
     val apks = getApks(debug)
-    var c = 0;
+    var c = 0
     apks
         .forEach { c++; transformAndSignApk(apkDir, it.nameWithoutExtension, debug) }
 
@@ -203,6 +203,11 @@ fun transformApk(input: File, output: File, compressionLevel: String = "Z") {
 
     val brotli = findToolInPath("brotli")
         ?: throw Exception("Brotli not found in path")
+    val optipng = findToolInPath("optipng")
+
+    if (optipng == null || optipng.isEmpty()) {
+        println("Optipng was not found in PATH, optimizing images will be skipped.")
+    }
 
     copy {
         from(zipTree(input))
@@ -210,7 +215,7 @@ fun transformApk(input: File, output: File, compressionLevel: String = "Z") {
     }
 
     val metaInf = File(tempDir, "META-INF")
-    val metaInfFiles = metaInf.listFiles();
+    val metaInfFiles = metaInf.listFiles()
     for (file in metaInfFiles!!) {
         if (file.name.endsWith("MF") || file.name.endsWith("SF")
             || file.name.endsWith("RSA")) {
@@ -245,12 +250,24 @@ fun transformApk(input: File, output: File, compressionLevel: String = "Z") {
     }
 
     val topDirL = tempDir.absolutePath.length + 1
-    val zos = ZipOutputStream(output.outputStream());
+    val zos = ZipOutputStream(output.outputStream())
     tempDir.walkTopDown().forEach { f ->
         if (f.absolutePath == tempDir.absolutePath) return@forEach
 
         var relName = f.absolutePath.substring(topDirL).replace("\\", "/")
         if (f.isDirectory && !relName.endsWith("/")) relName += "/"
+
+        if (compressionLevel == "Z" && optipng != null && f.extension == "png") {
+            exec {
+                commandLine(
+                    optipng,
+                    "-zm", "9",
+                    "-zw", "32k",
+                    "-o9",
+                    f.absolutePath
+                )
+            }
+        }
 
         val compress = !relName.endsWith(".so") && !relName.endsWith(".arsc")
         zos.setMethod(if (compress) { DEFLATED } else { STORED })
@@ -300,6 +317,8 @@ fun transformAppBundle() {
         from(zipTree(bundle))
         into(aabTempDir)
     }
+
+    // TODO: Finish
 
 }
 
@@ -394,15 +413,15 @@ fun findToolInSdkPath(toolName: String): String? {
 
     if (!toolName.contains(".exe")) {
         val exeTool = findToolInSdkPath("$toolName.exe")
-        if (exeTool != null) return exeTool;
+        if (exeTool != null) return exeTool
     }
     if (!toolName.contains(".sh")) {
         val shTool = findToolInSdkPath("$toolName.sh")
-        if (shTool != null) return shTool;
+        if (shTool != null) return shTool
     }
     if (!toolName.contains(".bat")) {
         val batTool = findToolInSdkPath("$toolName.bat")
-        if (batTool != null) return batTool;
+        if (batTool != null) return batTool
     }
 
     return null
