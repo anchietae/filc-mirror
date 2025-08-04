@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:majesticons_flutter/majesticons_flutter.dart';
-import 'package:shake_gesture/shake_gesture.dart';
+
 
 import '../../../../helpers/debug_helper.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -157,14 +157,6 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _updateSystemUI();
     });
-
-    // TODO: move this to a button inside the settings page when it's implemented
-    if (kDebugMode) {
-      ShakeGesture.registerCallback(onShake: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DebugScreen(data)));
-      });
-    }
 
     prefetch();
   }
