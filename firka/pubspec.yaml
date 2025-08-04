@@ -62,7 +62,7 @@ dependencies:
   flutter_arc_text: ^0.6.0
   flutter_svg: ^1.1.6
   fmb_dart:
-    hosted: https://git.anchietae.cc/api/packages/FMBCrypt/pub/
+    path: vendor/fmb_dart
     version: 5.0.0
 
 dev_dependencies:
