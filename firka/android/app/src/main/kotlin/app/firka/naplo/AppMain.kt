@@ -25,6 +25,7 @@ class AppMain : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        /*
         val abi = Build.SUPPORTED_ABIS[0]
 
         val apks = File(applicationInfo.nativeLibraryDir, "../..").absoluteFile
@@ -83,6 +84,7 @@ class AppMain : Application() {
 
             System.load(soFile.absolutePath)
         }
+        */
     }
 
 }

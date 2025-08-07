@@ -13,7 +13,6 @@ import 'package:firka/ui/phone/screens/debug/debug_screen.dart';
 import 'package:firka/ui/phone/screens/home/home_screen.dart';
 import 'package:firka/ui/phone/screens/login/login_screen.dart';
 import 'package:firka/ui/phone/screens/wear_login/wear_login_screen.dart';
-import 'package:firka/wear_main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -137,11 +136,6 @@ void main() async {
   const platform = MethodChannel('firka.app/main');
   if (Platform.isAndroid) {
     var isWear = (await platform.invokeMethod("isWear")) as bool;
-
-    if (isWear) {
-      wearMain(platform);
-      return;
-    }
   }
 
   runZonedGuarded(() async {

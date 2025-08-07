@@ -19,7 +19,6 @@ import '../../pages/extras/extras.dart';
 import '../../pages/extras/main_error.dart';
 import '../../pages/home/home_grades_subject.dart';
 import '../../pages/home/home_timetable.dart';
-import '../debug/debug_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppInitialization data;

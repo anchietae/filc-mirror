@@ -7,7 +7,6 @@ import 'package:firka/helpers/extensions.dart';
 import 'package:firka/helpers/icon_helper.dart';
 import 'package:firka/helpers/profile_picture.dart';
 import 'package:firka/main.dart';
-import 'package:firka/ui/model/style.dart';
 import 'package:firka/ui/phone/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

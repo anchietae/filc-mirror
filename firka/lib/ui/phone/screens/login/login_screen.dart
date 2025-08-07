@@ -490,72 +490,72 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: EdgeInsets.symmetric(
                           horizontal: paddingWidthHorizontal),
                       child: InkWell(
-                        onTap: () {
-                          showModalBottomSheet<void>(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (BuildContext context) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom),
-                                child: FractionallySizedBox(
-                                  heightFactor: 0.90,
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: <Widget>[
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 16),
-                                              child: Container(
-                                                decoration: const BoxDecoration(
-                                                  color: Color(0xFFB9C8E5),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(2)),
-                                                ),
-                                                width: 40,
-                                                height: 4,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.8,
-                                          // Adjust height for content
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                          // Add ClipRRect for circular edges
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            child: WebViewWidget(
-                                              controller: _webViewController,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
+                        // onTap: () {
+                        //   showModalBottomSheet<void>(
+                        //     context: context,
+                        //     isScrollControlled: true,
+                        //     builder: (BuildContext context) {
+                        //       return Padding(
+                        //         padding: EdgeInsets.only(
+                        //             bottom: MediaQuery.of(context)
+                        //                 .viewInsets
+                        //                 .bottom),
+                        //         child: FractionallySizedBox(
+                        //           heightFactor: 0.90,
+                        //           child: Center(
+                        //             child: Column(
+                        //               mainAxisAlignment:
+                        //                   MainAxisAlignment.start,
+                        //               mainAxisSize: MainAxisSize.max,
+                        //               children: <Widget>[
+                        //                 Column(
+                        //                   crossAxisAlignment:
+                        //                       CrossAxisAlignment.center,
+                        //                   mainAxisAlignment:
+                        //                       MainAxisAlignment.start,
+                        //                   children: [
+                        //                     Padding(
+                        //                       padding:
+                        //                           const EdgeInsets.symmetric(
+                        //                               vertical: 16),
+                        //                       child: Container(
+                        //                         decoration: const BoxDecoration(
+                        //                           color: Color(0xFFB9C8E5),
+                        //                           borderRadius:
+                        //                               BorderRadius.all(
+                        //                                   Radius.circular(2)),
+                        //                         ),
+                        //                         width: 40,
+                        //                         height: 4,
+                        //                       ),
+                        //                     ),
+                        //                   ],
+                        //                 ),
+                        //                 Container(
+                        //                   height: MediaQuery.of(context)
+                        //                           .size
+                        //                           .height *
+                        //                       0.8,
+                        //                   // Adjust height for content
+                        //                   margin: const EdgeInsets.symmetric(
+                        //                       horizontal: 16),
+                        //                   // Add ClipRRect for circular edges
+                        //                   child: ClipRRect(
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(20),
+                        //                     child: WebViewWidget(
+                        //                       controller: _webViewController,
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       );
+                        //     },
+                        //   );
+                        // },
                         borderRadius: BorderRadius.circular(12),
                         child: Container(
                           width: double.infinity,
